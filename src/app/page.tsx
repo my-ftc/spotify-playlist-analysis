@@ -9,7 +9,7 @@ import GenreChart from "../components/GenreChart";
 import AgeDistributionChart from "../components/AgeDistributionChart";
 import ErrorMessage from "../components/ErrorMessage";
 import LoadingSpinner from "../components/LoadingSpinner"; // Spinner for loading state
-import { extractPlaylistId, getAccessToken, fetchPlaylistData, fetchArtistGenres, fetchUsersPlaylists } from "../lib/spotify";
+import { extractPlaylistId, getAccessToken, fetchPlaylistData, fetchArtistGenresInBatches, fetchUsersPlaylists } from "../lib/spotify";
 import { categorizeTracksByAge } from "../lib/trackUtils";
 
 export default function Home() {
@@ -31,9 +31,11 @@ export default function Home() {
         return await fetchFunc();
       } catch (error: any) {
         if (error.response && error.response.status === 429) {
+          // Check the Retry-After header
           const retryAfter = error.response.headers.get('Retry-After');
-          const waitTime = retryAfter ? parseInt(retryAfter) * 1000 : Math.pow(2, i) * 1000; // Exponential backoff
-          await delay(waitTime);
+          const waitTime = retryAfter ? parseInt(retryAfter, 10) * 1000 : Math.pow(2, i) * 1000; // Exponential backoff if Retry-After is absent
+          console.log(`Rate limited, retrying after ${waitTime / 1000} seconds`);
+          await delay(waitTime); // Wait before retrying
         } else {
           throw error; // Rethrow if it's not a 429 error
         }
@@ -41,6 +43,7 @@ export default function Home() {
     }
     throw new Error("Max retries reached for fetching data.");
   };
+
 
   const handleAnalyze = async () => {
     setError(null);
@@ -72,7 +75,7 @@ export default function Home() {
 
       const [userPlaylists, genreCounts] = await Promise.all([
         ownerId ? fetchUsersPlaylists(ownerId, accessToken) : Promise.resolve([]),
-        fetchWithRetry(() => fetchArtistGenres(artistIds, accessToken)) // Fetch genres with retry logic
+        fetchArtistGenresInBatches(artistIds, accessToken)
       ]);
 
       if (ownerId) {

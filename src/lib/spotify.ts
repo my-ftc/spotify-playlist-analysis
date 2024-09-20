@@ -111,3 +111,65 @@ export const fetchUsersPlaylists = async (userId: string, accessToken: string) =
   return data.items; // Return the user's playlists
 };
 
+// Helper function to split array into batches
+const chunkArray = (array: any[], chunkSize: number) => {
+  return array.reduce((resultArray: any[], item, index) => {
+    const chunkIndex = Math.floor(index / chunkSize);
+    if (!resultArray[chunkIndex]) {
+      resultArray[chunkIndex] = []; // Start a new chunk
+    }
+    resultArray[chunkIndex].push(item);
+    return resultArray;
+  }, []);
+};
+
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const fetchWithRetry = async (fetchFunc: () => Promise<any>, retries = 3) => {
+  for (let i = 0; i < retries; i++) {
+    try {
+      return await fetchFunc();
+    } catch (error: any) {
+      if (error.response && error.response.status === 429) {
+        const rateLimitReset = error.response.headers.get('X-RateLimit-Reset');
+
+        // Log the reset time and convert it to a human-readable format
+        if (rateLimitReset) {
+          const resetTimestamp = parseInt(rateLimitReset, 10) * 1000; // Convert to milliseconds
+          const resetTime = new Date(resetTimestamp).toLocaleTimeString();
+          console.log(`Rate limited. API will reset at: ${resetTime}`);
+        } else {
+          console.log('Rate limit reset information not available.');
+        }
+
+        // Check for Retry-After header
+        const retryAfter = error.response.headers.get('Retry-After');
+        const waitTime = retryAfter ? parseInt(retryAfter, 10) * 1000 : Math.pow(2, i) * 1000; // Fallback to exponential backoff
+        console.log(`Rate limited, retrying after ${waitTime / 1000} seconds`);
+        await delay(waitTime); // Wait before retrying
+      } else {
+        throw error; // Rethrow any other error
+      }
+    }
+  }
+  throw new Error("Max retries reached for fetching data.");
+};
+
+// Batch request function with delay between batches
+export const fetchArtistGenresInBatches = async (artistIds: string[], accessToken: string, batchSize = 20, delayMs = 1000) => {
+  const artistChunks = chunkArray(artistIds, batchSize);
+  let genreCounts: { [genre: string]: number } = {};
+
+  for (const chunk of artistChunks) {
+    try {
+      const genreChunk = await fetchWithRetry(() => fetchArtistGenres(chunk, accessToken));
+      genreCounts = { ...genreCounts, ...genreChunk };
+    } catch (error) {
+      console.error("Error fetching genre chunk", error);
+    }
+    await delay(delayMs); // Delay between batches to avoid rate limiting
+  }
+
+  return genreCounts;
+};
+
