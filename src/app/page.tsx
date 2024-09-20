@@ -23,28 +23,6 @@ export default function Home() {
   const [loading, setLoading] = useState<boolean>(false);
   const [userPlaylists, setUserPlaylists] = useState<any[]>([]);
 
-  const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
-  const fetchWithRetry = async (fetchFunc: () => Promise<any>, retries = 3) => {
-    for (let i = 0; i < retries; i++) {
-      try {
-        return await fetchFunc();
-      } catch (error: any) {
-        if (error.response && error.response.status === 429) {
-          // Check the Retry-After header
-          const retryAfter = error.response.headers.get('Retry-After');
-          const waitTime = retryAfter ? parseInt(retryAfter, 10) * 1000 : Math.pow(2, i) * 1000; // Exponential backoff if Retry-After is absent
-          console.log(`Rate limited, retrying after ${waitTime / 1000} seconds`);
-          await delay(waitTime); // Wait before retrying
-        } else {
-          throw error; // Rethrow if it's not a 429 error
-        }
-      }
-    }
-    throw new Error("Max retries reached for fetching data.");
-  };
-
-
   const handleAnalyze = async () => {
     setError(null);
     setFollowers(null);
@@ -103,7 +81,7 @@ export default function Home() {
       {loading && <LoadingSpinner />}
       {!loading && followers !== null && trackCount !== null && (
         <div className="text-center">
-          <p>Followers: {followers} | Tracks: {trackCount}</p>
+          <FollowerCount followers={followers} trackCount={trackCount} />
         </div>
       )}
       {showChart && (
