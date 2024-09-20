@@ -92,7 +92,7 @@ export default function Home() {
       )}
       {!loading && userPlaylists.length > 0 && (
         <div>
-          <h2>User's Other Playlists:</h2>
+          <h2>User&#39;s Other Playlists:</h2>
           <ul>
             {userPlaylists.map((playlist) => (
               <li key={playlist.id}>
