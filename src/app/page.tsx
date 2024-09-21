@@ -1,16 +1,15 @@
-// src/app/page.tsx
+"use client";
 
-"use client"
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import InputAnalyze from "../components/InputAnalyze";
 import FollowerCount from "../components/FollowerCount";
 import GenreChart from "../components/GenreChart";
 import AgeDistributionChart from "../components/AgeDistributionChart";
 import ErrorMessage from "../components/ErrorMessage";
-import LoadingSpinner from "../components/LoadingSpinner"; // Spinner for loading state
+import LoadingSpinner from "../components/LoadingSpinner";
 import { extractPlaylistId, getAccessToken, fetchPlaylistData, fetchArtistGenresInBatches, fetchUsersPlaylists } from "../lib/spotify";
 import { categorizeTracksByAge } from "../lib/trackUtils";
+import { getPreviousSearches, storePlaylistSearch } from "../lib/localStorageUtils";  // Import local storage utilities
 
 export default function Home() {
   const [query, setQuery] = useState("");
@@ -22,6 +21,12 @@ export default function Home() {
   const [showChart, setShowChart] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [userPlaylists, setUserPlaylists] = useState<any[]>([]);
+  const [previousSearches, setPreviousSearches] = useState<{ name: string, url: string }[]>([]);
+
+  // Retrieve previous searches from local storage on component mount
+  useEffect(() => {
+    setPreviousSearches(getPreviousSearches());
+  }, []);
 
   const handleAnalyze = async () => {
     setError(null);
@@ -47,13 +52,25 @@ export default function Home() {
       setFollowers(playlistData.followers);
       setTrackCount(playlistData.tracks.length);
 
+      // Store follower count in the database
+      await fetch('/api/storeFollowerCount', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          playlistId: playlistId,
+          followerCount: playlistData.followers,
+        }),
+      });
+
       const tracks = playlistData.tracks;
       const artistIds = tracks.map((item: any) => item.track.artists[0].id);
       const ownerId = playlistData.ownerId;
 
       const [userPlaylists, genreCounts] = await Promise.all([
         ownerId ? fetchUsersPlaylists(ownerId, accessToken) : Promise.resolve([]),
-        fetchArtistGenresInBatches(artistIds, accessToken)
+        fetchArtistGenresInBatches(artistIds, accessToken),
       ]);
 
       if (ownerId) {
@@ -67,6 +84,13 @@ export default function Home() {
       const ageDistribution = categorizeTracksByAge(tracks);
       setAgeDistribution(ageDistribution);
       setShowChart(true);
+
+      // Handle null values with fallback defaults
+      const playlistName = playlistData.name || "Unknown Playlist"; // Fallback to 'Unknown Playlist' if null
+      const playlistUrl = playlistData.external_urls.spotify || "#"; // Fallback to '#' if URL is null
+
+      // Store the playlist name and URL in local storage
+      storePlaylistSearch(playlistName, playlistUrl);
     } catch (err: any) {
       setError("Error fetching playlist or artist data.");
       console.error("Error fetching playlist data:", err.message);
@@ -98,6 +122,20 @@ export default function Home() {
               <li key={playlist.id}>
                 <a href={playlist.external_urls.spotify} target="_blank" rel="noopener noreferrer">
                   {playlist.name}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {previousSearches.length > 0 && (
+        <div>
+          <h2>Previous Playlist Searches:</h2>
+          <ul>
+            {previousSearches.map((search, index) => (
+              <li key={index}>
+                <a href={search.url} target="_blank" rel="noopener noreferrer">
+                  {search.name}
                 </a>
               </li>
             ))}
