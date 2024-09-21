@@ -1,14 +1,15 @@
 // pages/api/updateFollowerCounts.ts
 
 import { NextApiRequest, NextApiResponse } from 'next';
-import { PrismaClient } from '@prisma/client';
-import { getAccessToken, fetchPlaylistData } from '../../lib/spotify';
 import { upsertFollowerCount } from '../../lib/upsertFollower';
+import { getAccessToken, fetchPlaylistData } from '../../lib/spotify';
+import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === 'POST') {
+  // Accept both GET and POST
+  if (req.method === 'POST' || req.method === 'GET') {
     try {
       const accessToken = await getAccessToken();
       
@@ -21,7 +22,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const playlistData = await fetchPlaylistData(playlist.playlist_id, accessToken);
         const followerCount = playlistData?.followers ?? 0; // Ensure followerCount is never null
 
-        // Use the upsert function to either update or insert follower count
+        // Use upsertFollowerCount to update the follower count in the database
         await upsertFollowerCount(playlist.playlist_id, followerCount);
       }
 
@@ -31,10 +32,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       console.error('Error updating follower counts:', error);
       return res.status(500).json({ message: 'Error updating follower counts.' });
     } finally {
-      await prisma.$disconnect(); // Disconnect Prisma Client
+      await prisma.$disconnect();
     }
   } else {
-    res.setHeader('Allow', ['POST']);
+    res.setHeader('Allow', ['POST', 'GET']);
     return res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }
