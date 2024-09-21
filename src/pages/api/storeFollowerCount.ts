@@ -15,6 +15,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const result = await upsertFollowerCount(playlistId, followerCount);
       return res.status(201).json(result);
     } catch (error) {
+      console.error('Error storing follower count:', error); // Log the error
       return res.status(500).json({ message: 'Error storing follower count.' });
     }
   } else {

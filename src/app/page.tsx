@@ -9,7 +9,7 @@ import ErrorMessage from "../components/ErrorMessage";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { extractPlaylistId, getAccessToken, fetchPlaylistData, fetchArtistGenresInBatches, fetchUsersPlaylists } from "../lib/spotify";
 import { categorizeTracksByAge } from "../lib/trackUtils";
-import { getPreviousSearches, storePlaylistSearch } from "../lib/localStorageUtils";  // Import local storage utilities
+import { getPreviousSearches, storePlaylistSearch } from "../lib/localStorageUtils";
 
 export default function Home() {
   const [query, setQuery] = useState("");
