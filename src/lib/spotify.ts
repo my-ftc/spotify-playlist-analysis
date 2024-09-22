@@ -27,8 +27,6 @@ export const getAccessToken = async (): Promise<string> => {
   return data.access_token;
 };
 
-// lib/spotify.ts
-
 export const fetchPlaylistData = async (playlistId: string, accessToken: string) => {
   let tracks: any[] = [];
   let followersCount: number | null = null;
@@ -81,8 +79,6 @@ export const fetchPlaylistData = async (playlistId: string, accessToken: string)
     },
   };
 };
-
-
 
 export const fetchArtistGenres = async (artistIds: string[], accessToken: string) => {
   const genreCounts: { [genre: string]: number } = {};
