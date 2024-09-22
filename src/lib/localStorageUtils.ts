@@ -18,16 +18,16 @@ export const getPreviousSearches = (): PlaylistSearch[] => {
 export const storePlaylistSearch = (name: string, url: string) => {
   const previousSearches = getPreviousSearches();
   
-  // Check if the search already exists by either name or url
+  // Check if the search already exists by URL
   const isSearchExists = previousSearches.some(
-    (search) => search.name === name || search.url === url
+    (search) => search.url === url
   );
 
   if (!isSearchExists) {
     const updatedSearches = [...previousSearches, { name, url }];
     localStorage.setItem(PLAYLIST_SEARCHES_KEY, JSON.stringify(updatedSearches));
   } else {
-    console.log("Search with this name or URL already exists.");
+    console.log("Search with this URL already exists.");
   }
 };
 
