@@ -16,6 +16,6 @@ datasource db {
 model Followers {
   id            Int      @id @default(autoincrement())
   playlist_id   String   @unique
-  follower_count Int
+  follower_count Int[]
   created_at    DateTime @default(now())
 }
