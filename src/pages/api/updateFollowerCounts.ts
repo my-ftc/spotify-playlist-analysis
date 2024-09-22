@@ -1,7 +1,7 @@
 // pages/api/updateFollowerCounts.ts
 
 import { NextApiRequest, NextApiResponse } from 'next';
-import { upsertFollowerCount } from '../../lib/upsertFollower';
+import { updateFollower } from '../../lib/updateFollower';
 import { getAccessToken, fetchPlaylistData } from '../../lib/spotify';
 import { PrismaClient } from '@prisma/client';
 
@@ -12,7 +12,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method === 'POST' || req.method === 'GET') {
     try {
       const accessToken = await getAccessToken();
-      
+
       // Fetch all playlists from the database
       const playlists = await prisma.followers.findMany({
         select: { playlist_id: true },
@@ -22,8 +22,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const playlistData = await fetchPlaylistData(playlist.playlist_id, accessToken);
         const followerCount = playlistData?.followers ?? 0; // Ensure followerCount is never null
 
-        // Use upsertFollowerCount to update the follower count in the database
-        await upsertFollowerCount(playlist.playlist_id, followerCount);
+        // Use insertFollowerCount to add a new record for each playlistId
+        await updateFollower(playlist.playlist_id, followerCount);
       }
 
       console.log('Follower counts updated successfully.');

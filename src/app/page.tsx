@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import { useState, useEffect } from "react";
 import InputAnalyze from "../components/InputAnalyze";
@@ -15,6 +15,7 @@ export default function Home() {
   const [query, setQuery] = useState("");
   const [followers, setFollowers] = useState<number | null>(null);
   const [trackCount, setTrackCount] = useState<number | null>(null);
+  const [followerCountArray, setFollowerCountArray] = useState<number[]>([]); // State for follower count array
   const [genres, setGenres] = useState<{ [genre: string]: number }>({});
   const [ageDistribution, setAgeDistribution] = useState<{ [ageGroup: string]: number }>({});
   const [error, setError] = useState<string | null>(null);
@@ -23,7 +24,6 @@ export default function Home() {
   const [userPlaylists, setUserPlaylists] = useState<any[]>([]);
   const [previousSearches, setPreviousSearches] = useState<{ name: string, url: string }[]>([]);
 
-  // Retrieve previous searches from local storage on component mount
   useEffect(() => {
     setPreviousSearches(getPreviousSearches());
   }, []);
@@ -32,6 +32,7 @@ export default function Home() {
     setError(null);
     setFollowers(null);
     setTrackCount(null);
+    setFollowerCountArray([]); // Reset follower count array
     setGenres({});
     setAgeDistribution({});
     setUserPlaylists([]);
@@ -47,11 +48,9 @@ export default function Home() {
     }
 
     try {
-      // Fetch access token from backend
       const tokenResponse = await fetch('/api/getAccessToken');
       if (!tokenResponse.ok) throw new Error('Failed to fetch access token');
 
-      // Fetch playlist data from backend
       const playlistResponse = await fetch(`/api/fetchPlaylistData?playlistId=${playlistId}`);
       if (!playlistResponse.ok) throw new Error('Failed to fetch playlist data');
       const playlistData = await playlistResponse.json();
@@ -59,12 +58,16 @@ export default function Home() {
       setFollowers(playlistData.followers);
       setTrackCount(playlistData.tracks.length);
 
-      // Store follower count in the database
-      await fetch('/api/storeFollowerCount', {
+      // Fetch follower count array from the new API
+      const followerCountResponse = await fetch(`/api/getFollowerCountArray?playlistId=${playlistId}`);
+      if (followerCountResponse.ok) {
+        const { followerCountArray } = await followerCountResponse.json();
+        setFollowerCountArray(followerCountArray); // Set the follower count array
+      }
+
+      await fetch('/api/insertPlaylist', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           playlistId: playlistId,
           followerCount: playlistData.followers,
@@ -96,11 +99,8 @@ export default function Home() {
       setAgeDistribution(ageDistribution);
       setShowChart(true);
 
-      // Handle null values with fallback defaults
-      const playlistName = playlistData.name || "Unknown Playlist"; // Fallback to 'Unknown Playlist' if null
-      const playlistUrl = playlistData.external_urls.spotify || "#"; // Fallback to '#' if URL is null
-
-      // Store the playlist name and URL in local storage
+      const playlistName = playlistData.name || "Unknown Playlist";
+      const playlistUrl = playlistData.external_urls.spotify || "#";
       storePlaylistSearch(playlistName, playlistUrl);
     } catch (err: any) {
       setError("Error fetching playlist or artist data.");
@@ -116,7 +116,7 @@ export default function Home() {
       {loading && <LoadingSpinner />}
       {!loading && followers !== null && trackCount !== null && (
         <div className="text-center">
-          <FollowerCount followers={followers} trackCount={trackCount} />
+          <FollowerCount followers={followers} trackCount={trackCount} followerCountArray={followerCountArray} />
         </div>
       )}
       {showChart && (

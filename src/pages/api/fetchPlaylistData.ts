@@ -14,7 +14,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const accessToken = await fetchAccessToken();
     const playlistData = await fetchPlaylistData(playlistId, accessToken);
-    console.log('Spotify Playlist Data:', playlistData);
     res.status(200).json(playlistData);
   } catch (error) {
     res.status(500).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });
