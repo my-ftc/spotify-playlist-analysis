@@ -7,7 +7,7 @@ import GenreChart from "../components/GenreChart";
 import AgeDistributionChart from "../components/AgeDistributionChart";
 import ErrorMessage from "../components/ErrorMessage";
 import LoadingSpinner from "../components/LoadingSpinner";
-import { extractPlaylistId, getAccessToken, fetchPlaylistData, fetchArtistGenresInBatches, fetchUsersPlaylists } from "../lib/spotify";
+import { extractPlaylistId } from "../lib/spotify";
 import { categorizeTracksByAge } from "../lib/trackUtils";
 import { getPreviousSearches, storePlaylistSearch } from "../lib/localStorageUtils";
 
@@ -47,8 +47,15 @@ export default function Home() {
     }
 
     try {
-      const accessToken = await getAccessToken();
-      const playlistData = await fetchPlaylistData(playlistId, accessToken);
+      // Fetch access token from backend
+      const tokenResponse = await fetch('/api/getAccessToken');
+      if (!tokenResponse.ok) throw new Error('Failed to fetch access token');
+
+      // Fetch playlist data from backend
+      const playlistResponse = await fetch(`/api/fetchPlaylistData?playlistId=${playlistId}`);
+      if (!playlistResponse.ok) throw new Error('Failed to fetch playlist data');
+      const playlistData = await playlistResponse.json();
+
       setFollowers(playlistData.followers);
       setTrackCount(playlistData.tracks.length);
 
@@ -68,18 +75,22 @@ export default function Home() {
       const artistIds = tracks.map((item: any) => item.track.artists[0].id);
       const ownerId = playlistData.ownerId;
 
-      const [userPlaylists, genreCounts] = await Promise.all([
-        ownerId ? fetchUsersPlaylists(ownerId, accessToken) : Promise.resolve([]),
-        fetchArtistGenresInBatches(artistIds, accessToken),
+      const [userPlaylistsResponse, genreCountsResponse] = await Promise.all([
+        ownerId ? fetch(`/api/fetchUserPlaylists?userId=${ownerId}`) : Promise.resolve(null),
+        fetch(`/api/fetchArtistGenres?artistIds=${artistIds.join(',')}`),
       ]);
 
-      if (ownerId) {
-        setUserPlaylists(userPlaylists);
+      if (ownerId && userPlaylistsResponse && userPlaylistsResponse.ok) {
+        const userPlaylistsData = await userPlaylistsResponse.json();
+        setUserPlaylists(userPlaylistsData);
       } else {
         setError("Owner ID is not available for this playlist.");
       }
 
-      setGenres(genreCounts);
+      if (genreCountsResponse && genreCountsResponse.ok) {
+        const genreCountsData = await genreCountsResponse.json();
+        setGenres(genreCountsData);
+      }
 
       const ageDistribution = categorizeTracksByAge(tracks);
       setAgeDistribution(ageDistribution);
