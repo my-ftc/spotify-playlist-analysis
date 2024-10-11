@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useState, useEffect } from "react";
 import InputAnalyze from "../components/InputAnalyze";
@@ -48,11 +48,11 @@ export default function Home() {
     }
 
     try {
-      const tokenResponse = await fetch('/api/getAccessToken');
-      if (!tokenResponse.ok) throw new Error('Failed to fetch access token');
+      const tokenResponse = await fetch("/api/getAccessToken");
+      if (!tokenResponse.ok) throw new Error("Failed to fetch access token");
 
       const playlistResponse = await fetch(`/api/fetchPlaylistData?playlistId=${playlistId}`);
-      if (!playlistResponse.ok) throw new Error('Failed to fetch playlist data');
+      if (!playlistResponse.ok) throw new Error("Failed to fetch playlist data");
       const playlistData = await playlistResponse.json();
 
       setFollowers(playlistData.followers);
@@ -65,9 +65,9 @@ export default function Home() {
         setFollowerCountArray(followerCountArray); // Set the follower count array
       }
 
-      await fetch('/api/insertPlaylist', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      await fetch("/api/insertPlaylist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           playlistId: playlistId,
           followerCount: playlistData.followers,
@@ -80,7 +80,7 @@ export default function Home() {
 
       const [userPlaylistsResponse, genreCountsResponse] = await Promise.all([
         ownerId ? fetch(`/api/fetchUserPlaylists?userId=${ownerId}`) : Promise.resolve(null),
-        fetch(`/api/fetchArtistGenres?artistIds=${artistIds.join(',')}`),
+        fetch(`/api/fetchArtistGenres?artistIds=${artistIds.join(",")}`),
       ]);
 
       if (ownerId && userPlaylistsResponse && userPlaylistsResponse.ok) {
@@ -111,49 +111,84 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-8 gap-8">
-      <InputAnalyze query={query} setQuery={setQuery} handleAnalyze={handleAnalyze} />
-      {loading && <LoadingSpinner />}
-      {!loading && followers !== null && trackCount !== null && (
-        <div className="text-center">
-          <FollowerCount followers={followers} trackCount={trackCount} followerCountArray={followerCountArray} />
+    <div className="flex flex-col items-center justify-center relative">
+      {/* Background Vector Image */}
+      <div className="relative w-full">
+        <img
+          src="/images/Vector.png"
+          alt="Top Image"
+          className="w-screen h-auto object-cover"
+        />
+      </div>
+
+      {/* Parent Div for Content */}
+      <div className="absolute top-0 left-0 right-0 mx-24 my-4 z-10">
+        {/* Transparent Navigation Bar */}
+        <nav className="flex justify-between items-center bg-transparent">
+          <div className="z-10 mt-6">
+            <img
+              src="/images/logo-text-over-image.png"
+              alt="Logo"
+              className="w-full h-auto"
+            />
+          </div>
+        </nav>
+
+        {/* Text Section on top of the image */}
+        <div className="text-left">
+          <h1 className="text-3xl font-bold text-white">Spotify Playlist Analyzer</h1>
+          <p className="text-lg text-gray-200">Real-time analysis of playlists to check for quality, bots, and history</p>
         </div>
-      )}
-      {showChart && (
-        <>
-          <GenreChart genres={genres} />
-          <AgeDistributionChart ageDistribution={ageDistribution} />
-        </>
-      )}
-      {!loading && userPlaylists.length > 0 && (
-        <div>
-          <h2>User&#39;s Other Playlists:</h2>
-          <ul>
-            {userPlaylists.map((playlist) => (
-              <li key={playlist.id}>
-                <a href={playlist.external_urls.spotify} target="_blank" rel="noopener noreferrer">
-                  {playlist.name}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-      {previousSearches.length > 0 && (
-        <div>
-          <h2>Previous Playlist Searches:</h2>
-          <ul>
-            {previousSearches.map((search, index) => (
-              <li key={index}>
-                <a href={search.url} target="_blank" rel="noopener noreferrer">
-                  {search.name}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-      <ErrorMessage error={error} />
+
+        {/* Search Bar */}
+        <InputAnalyze query={query} setQuery={setQuery} handleAnalyze={handleAnalyze} />
+
+        {loading && <LoadingSpinner />}
+        {!loading && followers !== null && trackCount !== null && (
+          <div className="text-center">
+            <FollowerCount followers={followers} trackCount={trackCount} followerCountArray={followerCountArray} />
+          </div>
+        )}
+
+        {showChart && (
+          <>
+            <GenreChart genres={genres} />
+            <AgeDistributionChart ageDistribution={ageDistribution} />
+          </>
+        )}
+
+        {!loading && userPlaylists.length > 0 && (
+          <div>
+            <h2>User&#39;s Other Playlists:</h2>
+            <ul>
+              {userPlaylists.map((playlist) => (
+                <li key={playlist.id}>
+                  <a href={playlist.external_urls.spotify} target="_blank" rel="noopener noreferrer">
+                    {playlist.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {previousSearches.length > 0 && (
+          <div>
+            <h2>Previous Playlist Searches:</h2>
+            <ul>
+              {previousSearches.map((search, index) => (
+                <li key={index}>
+                  <a href={search.url} target="_blank" rel="noopener noreferrer">
+                    {search.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        <ErrorMessage error={error} />
+      </div>
     </div>
   );
 }
