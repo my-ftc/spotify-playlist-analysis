@@ -15,8 +15,17 @@ const config: Config = {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      margin: {
+        '1p': '1%',
+        '2p': '2%',
+        '5p': '5%',
+        '10p': '10%',
+        '15p': '15%',
+        '20p': '20%',
+      },
     },
   },
   plugins: [],
 };
+
 export default config;

@@ -111,7 +111,7 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center relative">
+    <div className="flex flex-col items-center bg-[#f5f9fa] justify-center relative">
       {/* Background Vector Image */}
       <div className="relative w-full">
         <img
@@ -122,10 +122,10 @@ export default function Home() {
       </div>
 
       {/* Parent Div for Content */}
-      <div className="absolute top-0 left-0 right-0 mx-24 my-4 z-10">
+      <div className="absolute top-0 left-0 right-0 mx-24 my-2p z-10">
         {/* Transparent Navigation Bar */}
         <nav className="flex justify-between items-center bg-transparent">
-          <div className="z-10 mt-6">
+          <div className="z-10">
             <img
               src="/images/logo-text-over-image.png"
               alt="Logo"
@@ -135,9 +135,9 @@ export default function Home() {
         </nav>
 
         {/* Text Section on top of the image */}
-        <div className="text-left">
-          <h1 className="text-3xl font-bold text-white">Spotify Playlist Analyzer</h1>
-          <p className="text-lg text-gray-200">Real-time analysis of playlists to check for quality, bots, and history</p>
+        <div className="text-left mt-15p">
+          <h1 className="text-6xl font-extrabold text-white">Spotify Playlist Analyzer</h1>
+          <p className="text-xl text-gray-200 mt-1p tracking-wider">Real-time analysis of playlists to check for quality, bots, and history.</p>
         </div>
 
         {/* Search Bar */}
@@ -173,8 +173,8 @@ export default function Home() {
         )}
 
         {previousSearches.length > 0 && (
-          <div>
-            <h2>Previous Playlist Searches:</h2>
+          <div className="">
+            <h2 className="font-extrabold">Recently checked</h2>
             <ul>
               {previousSearches.map((search, index) => (
                 <li key={index}>
