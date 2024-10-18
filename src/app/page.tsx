@@ -9,20 +9,28 @@ import ErrorMessage from "../components/ErrorMessage";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { extractPlaylistId } from "../lib/spotify";
 import { categorizeTracksByAge } from "../lib/trackUtils";
-import { getPreviousSearches, storePlaylistSearch } from "../lib/localStorageUtils";
+import { getPreviousSearches, storePlaylistSearch, timeSince } from "../lib/localStorageUtils";
 
 export default function Home() {
   const [query, setQuery] = useState("");
   const [followers, setFollowers] = useState<number | null>(null);
   const [trackCount, setTrackCount] = useState<number | null>(null);
-  const [followerCountArray, setFollowerCountArray] = useState<number[]>([]); // State for follower count array
+  const [followerCountArray, setFollowerCountArray] = useState<number[]>([]);
   const [genres, setGenres] = useState<{ [genre: string]: number }>({});
   const [ageDistribution, setAgeDistribution] = useState<{ [ageGroup: string]: number }>({});
   const [error, setError] = useState<string | null>(null);
   const [showChart, setShowChart] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [userPlaylists, setUserPlaylists] = useState<any[]>([]);
-  const [previousSearches, setPreviousSearches] = useState<{ name: string, url: string }[]>([]);
+  const [previousSearches, setPreviousSearches] = useState<{
+    name: string,
+    url: string,
+    ownerId: string;
+    followers: number;
+    tracks: number;
+    date: string;
+    image: string | null;
+  }[]>([]);
 
   useEffect(() => {
     setPreviousSearches(getPreviousSearches());
@@ -98,10 +106,7 @@ export default function Home() {
       const ageDistribution = categorizeTracksByAge(tracks);
       setAgeDistribution(ageDistribution);
       setShowChart(true);
-
-      const playlistName = playlistData.name || "Unknown Playlist";
-      const playlistUrl = playlistData.external_urls.spotify || "#";
-      storePlaylistSearch(playlistName, playlistUrl);
+      storePlaylistSearch(playlistData);
     } catch (err: any) {
       setError("Error fetching playlist or artist data.");
       console.error("Error fetching playlist data:", err.message);
@@ -111,9 +116,9 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col items-center bg-[#f5f9fa] justify-center relative">
+    <div className="flex flex-col bg-[#f5f9fa] min-h-screen">
       {/* Background Vector Image */}
-      <div className="relative w-full">
+      <div className="absolute w-full">
         <img
           src="/images/Vector.png"
           alt="Top Image"
@@ -122,7 +127,7 @@ export default function Home() {
       </div>
 
       {/* Parent Div for Content */}
-      <div className="absolute top-0 left-0 right-0 mx-24 my-2p z-10">
+      <div className="top-0 left-0 right-0 mx-24 my-2p z-10">
         {/* Transparent Navigation Bar */}
         <nav className="flex justify-between items-center bg-transparent">
           <div className="z-10">
@@ -173,22 +178,69 @@ export default function Home() {
         )}
 
         {previousSearches.length > 0 && (
-          <div className="">
-            <h2 className="font-extrabold">Recently checked</h2>
-            <ul>
-              {previousSearches.map((search, index) => (
-                <li key={index}>
-                  <a href={search.url} target="_blank" rel="noopener noreferrer">
-                    {search.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
+          <div className="mt-1p">
+            <h2 className="font-extrabold text-black">Recently checked</h2>
+            <p className="text-[#636588]">Latest playlists that have been analysed.</p>
+
+            {/* White background for the list */}
+            <div className="bg-white p-4 rounded-lg shadow-md mt-2">
+
+              {/* Column Headings */}
+              <div className="flex justify-between items-start border-b border-gray-300 pb-2">
+                {/* Empty header for the image */}
+                <div className="w-16"></div> {/* Adjust width to fit the image size */}
+                <div className="flex-1 text-[#8789a8]">Playlist name</div>
+                <div className="flex-1 text-center text-[#8789a8]">Songs</div>
+                <div className="flex-1 text-center text-[#8789a8]">Followers</div>
+                <div className="flex-1 text-center text-[#8789a8]">Checked</div>
+              </div>
+
+              <ul>
+                {previousSearches.map((search, index) => (
+                  <li key={index} className="flex justify-between items-start py-2">
+
+                    {/* Image Column */}
+                    <div className="w-16 flex-shrink-0">
+                      <img
+                        src={search.image || "default-image.jpg"}
+                        alt={search.name}
+                        className="w-12 h-12 object-cover rounded-lg"
+                      />
+                    </div>
+
+                    {/* Name and Owner ID Column */}
+                    <div className="flex-1">
+                      <a href={search.url} target="_blank" rel="noopener noreferrer" className="text-[#373843] hover:underline font-semibold">
+                        {search.name}
+                      </a>
+                      <div className="text-[#8789a8]">{search.ownerId}</div>
+                    </div>
+
+                    {/* Songs Count Column */}
+                    <div className="flex-1 text-gray-600 text-center">
+                      {search.tracks}
+                    </div>
+
+                    {/* Followers Count Column */}
+                    <div className="flex-1 text-gray-600 text-center">
+                      {search.followers}
+                    </div>
+
+                    {/* Time Since Column */}
+                    <div className="flex-1 text-gray-600 text-center">
+                      {timeSince(search.date)}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         )}
+
 
         <ErrorMessage error={error} />
       </div>
     </div>
+
   );
 }

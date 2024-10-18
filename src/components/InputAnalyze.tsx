@@ -16,7 +16,7 @@ const InputAnalyze: React.FC<InputAnalyzeProps> = ({ query, setQuery, handleAnal
           </g>
         </g>
       </svg>
-      <strong className="ml-2">Paste a Spotify URL to check it for bots</strong>
+      <strong className="ml-2 text-black">Paste a Spotify URL to check it for bots</strong>
     </div>
     <div className="flex flex-row mt-4 w-full">
       <input
@@ -29,7 +29,8 @@ const InputAnalyze: React.FC<InputAnalyzeProps> = ({ query, setQuery, handleAnal
       />
       <button
         onClick={handleAnalyze}
-        className="border-gray-300 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-r-lg px-4 py-3 transition duration-200 w-auto whitespace-nowrap"
+        disabled={!query}  // Disable the button if query is empty
+        className={`border-gray-300 ${query ? 'bg-blue-600 hover:bg-blue-700' : 'bg-[#afb7be]'} text-white font-bold rounded-r-lg px-4 py-3 transition duration-200 w-auto whitespace-nowrap`}
       >
         Analyse playlist
       </button>

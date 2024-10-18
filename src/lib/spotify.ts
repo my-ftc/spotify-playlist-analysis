@@ -30,9 +30,10 @@ export const getAccessToken = async (): Promise<string> => {
 export const fetchPlaylistData = async (playlistId: string, accessToken: string) => {
   let tracks: any[] = [];
   let followersCount: number | null = null;
-  let ownerId: string | null = null; // To hold the owner's user ID
+  let ownerId: string | null = null;
   let playlistName: string | null = null;
-  let playlistUrl: string | null = null; // To hold the playlist's external Spotify URL
+  let playlistUrl: string | null = null;
+  let playlistImage: string | null = null; // To hold the playlist's image URL
   let nextUrl = `https://api.spotify.com/v1/playlists/${playlistId}`;
 
   const playlistResponse = await fetch(nextUrl, {
@@ -47,11 +48,12 @@ export const fetchPlaylistData = async (playlistId: string, accessToken: string)
 
   const playlistData = await playlistResponse.json();
   followersCount = playlistData.followers.total;
-  ownerId = playlistData.owner.id; // Get the owner's user ID
-  playlistName = playlistData.name; // Get the playlist name
-  playlistUrl = playlistData.external_urls.spotify; // Get the external URL
+  ownerId = playlistData.owner.id;
+  playlistName = playlistData.name;
+  playlistUrl = playlistData.external_urls.spotify;
+  playlistImage = playlistData.images && playlistData.images.length > 0 ? playlistData.images[0].url : null; // Get the first image if available
 
-  nextUrl = playlistData.tracks.href; // Use the href to fetch tracks
+  nextUrl = playlistData.tracks.href;
 
   while (nextUrl) {
     const response = await fetch(nextUrl, {
@@ -66,19 +68,21 @@ export const fetchPlaylistData = async (playlistId: string, accessToken: string)
 
     const data = await response.json();
     tracks = tracks.concat(data.items);
-    nextUrl = data.next; // Move to the next page
+    nextUrl = data.next;
   }
 
   return {
     followers: followersCount,
     tracks,
-    ownerId, // Return the owner ID
-    name: playlistName, // Return the playlist name
+    ownerId,
+    name: playlistName,
     external_urls: {
-      spotify: playlistUrl, // Return the playlist's Spotify URL
+      spotify: playlistUrl,
     },
+    image: playlistImage, // Return the playlist image URL
   };
 };
+
 
 export const fetchArtistGenres = async (artistIds: string[], accessToken: string) => {
   const genreCounts: { [genre: string]: number } = {};
