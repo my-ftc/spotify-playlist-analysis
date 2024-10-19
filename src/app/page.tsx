@@ -10,6 +10,7 @@ import LoadingSpinner from "../components/LoadingSpinner";
 import { extractPlaylistId } from "../lib/spotify";
 import { categorizeTracksByAge } from "../lib/trackUtils";
 import { getPreviousSearches, storePlaylistSearch, timeSince } from "../lib/localStorageUtils";
+import Pagination from "../components/Pagination";
 
 export default function Home() {
   const [query, setQuery] = useState("");
@@ -32,6 +33,9 @@ export default function Home() {
     image: string | null;
   }[]>([]);
 
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const itemsPerPage = 9;
+
   useEffect(() => {
     setPreviousSearches(getPreviousSearches());
   }, []);
@@ -40,7 +44,7 @@ export default function Home() {
     setError(null);
     setFollowers(null);
     setTrackCount(null);
-    setFollowerCountArray([]); // Reset follower count array
+    setFollowerCountArray([]);
     setGenres({});
     setAgeDistribution({});
     setUserPlaylists([]);
@@ -114,6 +118,10 @@ export default function Home() {
       setLoading(false);
     }
   };
+
+  const totalPages = Math.ceil(previousSearches.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedSearches = previousSearches.slice(startIndex, startIndex + itemsPerPage);
 
   return (
     <div className="flex flex-col bg-[#f5f9fa] min-h-screen">
@@ -196,7 +204,7 @@ export default function Home() {
               </div>
 
               <ul>
-                {previousSearches.map((search, index) => (
+                {paginatedSearches.map((search, index) => (
                   <li key={index} className="flex justify-between items-start py-2">
 
                     {/* Image Column */}
@@ -234,13 +242,27 @@ export default function Home() {
                 ))}
               </ul>
             </div>
+
+            <div className="flex justify-end">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+              />
+            </div>
           </div>
         )}
 
-
         <ErrorMessage error={error} />
       </div>
-    </div>
 
+      <div className="w-full">
+        <img
+          src="/images/footer-bg.png"
+          alt="Footer Image"
+          className="w-screen h-auto object-cover"
+        />
+      </div>
+    </div>
   );
 }
