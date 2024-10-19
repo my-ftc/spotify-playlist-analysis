@@ -23,6 +23,11 @@ const InputAnalyze: React.FC<InputAnalyzeProps> = ({ query, setQuery, handleAnal
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
+        onKeyPress={(e) => {
+          if (e.key === 'Enter') {
+            handleAnalyze(); // Call handleAnalyze on Enter key press
+          }
+        }}
         placeholder="Paste URL"
         className="border border-gray-300 rounded-l-lg text-black focus:outline-none py-3 px-4 w-full"
         style={{ animation: "blinkingCursor 1.2s steps(12) infinite" }}
@@ -30,7 +35,7 @@ const InputAnalyze: React.FC<InputAnalyzeProps> = ({ query, setQuery, handleAnal
       <button
         onClick={handleAnalyze}
         disabled={!query}  // Disable the button if query is empty
-        className={`border-gray-300 ${query ? 'bg-blue-600 hover:bg-blue-700' : 'bg-[#afb7be]'} text-white font-bold rounded-r-lg px-4 py-3 transition duration-200 w-auto whitespace-nowrap`}
+        className={`border-gray-300 ${query ? 'bg-[#1d4a5d]' : 'bg-[#afb7be]'} text-white font-bold rounded-r-lg px-4 py-3 transition duration-200 w-auto whitespace-nowrap`}
       >
         Analyse playlist
       </button>

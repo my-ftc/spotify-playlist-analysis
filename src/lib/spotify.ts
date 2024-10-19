@@ -117,7 +117,36 @@ export const fetchUsersPlaylists = async (userId: string, accessToken: string) =
   }
 
   const data = await response.json();
-  return data.items; // Return the user's playlists
+
+  // Map to include follower count in each playlist object
+  const playlistsWithFollowers = await Promise.all(data.items.map(async (playlist: any) => {
+    const playlistResponse = await fetch(`https://api.spotify.com/v1/playlists/${playlist.id}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    if (!playlistResponse.ok) {
+      throw new Error(`Failed to fetch details for playlist ${playlist.id}`);
+    }
+
+    const playlistData = await playlistResponse.json();
+    return {
+      id: playlist.id,
+      name: playlistData.name,
+      tracks: playlistData.tracks,
+      followers: playlistData.followers.total,
+      external_urls: playlistData.external_urls,
+      images: playlistData.images,
+    };
+  }));
+
+  // Sort playlists by followers and return the top 3
+  const topPlaylists = playlistsWithFollowers
+    .sort((a, b) => b.followers - a.followers)
+    .slice(0, 3);
+
+  return topPlaylists; // Return the top 3 playlists
 };
 
 // Helper function to split array into batches
