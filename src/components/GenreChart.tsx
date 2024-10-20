@@ -15,13 +15,13 @@ const GenreChart: React.FC<GenreChartProps> = ({ genres }) => {
   return (
     <div className='bg-white p-4 rounded-lg shadow-md mt-5 w-1/2 h-fit'>
       <h2 className='font-bold text-black'>Genre Analysis</h2>
-      <div className='flex flex-wrap gap-2 mt-2'> {/* Use flex for horizontal alignment */}
-        {sortedGenres.map(([genre, count]) => (
+      <div className='flex flex-wrap gap-2 mt-2'>
+        {sortedGenres.map(([genre]) => (
           <div
             key={genre}
-            className='rounded-full p-4 text-black' // Updated text color to black for contrast
+            className='rounded-full p-4 text-black'
             style={{
-              backgroundColor: '#dbe8ed', // Set the specified background color
+              backgroundColor: '#dbe8ed',
             }}
           >
             {genre}

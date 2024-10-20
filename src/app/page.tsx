@@ -13,7 +13,6 @@ import { categorizeTracksByAge } from '../lib/trackUtils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import NavBar from '@/components/NavBar';
-import Footer from '@/components/Footer';
 
 export default function Home() {
   const [query, setQuery] = useState("");
@@ -129,6 +128,8 @@ export default function Home() {
   const totalPages = Math.ceil(previousSearches.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedSearches = previousSearches.slice(startIndex, startIndex + itemsPerPage);
+
+  console.log('Error: ', error)
 
   return (
     <div className="flex flex-col bg-[#f5f9fa] min-h-screen font-poppins">
