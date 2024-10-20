@@ -58,6 +58,15 @@ const AgeDistributionChart: React.FC<AgeDistributionChartProps> = ({ ageDistribu
         border: {
           color: '#f6f6fb', // Set the border color for y-axis
         },
+        title: {
+          display: true, // Display the title
+          text: 'Number of tracks', // Set the title text
+          color: '#000', // Set the title color (optional)
+          font: {
+            size: 14, // Set font size for the title (optional)
+            family: 'Arial', // Set font family (optional)
+          },
+        },
       },
     },
   };

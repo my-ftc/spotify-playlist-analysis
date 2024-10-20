@@ -12,6 +12,8 @@ import { extractPlaylistId } from '../utils/helpers';
 import { categorizeTracksByAge } from '../lib/trackUtils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import NavBar from '@/components/NavBar';
+import Footer from '@/components/Footer';
 
 export default function Home() {
   const [query, setQuery] = useState("");
@@ -129,7 +131,7 @@ export default function Home() {
   const paginatedSearches = previousSearches.slice(startIndex, startIndex + itemsPerPage);
 
   return (
-    <div className="flex flex-col bg-[#f5f9fa] min-h-screen">
+    <div className="flex flex-col bg-[#f5f9fa] min-h-screen font-poppins">
       {/* Background Vector Image */}
       <div className="absolute w-full">
         <img
@@ -142,15 +144,7 @@ export default function Home() {
       {/* Parent Div for Content */}
       <div className="top-0 left-0 right-0 mx-24 my-2p z-10">
         {/* Transparent Navigation Bar */}
-        <nav className="flex justify-between items-center bg-transparent">
-          <div className="z-10">
-            <img
-              src="/images/logo-text-over-image.png"
-              alt="Logo"
-              className="w-full h-auto"
-            />
-          </div>
-        </nav>
+        <NavBar />
 
         {/* Text Section on top of the image */}
         <div className="text-left mt-15p">
@@ -164,12 +158,12 @@ export default function Home() {
             <InputAnalyze query={query} setQuery={setQuery} handleAnalyze={handleAnalyze} />
 
             {previousSearches.length > 0 && (
-              <div className="mt-1p">
+              <div className="mt-2p">
                 <h2 className="font-extrabold text-black">Recently checked</h2>
                 <p className="text-[#636588]">Latest playlists that have been analysed.</p>
 
                 {/* White background for the list */}
-                <div className="bg-white p-4 rounded-lg shadow-md mt-2">
+                <div className="bg-white p-4 rounded-lg shadow-md mt-4">
                   {/* Column Headings */}
                   <div className="flex justify-between items-start border-b border-gray-300 pb-2">
                     {/* Empty header for the image */}
@@ -320,15 +314,63 @@ export default function Home() {
             </div>
           </div>
         )}
-
       </div>
 
-      <div className="w-full">
+      <div className="relative w-full">
         <img
           src="/images/footer-bg.png"
           alt="Footer Image"
           className="w-screen h-auto object-cover"
         />
+
+        {/* Footer Links Container */}
+        <div className="absolute bottom-0 left-0 right-0 z-20 flex bg-transparent mx-24 underline space-x-48 mb-3p">
+          {/* Left Column */}
+          <div className='space-y-8'>
+            <div>
+              <ul className="space-y-4">
+                <li><a href="#" className="hover:underline">Submit Your Music</a></li>
+                <li><a href="#" className="hover:underline">How Musosoup Works</a></li>
+                <li><a href="#" className="hover:underline">Our Difference</a></li>
+                <li><a href="#" className="hover:underline">Preparing to Submit</a></li>
+                <li><a href="#" className="hover:underline">Your Curators</a></li>
+                <li><a href="#" className="hover:underline">Blog</a></li>
+              </ul>
+            </div>
+            <div className='flex flex-row space-x-4'>
+              <img
+                src="/images/vector-insta.png"
+                alt="Insta Logo"
+              />
+              <img
+                src="/images/vector-x.png"
+                alt="X Logo"
+              />
+              <img
+                src="/images/vector-facebook.png"
+                alt="Facebook Logo"
+              />
+            </div>
+            <div>
+              <p>&copy; 2024 Muso Ltd</p>
+            </div>
+            <div>
+              <ul className='space-y-1'>
+                <li><a href="#" className="hover:underline">Terms of Use</a></li>
+                <li><a href="#" className="hover:underline">Privacy Policy</a></li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Right Column */}
+          <div className="flex flex-col">
+            <ul className="space-y-4">
+              <li><a href="#" className="hover:underline">View recent music</a></li>
+              <li><a href="#" className="hover:underline">#SustainableCurator</a></li>
+              <li><a href="#" className="hover:underline">Contact us</a></li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   );

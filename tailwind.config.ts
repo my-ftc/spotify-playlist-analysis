@@ -8,7 +8,7 @@ const config: Config = {
   ],
   theme: {
     fontFamily: {
-      inter: ["Inter"],
+      poppins: ["Poppins", "sans-serif"],
     },
     extend: {
       colors: {
@@ -18,6 +18,8 @@ const config: Config = {
       margin: {
         '1p': '1%',
         '2p': '2%',
+        '3p': '3%',
+        '4p': '4%',
         '5p': '5%',
         '10p': '10%',
         '15p': '15%',

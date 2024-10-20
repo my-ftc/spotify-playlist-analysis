@@ -7,7 +7,7 @@ interface InputAnalyzeProps {
 }
 
 const InputAnalyze: React.FC<InputAnalyzeProps> = ({ query, setQuery, handleAnalyze }) => (
-  <div className="flex flex-col bg-white mt-5p p-5 rounded-lg shadow-lg">
+  <div className="flex flex-col bg-white mt-3p p-5 rounded-lg shadow-lg font-poppins">
     <div className="flex items-center">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 48 48" id="spotify">
         <g id="Icons" fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
