@@ -1,61 +1,35 @@
 // components/GenreChart.tsx
 
-import { Bar } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
-
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+import React from 'react';
 
 interface GenreChartProps {
   genres: { [genre: string]: number };
 }
 
 const GenreChart: React.FC<GenreChartProps> = ({ genres }) => {
+  // Sort genres and select the top 10
   const sortedGenres = Object.entries(genres)
     .sort(([, countA], [, countB]) => countB - countA)
-    .slice(0, 20);
+    .slice(0, 10);
 
-  const data = {
-    labels: sortedGenres.map(([genre]) => genre),
-    datasets: [
-      {
-        label: 'Genre Count',
-        data: sortedGenres.map(([, count]) => count),
-        backgroundColor: 'rgba(54, 162, 235, 0.6)',
-      },
-    ],
-  };
-
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top' as const,
-      },
-      title: {
-        display: true,
-        text: 'Top 20 Genres',
-      },
-    },
-    scales: {
-      x: {
-        ticks: {
-          autoSkip: false,
-          maxRotation: 90,
-          minRotation: 90,
-        },
-        grid: {
-          display: false, // Disable grid lines on the x-axis
-        },
-      },
-      y: {
-        grid: {
-          display: false, // Disable grid lines on the y-axis
-        },
-      },
-    },
-  };
-
-  return <Bar data={data} options={options} />;
+  return (
+    <div className='bg-white p-4 rounded-lg shadow-md mt-5 w-1/2 h-fit'>
+      <h2 className='font-bold text-black'>Genre Analysis</h2>
+      <div className='flex flex-wrap gap-2 mt-2'>
+        {sortedGenres.map(([genre]) => (
+          <div
+            key={genre}
+            className='rounded-full p-4 text-black'
+            style={{
+              backgroundColor: '#dbe8ed',
+            }}
+          >
+            {genre}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 };
 
 export default GenreChart;

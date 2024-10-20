@@ -1,37 +1,93 @@
 // src/lib/localStorageUtils.ts
 
-const PLAYLIST_SEARCHES_KEY = "playlistSearches";
+export const PLAYLIST_SEARCHES_KEY = "playlistSearches";
 
 // Interface for storing playlist search details
 interface PlaylistSearch {
   name: string;
   url: string;
+  ownerId: string;
+  followers: number;
+  tracks: number;
+  date: string;
+  image: string | null;
 }
 
-// Retrieve searches from local storage
+// Retrieve searches from local storage, sorted by date (most recent first)
 export const getPreviousSearches = (): PlaylistSearch[] => {
   const storedSearches = localStorage.getItem(PLAYLIST_SEARCHES_KEY);
-  return storedSearches ? JSON.parse(storedSearches) : [];
+  const searches: PlaylistSearch[] = storedSearches ? JSON.parse(storedSearches) : [];
+
+  // Sort searches by date in descending order (most recent first)
+  searches.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+  return searches;
 };
 
-// Store a new playlist search (name and URL) in local storage
-export const storePlaylistSearch = (name: string, url: string) => {
-  const previousSearches = getPreviousSearches();
-  
-  // Check if the search already exists by URL
-  const isSearchExists = previousSearches.some(
-    (search) => search.url === url
-  );
+// Store a new playlist search (name, URL, image) in local storage
+export const storePlaylistSearch = (playlistData: any) => {
+  const previousSearches: PlaylistSearch[] = getPreviousSearches(); // Ensure previous searches conform to PlaylistSearch type
+  const name = playlistData.name || "Unknown Playlist";
+  const url = playlistData.external_urls.spotify || "#";
+  const ownerId = playlistData.ownerId || "Unknown owner";
+  const followers = playlistData.followers || 0;
+  const tracks = playlistData.tracks.length || 0;
+  const date = new Date().toISOString();
+  const image = playlistData.image || null;  // Store the image URL
 
-  if (!isSearchExists) {
-    const updatedSearches = [...previousSearches, { name, url }];
-    localStorage.setItem(PLAYLIST_SEARCHES_KEY, JSON.stringify(updatedSearches));
+  // Check if the search already exists by URL
+  const existingSearchIndex = previousSearches.findIndex(search => search.url === url);
+
+  if (existingSearchIndex !== -1) {
+    // Update the existing entry
+    previousSearches[existingSearchIndex] = {
+      name,
+      url,
+      ownerId,
+      followers,
+      tracks,
+      date,
+      image  // Update image field
+    };
+    console.log("Updated existing search entry.");
   } else {
-    console.log("Search with this URL already exists.");
+    // Add a new entry
+    previousSearches.push({
+      name,
+      url,
+      ownerId,
+      followers,
+      tracks,
+      date,
+      image  // Add image field
+    });
+    console.log("Added new search entry.");
   }
+
+  // Store the updated searches back in local storage
+  localStorage.setItem(PLAYLIST_SEARCHES_KEY, JSON.stringify(previousSearches));
 };
 
 // Clear the search history from local storage
 export const clearSearchHistory = () => {
   localStorage.removeItem(PLAYLIST_SEARCHES_KEY);
+};
+
+// Time since function to format the date
+export const timeSince = (dateString: string) => {
+  const date = new Date(dateString);
+  const now = new Date();
+  const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+
+  let interval = Math.floor(seconds / 31536000);
+  if (interval > 1) return `${interval} years ago`;
+  interval = Math.floor(seconds / 2592000);
+  if (interval > 1) return `${interval} months ago`;
+  interval = Math.floor(seconds / 86400);
+  if (interval > 1) return `${interval} days ago`;
+  interval = Math.floor(seconds / 3600);
+  if (interval > 1) return `${interval} hours ago`;
+  interval = Math.floor(seconds / 60);
+  if (interval > 1) return `${interval} minutes ago`;
+  return `${seconds} seconds ago`;
 };
