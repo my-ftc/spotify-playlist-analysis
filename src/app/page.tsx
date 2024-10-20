@@ -136,7 +136,7 @@ export default function Home() {
       {/* Background Vector Image */}
       <div className="absolute w-full">
         <img
-          src="/images/Vector.png"
+          src="/images/vector.png"
           alt="Top Image"
           className="w-screen h-auto object-cover"
         />
