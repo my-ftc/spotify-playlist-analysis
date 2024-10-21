@@ -129,7 +129,9 @@ export default function Home() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedSearches = previousSearches.slice(startIndex, startIndex + itemsPerPage);
 
-  console.log('Error: ', error)
+  if (error != null) {
+    console.log('Error: ', error)
+  }
 
   return (
     <div className="flex flex-col bg-[#f5f9fa] min-h-screen font-poppins">
@@ -281,37 +283,50 @@ export default function Home() {
               {!loading && userPlaylists.length > 0 && (
                 <div className="mt-4 bg-white p-4 shadow-lg rounded-lg w-1/2">
                   <h2 className="font-extrabold text-black">Other playlists from user</h2>
-                  <div className="mt-4">
-                    {userPlaylists.map((playlist) => (
-                      <div key={playlist.id} className="flex flex-row items-center p-2">
-                        {/* Playlist Image */}
-                        <img
-                          src={playlist.images || '/images/default-image.png'} // Provide a default image if none exists
-                          alt={playlist.name}
-                          className="w-20 h-20 object-cover rounded-lg mb-2"
-                        />
-                        {/* Playlist Name and Owner */}
-                        <div className="text-center">
-                          <a
-                            href={playlist.external_urls.spotify}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-black font-semibold hover:underline"
-                          >
+
+                  {/* Header with adjusted column sizes */}
+                  <div className="grid grid-cols-[0.5fr_2fr_1fr_1fr] gap-4 border-b border-gray-300 pb-2 my-4">
+                    <div className="text-[#8789a8] text-center">Image</div>
+                    <div className="text-[#8789a8] text-left">Playlist name</div>
+                    <div className="text-[#8789a8] text-center">Songs</div>
+                    <div className="text-[#8789a8] text-center">Followers</div>
+                  </div>
+
+                  {/* List of playlists */}
+                  <ul>
+                    {userPlaylists.map((playlist, index) => (
+                      <li key={index} className="grid grid-cols-[0.5fr_2fr_1fr_1fr] gap-4 items-center py-2">
+                        {/* Image column */}
+                        <div className="flex justify-center">
+                          <img
+                            src={playlist.images || "default-image.jpg"}
+                            alt={playlist.name}
+                            className="w-12 h-12 object-cover rounded-lg"
+                          />
+                        </div>
+
+                        {/* Playlist name and owner */}
+                        <div className="flex flex-col break-words">
+                          <a href={playlist.external_urls.spotify} target="_blank" rel="noopener noreferrer" className="text-[#373843] hover:underline font-semibold">
                             {playlist.name}
                           </a>
-                          <div className="text-gray-600">{playlist.ownerId}</div> {/* Display owner ID or name */}
+                          <div className="text-[#8789a8]">{playlist.ownerId}</div>
                         </div>
-                        {/* Track Count */}
-                        <div className="text-gray-600 mt-2">{playlist.tracks.length}</div>
-                        {/* Followers Count */}
-                        <div className="text-gray-600">{playlist.followers}</div>
-                      </div>
+
+                        {/* Number of songs */}
+                        <div className="text-center text-gray-600 break-words">
+                          {playlist.tracks.length}
+                        </div>
+
+                        {/* Number of followers */}
+                        <div className="text-center text-gray-600 break-words">
+                          {playlist.followers}
+                        </div>
+                      </li>
                     ))}
-                  </div>
+                  </ul>
                 </div>
               )}
-
             </div>
           </div>
         )}
@@ -325,7 +340,7 @@ export default function Home() {
         />
 
         {/* Footer Links Container */}
-        <div className="absolute bottom-0 left-0 right-0 z-20 flex bg-transparent mx-24 underline space-x-48 mb-3p">
+        <div className="absolute bottom-0 left-0 right-0 z-20 text-white flex bg-transparent mx-24 underline space-x-48 mb-3p">
           {/* Left Column */}
           <div className='space-y-8'>
             <div>
