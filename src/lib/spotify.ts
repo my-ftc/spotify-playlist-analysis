@@ -106,6 +106,9 @@ export const fetchArtistGenres = async (artistIds: string[], accessToken: string
 };
 
 export const fetchUsersPlaylists = async (userId: string, accessToken: string) => {
+  let playlistImage: string | null = null; // To hold the playlist's image URL
+  let ownerId: string | null = null;
+
   const response = await fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, {
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -118,7 +121,7 @@ export const fetchUsersPlaylists = async (userId: string, accessToken: string) =
 
   const data = await response.json();
 
-  // Map to include follower count in each playlist object
+  // Map to include follower count and all tracks in each playlist object
   const playlistsWithFollowers = await Promise.all(data.items.map(async (playlist: any) => {
     const playlistResponse = await fetch(`https://api.spotify.com/v1/playlists/${playlist.id}`, {
       headers: {
@@ -131,13 +134,37 @@ export const fetchUsersPlaylists = async (userId: string, accessToken: string) =
     }
 
     const playlistData = await playlistResponse.json();
+    playlistImage = playlistData.images && playlistData.images.length > 0 ? playlistData.images[0].url : null; // Get the first image if available
+    ownerId = playlistData.owner.id;
+
+    // Fetch all tracks (handling pagination)
+    let tracks = playlistData.tracks.items; // Start with the first set of tracks
+    let nextUrl = playlistData.tracks.next;
+
+    while (nextUrl) {
+      const tracksResponse = await fetch(nextUrl, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      if (!tracksResponse.ok) {
+        throw new Error('Failed to fetch playlist tracks');
+      }
+
+      const tracksData = await tracksResponse.json();
+      tracks = tracks.concat(tracksData.items); // Append new tracks to the existing array
+      nextUrl = tracksData.next; // Update nextUrl for the next page, if any
+    }
+
     return {
       id: playlist.id,
       name: playlistData.name,
-      tracks: playlistData.tracks,
+      ownerId,
+      tracks: tracks, // Return all tracks for the playlist
       followers: playlistData.followers.total,
       external_urls: playlistData.external_urls,
-      images: playlistData.images,
+      images: playlistImage,
     };
   }));
 
@@ -148,6 +175,7 @@ export const fetchUsersPlaylists = async (userId: string, accessToken: string) =
 
   return topPlaylists; // Return the top 3 playlists
 };
+
 
 // Helper function to split array into batches
 const chunkArray = (array: any[], chunkSize: number) => {
