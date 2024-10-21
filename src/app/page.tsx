@@ -145,7 +145,7 @@ export default function Home() {
       </div>
 
       {/* Parent Div for Content */}
-      <div className="top-0 left-0 right-0 mx-24 my-2p z-10">
+      <div className="flex-grow top-0 left-0 right-0 mx-24 my-2p z-10">
         {/* Transparent Navigation Bar */}
         <NavBar />
 
@@ -169,8 +169,7 @@ export default function Home() {
                 <div className="bg-white p-4 rounded-lg shadow-md mt-4">
                   {/* Column Headings */}
                   <div className="flex justify-between items-start border-b border-gray-300 pb-2">
-                    {/* Empty header for the image */}
-                    <div className="w-16"></div> {/* Adjust width to fit the image size */}
+                    <div className="w-16"></div>
                     <div className="flex-1 text-[#8789a8]">Playlist name</div>
                     <div className="flex-1 text-center text-[#8789a8]">Songs</div>
                     <div className="flex-1 text-center text-[#8789a8]">Followers</div>
@@ -180,8 +179,6 @@ export default function Home() {
                   <ul>
                     {paginatedSearches.map((search, index) => (
                       <li key={index} className="flex justify-between items-start py-2">
-
-                        {/* Image Column */}
                         <div className="w-16 flex-shrink-0">
                           <img
                             src={search.image || "default-image.jpg"}
@@ -190,7 +187,6 @@ export default function Home() {
                           />
                         </div>
 
-                        {/* Name and Owner ID Column */}
                         <div className="flex-1">
                           <a href={search.url} target="_blank" rel="noopener noreferrer" className="text-[#373843] hover:underline font-semibold">
                             {search.name}
@@ -198,17 +194,14 @@ export default function Home() {
                           <div className="text-[#8789a8]">{search.ownerId}</div>
                         </div>
 
-                        {/* Songs Count Column */}
                         <div className="flex-1 text-gray-600 text-center">
                           {search.tracks}
                         </div>
 
-                        {/* Followers Count Column */}
                         <div className="flex-1 text-gray-600 text-center">
                           {search.followers}
                         </div>
 
-                        {/* Time Since Column */}
                         <div className="flex-1 text-gray-600 text-center">
                           {timeSince(search.date)}
                         </div>
@@ -267,7 +260,6 @@ export default function Home() {
                     <span className="text-gray-600">{followers} followers</span>
                   </div>
                 </div>
-
               </div>
             </div>
 
@@ -296,7 +288,6 @@ export default function Home() {
                   <ul>
                     {userPlaylists.map((playlist, index) => (
                       <li key={index} className="grid grid-cols-[0.5fr_2fr_1fr_1fr] gap-4 items-center py-2">
-                        {/* Image column */}
                         <div className="flex justify-center">
                           <img
                             src={playlist.images || "default-image.jpg"}
@@ -305,7 +296,6 @@ export default function Home() {
                           />
                         </div>
 
-                        {/* Playlist name and owner */}
                         <div className="flex flex-col break-words">
                           <a href={playlist.external_urls.spotify} target="_blank" rel="noopener noreferrer" className="text-[#373843] hover:underline font-semibold">
                             {playlist.name}
@@ -313,12 +303,10 @@ export default function Home() {
                           <div className="text-[#8789a8]">{playlist.ownerId}</div>
                         </div>
 
-                        {/* Number of songs */}
                         <div className="text-center text-gray-600 break-words">
                           {playlist.tracks.length}
                         </div>
 
-                        {/* Number of followers */}
                         <div className="text-center text-gray-600 break-words">
                           {playlist.followers}
                         </div>
@@ -336,12 +324,10 @@ export default function Home() {
         <img
           src="/images/footer-bg.png"
           alt="Footer Image"
-          className="w-screen h-auto object-cover"
+          className="w-screen object-cover h-auto"
         />
 
-        {/* Footer Links Container */}
-        <div className="absolute bottom-0 left-0 right-0 z-20 text-white flex bg-transparent mx-24 underline space-x-48 mb-3p">
-          {/* Left Column */}
+        <div className="absolute bottom-0 left-0 right-0 z-20 text-white flex bg-transparent mx-24 underline space-x-48 mb-3p h-3/4 overflow-hidden">
           <div className='space-y-8'>
             <div>
               <ul className="space-y-4">
