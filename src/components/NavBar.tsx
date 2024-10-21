@@ -13,7 +13,7 @@ const NavBar: React.FC = () => {
             </div>
             <div className="flex items-center space-x-4">
                 {/* Links on the right side */}
-                <div className="flex flex-row gap-16">
+                <div className="flex flex-row gap-16 md:gap-10">
                     <a href="#" className="text-white hover:underline">How it works</a>
                     <a href="#" className="text-white hover:underline">Preparing to Submit</a>
                     <a href="#" className="text-white hover:underline">Our Difference</a>
