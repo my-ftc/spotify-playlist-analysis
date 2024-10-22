@@ -161,61 +161,116 @@ export default function Home() {
             <InputAnalyze query={query} setQuery={setQuery} handleAnalyze={handleAnalyze} />
 
             {previousSearches.length > 0 && (
-              <div className="mt-2p">
-                <h2 className="font-extrabold text-black">Recently checked</h2>
-                <p className="text-[#636588]">Latest playlists that have been analysed.</p>
+              <div className="mt-2p flex space-x-2">
+                <div className="w-3/4 pr-4">
+                  <h2 className="font-extrabold text-black">Recently checked</h2>
+                  <p className="text-[#636588] mt-3">Latest playlists that have been analysed.</p>
 
-                {/* White background for the list */}
-                <div className="bg-white p-4 rounded-lg shadow-md mt-4">
-                  {/* Column Headings */}
-                  <div className="flex justify-between items-start border-b border-gray-300 pb-2">
-                    <div className="w-16"></div>
-                    <div className="flex-1 text-[#8789a8]">Playlist name</div>
-                    <div className="flex-1 text-center text-[#8789a8]">Songs</div>
-                    <div className="flex-1 text-center text-[#8789a8]">Followers</div>
-                    <div className="flex-1 text-center text-[#8789a8]">Checked</div>
+                  <div className="bg-white p-4 rounded-lg shadow-md mt-4">
+                    {/* Column Headings */}
+                    <div className="grid grid-cols-12 text-left border-b border-gray-300 pb-2">
+                      <div className="col-span-5 text-[#8789a8]">Playlist</div>
+                      <div className="col-span-1 text-center text-[#8789a8]">Songs</div>
+                      <div className="col-span-2 text-center text-[#8789a8]">Followers</div>
+                      <div className="col-span-2 text-center text-[#8789a8]">Checked</div>
+                      <div className="col-span-2 text-center text-[#8789a8]">Status</div>
+                    </div>
+
+                    <ul>
+                      {paginatedSearches.map((search, index) => (
+                        <li key={index} className="grid grid-cols-12 gap-4 py-4">
+                          {/* Playlist Image and Name */}
+                          <div className="col-span-5 flex items-center">
+                            <img
+                              src={search.image || "default-image.jpg"}
+                              alt={search.name}
+                              className="w-12 h-12 object-cover rounded-lg mr-3"
+                            />
+                            <div>
+                              <a href={search.url} target="_blank" rel="noopener noreferrer" className="text-[#373843] hover:underline font-semibold">
+                                {search.name}
+                              </a>
+                              <div className="text-[#8789a8]">{search.ownerId}</div>
+                            </div>
+                          </div>
+
+                          {/* Songs */}
+                          <div className="col-span-1 flex items-center justify-center text-gray-600">
+                            {search.tracks}
+                          </div>
+
+                          {/* Followers */}
+                          <div className="col-span-2 flex items-center justify-center text-gray-600">
+                            {search.followers}
+                          </div>
+
+                          {/* Checked */}
+                          <div className="col-span-2 flex items-center justify-center text-gray-600">
+                            {timeSince(search.date)}
+                          </div>
+
+                          {/* Status with green background */}
+                          <div className="col-span-2 flex items-center justify-center bg-[#eefaf0] px-2 rounded-lg">
+                            <img src="/images/safe-logo.png" alt="Safe Icon" className="w-4 h-5 mr-2" />
+                            <span className="text-[#0a0f26] font-semibold">Safe</span>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
 
-                  <ul>
-                    {paginatedSearches.map((search, index) => (
-                      <li key={index} className="flex justify-between items-start py-2">
-                        <div className="w-16 flex-shrink-0">
-                          <img
-                            src={search.image || "default-image.jpg"}
-                            alt={search.name}
-                            className="w-12 h-12 object-cover rounded-lg"
-                          />
-                        </div>
-
-                        <div className="flex-1">
-                          <a href={search.url} target="_blank" rel="noopener noreferrer" className="text-[#373843] hover:underline font-semibold">
-                            {search.name}
-                          </a>
-                          <div className="text-[#8789a8]">{search.ownerId}</div>
-                        </div>
-
-                        <div className="flex-1 text-gray-600 text-center">
-                          {search.tracks}
-                        </div>
-
-                        <div className="flex-1 text-gray-600 text-center">
-                          {search.followers}
-                        </div>
-
-                        <div className="flex-1 text-gray-600 text-center">
-                          {timeSince(search.date)}
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
+                  {totalPages > 1 && (
+                    <div className="flex justify-end mt-4">
+                      <Pagination
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        onPageChange={setCurrentPage}
+                      />
+                    </div>
+                  )}
                 </div>
 
-                <div className="flex justify-end">
-                  <Pagination
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    onPageChange={setCurrentPage}
-                  />
+
+
+                <div className="w-1/4 bg-[#0a0f26] p-5 rounded-lg shadow-md">
+                  {/* First Heading and Text */}
+                  <h2 className="font-extrabold text-white">How does it work</h2>
+                  <p className="text-[#c0c0c0] mt-2">
+                    Use our Spotify playlist bot checker to spot fake activity. Analyze streams, likes, and followers for bot signs. Enter playlist URL for a scan on engagement and interactions. Get a report in minutes.
+                  </p>
+
+                  {/* Divider Line */}
+                  <hr className="my-4 border-[#374151]" />
+
+                  {/* Outcomes Section */}
+                  <h2 className="font-extrabold text-white">Outcomes</h2>
+
+                  {/* Sub-heading 1: Issues detected */}
+                  <div className="flex items-center mt-3">
+                    <img src="/images/issues-logo.png" alt="Issues Logo" className="w-5 h-6 mr-2" />
+                    <h3 className="font-bold text-white">Issues detected</h3>
+                  </div>
+                  <p className="text-[#c0c0c0] mt-1">
+                    Tool found odd patterns in playlist engagement, hinting at bots or manipulated metrics. Act now to investigate and fix to uphold playlist integrity.
+                  </p>
+
+                  {/* Sub-heading 2: Inconclusive */}
+                  <div className="flex items-center mt-4">
+                    <img src="/images/inconclusive-logo.png" alt="Inconclusive Logo" className="w-5 h-7 mr-2" />
+                    <h3 className="font-bold text-white">Inconclusive</h3>
+                  </div>
+                  <p className="text-[#c0c0c0] mt-1">
+                    Results unclear, insufficient data to categorize playlist confidently. No definitive signs of bot activity, but recommend further monitoring or analysis.
+                  </p>
+
+                  {/* Sub-heading 3: Safe */}
+                  <div className="flex items-center mt-4">
+                    <img src="/images/safe-logo.png" alt="Safe Logo" className="w-5 h-7 mr-2" />
+                    <h3 className="font-bold text-white">Safe</h3>
+                  </div>
+                  <p className="text-[#c0c0c0] mt-1">
+                    No suspicious activity detected. Playlist&#39;s growth and engagement seem authentic, no sign of bot involvement. Keep promoting with confidence.
+                  </p>
                 </div>
               </div>
             )}
@@ -230,34 +285,49 @@ export default function Home() {
               <div className="flex items-center gap-3">
                 <h2 className="text-black">Playlist Analyzer</h2>
                 <FontAwesomeIcon icon={faChevronRight} />
-                <h2 className="font-bold text-black">Playlist Report</h2>
+                <h2 className="font-bold text-[#1d4a5d]">Playlist Report</h2>
               </div>
-              <h6 className="text-lg font-extrabold mt-4 text-black">Playlist Report</h6>
+              <h6 className="font-extrabold mt-4 text-black text-2xl">Playlist Report</h6>
 
               {/* Playlist Image and Details */}
               <div className="flex items-center mt-4">
                 <img
                   src={image!}
                   alt="Playlist"
-                  className="w-20 h-20 object-cover rounded-lg mr-4"
+                  className="w-32 h-32 object-cover rounded-lg mr-4"
                 />
                 <div className="flex-1">
-                  <div className="text-lg font-semibold text-black">{name}</div>
-                  <div className="flex items-center mt-2">
-                    <img
-                      src="/images/music-note-02.png"
-                      alt="Songs"
-                      className="w-4 h-4 mr-1"
-                    />
-                    <span className="text-gray-600">{trackCount} songs</span>
+                  <div className='flex flex-row space-x-4'>
+                    <div className="text-lg font-semibold text-black">{name}</div>
+                    <div className="flex items-center justify-center bg-[#eefaf0] px-4 py-1 rounded-md">
+                      <img src="/images/safe-logo.png" alt="Safe Icon" className="w-4 h-5 mr-2" />
+                      <span className="text-[#0a0f26] font-semibold">This playlist is safe</span>
+                    </div>
                   </div>
-                  <div className="flex items-center mt-2">
-                    <img
-                      src="/images/users-01.png"
-                      alt="Followers"
-                      className="w-4 h-4 mr-1"
-                    />
-                    <span className="text-gray-600">{followers} followers</span>
+                  <div className='flex flex-row space-x-4'>
+                    <div className="flex items-center mt-2">
+                      <img
+                        src="/images/music-note-02.png"
+                        alt="Songs"
+                        className="w-4 h-4 mr-1"
+                      />
+                      <span className="text-gray-600">{trackCount} songs</span>
+                    </div>
+                    <div className="flex items-center mt-2">
+                      <img
+                        src="/images/users-01.png"
+                        alt="Followers"
+                        className="w-4 h-4 mr-1"
+                      />
+                      <span className="text-gray-600">{followers} followers</span>
+                    </div>
+                  </div>
+                  <div className='mt-2'>There is a low chance that this playlist is botted.</div>
+                  <div className='flex mt-2'>
+                    <div className="flex items-center justify-center bg-[#eff5f7] px-4 py-1 rounded-md">
+                      <img src="/images/open.png" alt="Safe Icon" className="w-4 h-4 mr-2" />
+                      <span className="text-[#1d4a5d] font-semibold">Open on Spotify</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -278,7 +348,7 @@ export default function Home() {
 
                   {/* Header with adjusted column sizes */}
                   <div className="grid grid-cols-[0.5fr_2fr_1fr_1fr] gap-4 border-b border-gray-300 pb-2 my-4">
-                    <div className="text-[#8789a8] text-center">Image</div>
+                    <div className=""></div>
                     <div className="text-[#8789a8] text-left">Playlist name</div>
                     <div className="text-[#8789a8] text-center">Songs</div>
                     <div className="text-[#8789a8] text-center">Followers</div>
