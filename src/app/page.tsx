@@ -269,7 +269,7 @@ export default function Home() {
                     <h3 className="font-bold text-white">Safe</h3>
                   </div>
                   <p className="text-[#c0c0c0] mt-1">
-                    No suspicious activity detected. Playlist's growth and engagement seem authentic, no sign of bot involvement. Keep promoting with confidence.
+                    No suspicious activity detected. Playlist&#39;s growth and engagement seem authentic, no sign of bot involvement. Keep promoting with confidence.
                   </p>
                 </div>
               </div>
