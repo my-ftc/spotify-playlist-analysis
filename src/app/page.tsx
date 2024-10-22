@@ -232,7 +232,7 @@ export default function Home() {
 
 
 
-                <div className="w-1/4 bg-[#0a0f26] p-5 rounded-lg shadow-md">
+                <div className="w-1/4 bg-[#0a0f26] p-5 rounded-lg shadow-md text-lg">
                   {/* First Heading and Text */}
                   <h2 className="font-extrabold text-white">How does it work</h2>
                   <p className="text-[#c0c0c0] mt-2">
@@ -322,7 +322,7 @@ export default function Home() {
                       <span className="text-gray-600">{followers} followers</span>
                     </div>
                   </div>
-                  <div className='mt-2'>There is a low chance that this playlist is botted.</div>
+                  <div className='mt-2 text-[#373843]'>There is a low chance that this playlist is botted.</div>
                   <div className='flex mt-2'>
                     <div className="flex items-center justify-center bg-[#eff5f7] px-4 py-1 rounded-md">
                       <img src="/images/open.png" alt="Safe Icon" className="w-4 h-4 mr-2" />
