@@ -1,10 +1,12 @@
-// components/RecentlyChecked.js
+import React from 'react';
+import Link from 'next/link';
 import Pagination from './Pagination';
 import { timeSince } from "../lib/localStorageUtils";
+import { extractPlaylistId } from '@/utils/helpers';
 
 export interface Search {
-    name: string,
-    url: string,
+    name: string;
+    url: string;
     ownerId: string;
     followers: number;
     tracks: number;
@@ -26,20 +28,20 @@ const RecentlyChecked: React.FC<RecentlyCheckedProps> = ({ paginatedSearches, to
             <p className="text-[#636588] mt-3">Latest playlists that have been analysed.</p>
 
             <div className="bg-white p-4 rounded-lg shadow-md mt-4">
-                {/* Column Headings */}
                 <div className="grid grid-cols-12 text-left border-b border-gray-300 pb-2">
-                    <div className="col-span-5 text-[#8789a8]">Playlist</div>
+                    <div className="col-span-4 text-[#8789a8]">Playlist</div>
                     <div className="col-span-1 text-center text-[#8789a8]">Songs</div>
                     <div className="col-span-2 text-center text-[#8789a8]">Followers</div>
-                    <div className="col-span-2 text-center text-[#8789a8]">Checked</div>
+                    <div className="col-span-1 text-center text-[#8789a8]">Checked</div>
                     <div className="col-span-2 text-center text-[#8789a8]">Status</div>
+                    <div className="col-span-2 text-center text-[#8789a8]"></div>
                 </div>
 
                 <ul>
                     {paginatedSearches.map((search, index) => (
                         <li key={index} className="grid grid-cols-12 gap-4 py-4">
                             {/* Playlist Image and Name */}
-                            <div className="col-span-5 flex items-center">
+                            <div className="col-span-4 flex items-center">
                                 <img
                                     src={search.image || 'default-image.jpg'}
                                     alt={search.name}
@@ -58,25 +60,43 @@ const RecentlyChecked: React.FC<RecentlyCheckedProps> = ({ paginatedSearches, to
                                 </div>
                             </div>
 
-                            {/* Songs */}
+                            {/* Songs Count */}
                             <div className="col-span-1 flex items-center justify-center text-gray-600">
                                 {search.tracks}
                             </div>
 
-                            {/* Followers */}
+                            {/* Followers Count */}
                             <div className="col-span-2 flex items-center justify-center text-gray-600">
                                 {search.followers}
                             </div>
 
-                            {/* Checked */}
-                            <div className="col-span-2 flex items-center justify-center text-gray-600">
+                            {/* Checked Date */}
+                            <div className="col-span-1 flex items-center justify-center text-gray-600">
                                 {timeSince(search.date)}
                             </div>
 
-                            {/* Status */}
-                            <div className="col-span-2 flex items-center justify-center bg-[#eefaf0] px-2 rounded-lg">
-                                <img src="/images/safe-logo.png" alt="Safe Icon" className="w-4 h-5 mr-2" />
-                                <span className="text-[#0a0f26] font-semibold">Safe</span>
+                            {/* Status Column */}
+                            <div className="col-span-2 flex items-center justify-center">
+                                <div className="flex items-center bg-[#eefaf0] px-2 py-1 rounded-lg">
+                                    <img src="/images/safe-logo.png" alt="Safe Icon" className="w-4 h-5 mr-2" />
+                                    <span className="text-[#0a0f26] font-semibold">Safe</span>
+                                </div>
+                            </div>
+
+                            <div className="col-span-2 flex items-center justify-center">
+                                <Link
+                                    href={`/playlist/${extractPlaylistId(search.url)}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center text-[#1d4a5d] font-semibold hover:underline"
+                                >
+                                    <img
+                                        src="/images/report.png"
+                                        alt="Report"
+                                        className="w-4 h-5 mr-2"
+                                    />
+                                    Report
+                                </Link>
                             </div>
                         </li>
                     ))}
