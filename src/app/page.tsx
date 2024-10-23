@@ -29,7 +29,7 @@ export default function Home() {
   const paginatedSearches = previousSearches.slice(startIndex, startIndex + itemsPerPage);
 
   return (
-    <MainLayout children={
+    <MainLayout>
       <LandingSegment
         query={query}
         setQuery={setQuery}
@@ -39,7 +39,6 @@ export default function Home() {
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
       />
-    }
-    />
+    </MainLayout>
   );
 }

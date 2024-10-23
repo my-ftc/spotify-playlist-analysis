@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
 import PlaylistOverview from '../../../components/PlaylistOverview';
 import FollowerCount from '../../../components/FollowerCount';
 import GenreChart from '../../../components/GenreChart';
@@ -113,7 +112,7 @@ const ChartPage = () => {
     }, [params]);
 
     return (
-        <MainLayout children={
+        <MainLayout>
             <div className="mt-10">
                 {loading && <LoadingSpinner />}
                 {error && <div className="text-red-500">{error}</div>}
@@ -138,8 +137,7 @@ const ChartPage = () => {
                     )}
                 </div>
             </div>
-        }
-        />
+        </MainLayout>
     );
 };
 
