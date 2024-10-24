@@ -26,3 +26,13 @@ body {
     text-wrap: balance;
   }
 }
+
+@layer components {
+  .tooltip-black {
+    @apply bg-[#0a0f26] text-white font-poppins text-sm max-w-56;
+  }
+
+  .tooltip-arrow-black::before {
+    background-color: #0a0f26 !important;
+  }
+}
