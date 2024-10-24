@@ -57,7 +57,7 @@ const PlaylistOverview: React.FC<PlaylistOverviewProps> = ({ image, name, trackC
                     <div className="mt-2 text-[#373843]">There is a low chance that this playlist is botted.</div>
                     <div className="flex mt-2">
                         <div
-                            className="flex items-center justify-center bg-[#eff5f7] px-4 py-1 rounded-md cursor-pointer hover:underline"
+                            className="flex items-center justify-center bg-[#eff5f7] px-4 py-2 rounded-md cursor-pointer hover:underline shadow-sm active:scale-95 active:bg-[#e0e7ea] transition-transform duration-100"
                             onClick={() => {
                                 navigator.clipboard.writeText(window.location.href);
                             }}
@@ -70,7 +70,7 @@ const PlaylistOverview: React.FC<PlaylistOverviewProps> = ({ image, name, trackC
                             href={url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center justify-center bg-[#eff5f7] px-4 py-1 rounded-md ml-4 hover:underline"
+                            className="flex items-center justify-center bg-[#eff5f7] px-4 py-2 rounded-md ml-4 cursor-pointer hover:underline shadow-sm active:scale-95 active:bg-[#e0e7ea] transition-transform duration-100"
                         >
                             <img src="/images/open.png" alt="Open Icon" className="w-4 h-4 mr-2" />
                             <span className="text-[#1d4a5d] font-semibold">Open on Spotify</span>
