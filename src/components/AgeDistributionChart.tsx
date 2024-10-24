@@ -1,5 +1,3 @@
-// components/AgeDistributionChart.tsx
-
 import { Bar } from 'react-chartjs-2';
 import CustomTooltip from './Tooltip';
 import {
@@ -27,12 +25,14 @@ const AgeDistributionChart: React.FC<AgeDistributionChartProps> = ({ ageDistribu
         backgroundColor: 'rgba(29, 74, 93)', // Default bar color
         hoverBackgroundColor: 'rgba(7, 45, 61)', // Color on hover
         borderRadius: 5, // Makes the top of the bars rounded
+        barThickness: 80,
       },
     ],
   };
 
   const options = {
     responsive: true,
+    maintainAspectRatio: false, // Disable aspect ratio to allow custom height
     plugins: {
       legend: {
         display: false, // Hide the legend
@@ -84,7 +84,7 @@ const AgeDistributionChart: React.FC<AgeDistributionChartProps> = ({ ageDistribu
   };
 
   return (
-    <div className='bg-white shadow-lg rounded-lg p-4 mt-5'>
+    <div className="bg-white shadow-lg rounded-lg p-4 mt-5 h-[60vh]">
       <div className="flex items-center mt-3">
         <h2 className='font-bold text-black'>Track Age Analysis</h2>
 
@@ -104,7 +104,9 @@ const AgeDistributionChart: React.FC<AgeDistributionChartProps> = ({ ageDistribu
         </div>
       </div>
       <p className='my-4 text-[#515268]'>Lorem ipsum dolor sit amet consectetur. Gravida in egestas donec viverra a porttitor sit sed.</p>
-      <Bar data={data} options={options} />
+      <div className="h-[45vh]">
+        <Bar data={data} options={options} />
+      </div>
     </div>
   );
 };

@@ -94,7 +94,7 @@ const LineGraph: React.FC<LineGraphProps> = ({ data }) => {
   };
 
   return (
-    <div style={{ height: '400px' }}>
+    <div style={{ height: '50vh' }}>
       <Line ref={chartRef} data={chartData} options={options} />
     </div>
   );
