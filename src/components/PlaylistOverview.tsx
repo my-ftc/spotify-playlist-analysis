@@ -55,11 +55,22 @@ const PlaylistOverview: React.FC<PlaylistOverviewProps> = ({ image, name, trackC
                     </div>
                     <div className="mt-2 text-[#373843]">There is a low chance that this playlist is botted.</div>
                     <div className="flex mt-2">
-                        <div className="flex items-center justify-center bg-[#eff5f7] px-4 py-1 rounded-md">
+                        <div
+                            className="flex items-center justify-center bg-[#eff5f7] px-4 py-1 rounded-md cursor-pointer hover:underline"
+                            onClick={() => {
+                                navigator.clipboard.writeText(window.location.href);
+                            }}
+                        >
+                            <img src="/images/clipboard.png" alt="Clipboard Icon" className="w-4 h-4 mr-2" />
+                            <span className="text-[#1d4a5d] font-semibold">Copy Report Link</span>
+                        </div>
+
+                        <div className="flex items-center justify-center bg-[#eff5f7] px-4 py-1 rounded-md ml-4">
                             <img src="/images/open.png" alt="Open Icon" className="w-4 h-4 mr-2" />
                             <span className="text-[#1d4a5d] font-semibold">Open on Spotify</span>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
