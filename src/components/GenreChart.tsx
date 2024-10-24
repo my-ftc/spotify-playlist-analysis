@@ -1,7 +1,7 @@
 // components/GenreChart.tsx
 
 import React from 'react';
-import Tooltip from '@mui/material/Tooltip';
+import CustomTooltip from './Tooltip';
 
 interface GenreChartProps {
   genres: { [genre: string]: number };
@@ -24,21 +24,13 @@ const GenreChart: React.FC<GenreChartProps> = ({ genres }) => {
         </div>
 
         <div className="relative group ml-4 flex items-center">
-          <Tooltip
-            title="Lorem ipsum dolor sit amet consectetur."
-            arrow
-            placement="right"
-            classes={{
-              tooltip: 'tooltip-black',
-              arrow: 'tooltip-arrow-black',
-            }}
-          >
+          <CustomTooltip title="Lorem ipsum dolor sit amet consectetur.">
             <img
               src="/images/info.png"
               alt="Info Icon"
               className="w-4 h-4 cursor-pointer"
             />
-          </Tooltip>
+          </CustomTooltip>
         </div>
       </div>
 

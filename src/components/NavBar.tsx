@@ -1,18 +1,20 @@
 // components/NavBar.tsx
 import React from 'react';
+import Link from 'next/link';
 
 const NavBar: React.FC = () => {
     return (
         <nav className="flex justify-between items-center bg-transparent p-4 font-poppins">
             <div className="z-10">
-                <img
-                    src="/images/logo-text-over-image.png"
-                    alt="Logo"
-                    className="w-full h-auto"
-                />
+                <Link href="/">
+                    <img
+                        src="/images/logo-text-over-image.png"
+                        alt="Logo"
+                        className="w-full h-auto cursor-pointer"
+                    />
+                </Link>
             </div>
             <div className="flex items-center space-x-4">
-                {/* Links on the right side */}
                 <div className="flex flex-row gap-16 md:gap-10">
                     <a href="#" className="text-white hover:underline">How it works</a>
                     <a href="#" className="text-white hover:underline">Preparing to Submit</a>
@@ -20,7 +22,7 @@ const NavBar: React.FC = () => {
                     <a href="#" className="text-white hover:underline">For Curators</a>
                     <a href="#" className="text-white hover:underline mr-4">Blog</a>
                 </div>
-                {/* Buttons */}
+
                 <div className="flex space-x-2">
                     <button className="bg-white text-[#1d4a5d] px-4 py-2 rounded-lg">
                         Sign in

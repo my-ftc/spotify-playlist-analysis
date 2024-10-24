@@ -24,7 +24,7 @@ const UserPlaylistList: React.FC<UserPlaylistListProps> = ({ userPlaylists }) =>
     return (
         <div className="mt-4 bg-white p-4 shadow-lg rounded-lg w-1/2">
             <h2 className="font-extrabold text-black">Other playlists from user</h2>
-            <p className='my-4'>Lorem ipsum dolor sit amet consectetur. </p>
+            <p className='my-4 text-[#515268]'>Lorem ipsum dolor sit amet consectetur. </p>
 
             <div className="grid grid-cols-[0.5fr_2fr_1fr_1fr_1fr] gap-4 border-b border-gray-300 pb-2 my-4">
                 <div></div>

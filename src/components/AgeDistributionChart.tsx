@@ -1,7 +1,7 @@
 // components/AgeDistributionChart.tsx
 
 import { Bar } from 'react-chartjs-2';
-import Tooltip from '@mui/material/Tooltip';
+import CustomTooltip from './Tooltip';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -94,21 +94,13 @@ const AgeDistributionChart: React.FC<AgeDistributionChartProps> = ({ ageDistribu
         </div>
 
         <div className="relative group ml-4 flex items-center">
-          <Tooltip
-            title="Lorem ipsum dolor sit amet consectetur. Gravida in egestas donec viverra a porttitor sit sed."
-            arrow
-            placement="right"
-            classes={{
-              tooltip: 'tooltip-black',
-              arrow: 'tooltip-arrow-black',
-            }}
-          >
+          <CustomTooltip title="Lorem ipsum dolor sit amet consectetur. Gravida in egestas donec viverra a porttitor sit sed.">
             <img
               src="/images/info.png"
               alt="Info Icon"
               className="w-4 h-4 cursor-pointer"
             />
-          </Tooltip>
+          </CustomTooltip>
         </div>
       </div>
       <p className='my-4 text-[#515268]'>Lorem ipsum dolor sit amet consectetur. Gravida in egestas donec viverra a porttitor sit sed.</p>

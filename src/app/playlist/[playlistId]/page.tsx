@@ -111,7 +111,7 @@ const ChartPage = () => {
         };
 
         analyzePlaylist();
-    }, [params]);
+    }, []);
 
     return (
         <MainLayout>

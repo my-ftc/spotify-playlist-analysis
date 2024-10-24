@@ -1,7 +1,7 @@
 // components/FollowerCount.tsx
 
 import LineGraph from './LineGraph';
-import Tooltip from '@mui/material/Tooltip';
+import CustomTooltip from './Tooltip';
 
 interface FollowerData {
   count: number;
@@ -34,20 +34,13 @@ const FollowerCount: React.FC<FollowerCountProps> = ({ followers, trackCount, fo
         </div>
 
         <div className="relative group ml-4 flex items-center">
-          <Tooltip
-            title="Lorem ipsum dolor sit amet consectetur. Gravida in egestas donec viverra a porttitor sit sed."
-            arrow
-            placement="right"
-            classes={{
-              tooltip: 'tooltip-black',
-              arrow: 'tooltip-arrow-black',
-            }}
-          >
+          <CustomTooltip title="Lorem ipsum dolor sit amet consectetur. Gravida in egestas donec viverra a porttitor sit sed.">
             <img
               src="/images/info.png"
               alt="Info Icon"
-              className="w-4 h-4 cursor-pointer" />
-          </Tooltip>
+              className="w-4 h-4 cursor-pointer"
+            />
+          </CustomTooltip>
         </div>
       </div>
 
