@@ -105,7 +105,7 @@ export const fetchArtistGenres = async (artistIds: string[], accessToken: string
   return genreCounts;
 };
 
-export const fetchUsersPlaylists = async (userId: string, accessToken: string) => {
+export const fetchUsersPlaylists = async (userId: string, accessToken: string, playlistId: string) => {
   let playlistImage: string | null = null; // To hold the playlist's image URL
   let ownerId: string | null = null;
 
@@ -168,13 +168,17 @@ export const fetchUsersPlaylists = async (userId: string, accessToken: string) =
     };
   }));
 
+  // Filter out the playlist with the specified playlistId
+  const filteredPlaylists = playlistsWithFollowers.filter(playlist => playlist.id !== playlistId);
+
   // Sort playlists by followers and return the top 3
-  const topPlaylists = playlistsWithFollowers
+  const topPlaylists = filteredPlaylists
     .sort((a, b) => b.followers - a.followers)
     .slice(0, 3);
 
   return topPlaylists; // Return the top 3 playlists
 };
+
 
 
 // Helper function to split array into batches

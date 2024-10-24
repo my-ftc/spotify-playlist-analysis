@@ -7,15 +7,20 @@ import {
   BarElement,
   Title,
   Legend,
+  Tooltip,
+  ChartOptions,
 } from 'chart.js';
+import { useState } from 'react';
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Legend);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Legend, Tooltip);
 
 interface AgeDistributionChartProps {
   ageDistribution: { [ageGroup: string]: number };
 }
 
 const AgeDistributionChart: React.FC<AgeDistributionChartProps> = ({ ageDistribution }) => {
+  const [activeIndex, setActiveIndex] = useState<number | null>(null); // Track the active hover index
+
   const data = {
     labels: Object.keys(ageDistribution),
     datasets: [
@@ -30,9 +35,16 @@ const AgeDistributionChart: React.FC<AgeDistributionChartProps> = ({ ageDistribu
     ],
   };
 
-  const options = {
+  const options: ChartOptions<'bar'> = {
     responsive: true,
     maintainAspectRatio: false, // Disable aspect ratio to allow custom height
+    onHover: (event, elements) => {
+      if (elements.length > 0) {
+        setActiveIndex(elements[0].index); // Set the index of the hovered bar
+      } else {
+        setActiveIndex(null); // Reset the index when not hovering
+      }
+    },
     plugins: {
       legend: {
         display: false, // Hide the legend
@@ -48,8 +60,12 @@ const AgeDistributionChart: React.FC<AgeDistributionChartProps> = ({ ageDistribu
         },
         ticks: {
           color: '#636588', // Set tick color for x-axis
-          font: {
-            family: 'Poppins', // Use Poppins font
+          font: (context: any) => {
+            const isActive = context.index === activeIndex; // Check if this label is hovered
+            return {
+              family: 'Poppins', // Use Poppins font
+              weight: isActive ? 'bold' : 'normal', // Make the font bold if hovered
+            };
           },
         },
         border: {

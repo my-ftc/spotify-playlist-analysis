@@ -39,8 +39,6 @@ const ChartPage = () => {
 
             const playlistId = params?.playlistId;
 
-            console.log(playlistId)
-
             if (!playlistId) {
                 setError("Please enter a valid Spotify playlist URL or ID.");
                 setLoading(false);
@@ -59,7 +57,7 @@ const ChartPage = () => {
                 setFollowers(playlistData.followers);
                 setTrackCount(playlistData.tracks.length);
                 setImage(playlistData.image);
-                setUrl(playlistData.external_urls.spotify)
+                setUrl(playlistData.external_urls.spotify);
 
                 // Fetch follower count array from the new API
                 const followerCountResponse = await fetch(`/api/getFollowerCountArray?playlistId=${playlistId}`);
@@ -82,7 +80,7 @@ const ChartPage = () => {
                 const ownerId = playlistData.ownerId;
 
                 const [userPlaylistsResponse, genreCountsResponse] = await Promise.all([
-                    ownerId ? fetch(`/api/fetchUserPlaylists?userId=${ownerId}`) : Promise.resolve(null),
+                    ownerId ? fetch(`/api/fetchUserPlaylists?userId=${ownerId}&playlistId=${playlistId}`) : Promise.resolve(null),
                     fetch(`/api/fetchArtistGenres?artistIds=${artistIds.join(",")}`),
                 ]);
 
