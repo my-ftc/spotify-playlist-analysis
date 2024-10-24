@@ -42,7 +42,7 @@ const GenreChart: React.FC<GenreChartProps> = ({ genres }) => {
         </div>
       </div>
 
-      <p className='my-4'>Lorem ipsum dolor sit amet consectetur. </p>
+      <p className='my-4 text-[#515268]'>Lorem ipsum dolor sit amet consectetur. </p>
 
       <div className="flex flex-wrap gap-2 mt-2">
         {sortedGenres.map(([genre]) => (
