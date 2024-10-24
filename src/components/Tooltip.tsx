@@ -5,7 +5,7 @@ import React from 'react';
 
 const BootstrapTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip {...props} arrow classes={{ popper: className }} />
-))(({ theme }) => ({
+))(({ }) => ({
     [`& .${tooltipClasses.arrow}`]: {
         color: '#0a0f26', // Updated arrow color to match the tooltip background
     },
