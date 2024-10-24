@@ -1,7 +1,5 @@
-// components/AgeDistributionChart.tsx
-
 import { Bar } from 'react-chartjs-2';
-import Tooltip from '@mui/material/Tooltip';
+import CustomTooltip from './Tooltip';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -9,15 +7,20 @@ import {
   BarElement,
   Title,
   Legend,
+  Tooltip,
+  ChartOptions,
 } from 'chart.js';
+import { useState } from 'react';
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Legend);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Legend, Tooltip);
 
 interface AgeDistributionChartProps {
   ageDistribution: { [ageGroup: string]: number };
 }
 
 const AgeDistributionChart: React.FC<AgeDistributionChartProps> = ({ ageDistribution }) => {
+  const [activeIndex, setActiveIndex] = useState<number | null>(null); // Track the active hover index
+
   const data = {
     labels: Object.keys(ageDistribution),
     datasets: [
@@ -27,12 +30,21 @@ const AgeDistributionChart: React.FC<AgeDistributionChartProps> = ({ ageDistribu
         backgroundColor: 'rgba(29, 74, 93)', // Default bar color
         hoverBackgroundColor: 'rgba(7, 45, 61)', // Color on hover
         borderRadius: 5, // Makes the top of the bars rounded
+        barThickness: 80,
       },
     ],
   };
 
-  const options = {
+  const options: ChartOptions<'bar'> = {
     responsive: true,
+    maintainAspectRatio: false, // Disable aspect ratio to allow custom height
+    onHover: (event, elements) => {
+      if (elements.length > 0) {
+        setActiveIndex(elements[0].index); // Set the index of the hovered bar
+      } else {
+        setActiveIndex(null); // Reset the index when not hovering
+      }
+    },
     plugins: {
       legend: {
         display: false, // Hide the legend
@@ -48,8 +60,12 @@ const AgeDistributionChart: React.FC<AgeDistributionChartProps> = ({ ageDistribu
         },
         ticks: {
           color: '#636588', // Set tick color for x-axis
-          font: {
-            family: 'Poppins', // Use Poppins font
+          font: (context: any) => {
+            const isActive = context.index === activeIndex; // Check if this label is hovered
+            return {
+              family: 'Poppins', // Use Poppins font
+              weight: isActive ? 'bold' : 'normal', // Make the font bold if hovered
+            };
           },
         },
         border: {
@@ -84,7 +100,7 @@ const AgeDistributionChart: React.FC<AgeDistributionChartProps> = ({ ageDistribu
   };
 
   return (
-    <div className='bg-white shadow-lg rounded-lg p-4 mt-5'>
+    <div className="bg-white shadow-lg rounded-lg p-4 mt-5 h-[60vh]">
       <div className="flex items-center mt-3">
         <h2 className='font-bold text-black'>Track Age Analysis</h2>
 
@@ -94,25 +110,19 @@ const AgeDistributionChart: React.FC<AgeDistributionChartProps> = ({ ageDistribu
         </div>
 
         <div className="relative group ml-4 flex items-center">
-          <Tooltip
-            title="Lorem ipsum dolor sit amet consectetur. Gravida in egestas donec viverra a porttitor sit sed."
-            arrow
-            placement="right"
-            classes={{
-              tooltip: 'tooltip-black',
-              arrow: 'tooltip-arrow-black',
-            }}
-          >
+          <CustomTooltip title="Lorem ipsum dolor sit amet consectetur. Gravida in egestas donec viverra a porttitor sit sed.">
             <img
               src="/images/info.png"
               alt="Info Icon"
               className="w-4 h-4 cursor-pointer"
             />
-          </Tooltip>
+          </CustomTooltip>
         </div>
       </div>
       <p className='my-4 text-[#515268]'>Lorem ipsum dolor sit amet consectetur. Gravida in egestas donec viverra a porttitor sit sed.</p>
-      <Bar data={data} options={options} />
+      <div className="h-[45vh]">
+        <Bar data={data} options={options} />
+      </div>
     </div>
   );
 };
