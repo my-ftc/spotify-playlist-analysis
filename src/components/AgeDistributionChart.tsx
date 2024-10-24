@@ -46,6 +46,12 @@ const AgeDistributionChart: React.FC<AgeDistributionChartProps> = ({ ageDistribu
         grid: {
           color: '#f6f6fb', // Set the grid color for x-axis
         },
+        ticks: {
+          color: '#636588', // Set tick color for x-axis
+          font: {
+            family: 'Poppins', // Use Poppins font
+          },
+        },
         border: {
           color: '#f6f6fb', // Set the border color for x-axis
         },
@@ -55,6 +61,12 @@ const AgeDistributionChart: React.FC<AgeDistributionChartProps> = ({ ageDistribu
           color: '#f6f6fb', // Set the grid color for y-axis
         },
         beginAtZero: true, // Ensures y-axis starts from zero
+        ticks: {
+          color: '#636588', // Set tick color for y-axis
+          font: {
+            family: 'Poppins', // Use Poppins font
+          },
+        },
         border: {
           color: '#f6f6fb', // Set the border color for y-axis
         },
@@ -64,7 +76,7 @@ const AgeDistributionChart: React.FC<AgeDistributionChartProps> = ({ ageDistribu
           color: '#000', // Set the title color (optional)
           font: {
             size: 14, // Set font size for the title (optional)
-            family: 'Arial', // Set font family (optional)
+            family: 'Arial', // Set font family for the title (optional)
           },
         },
       },
@@ -99,7 +111,7 @@ const AgeDistributionChart: React.FC<AgeDistributionChartProps> = ({ ageDistribu
           </Tooltip>
         </div>
       </div>
-      <p className='my-4'>Lorem ipsum dolor sit amet consectetur. Gravida in egestas donec viverra a porttitor sit sed.</p>
+      <p className='my-4 text-[#515268]'>Lorem ipsum dolor sit amet consectetur. Gravida in egestas donec viverra a porttitor sit sed.</p>
       <Bar data={data} options={options} />
     </div>
   );

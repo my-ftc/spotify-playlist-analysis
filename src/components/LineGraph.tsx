@@ -1,5 +1,3 @@
-// components/LineGraph.tsx
-
 import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -9,12 +7,15 @@ import {
   Title,
   Tooltip,
   Legend,
+  ChartData,
+  ChartOptions,
+  Chart as ChartInstance,
 } from 'chart.js';
+import { useRef } from 'react';
 
 // Register the components
 ChartJS.register(LineElement, PointElement, LinearScale, Title, Tooltip, Legend);
 
-// Update the prop type to include date and count
 interface FollowerCountData {
   date: string; // DD-MMM format
   count: number; // Follower count
@@ -25,59 +26,76 @@ interface LineGraphProps {
 }
 
 const LineGraph: React.FC<LineGraphProps> = ({ data }) => {
-  // Extract dates and follower counts for the chart
+  const chartRef = useRef<ChartInstance<'line'>>(null);
+
   const dates = data.map(entry => entry.date);
   const counts = data.map(entry => entry.count);
 
-  const chartData = {
-    labels: dates, // Dates for the x-axis
+  const chartData: ChartData<'line'> = {
+    labels: dates,
     datasets: [
       {
-        data: counts, // Follower counts for the y-axis
-        fill: false,
-        borderColor: 'blue',
+        data: counts,
+        fill: true,
+        backgroundColor: 'rgba(29, 74, 93, 0.5)', // Static color fill
+        borderColor: '#1d4a5d',
         tension: 0.1,
+        pointRadius: 5,
+        pointBackgroundColor: '#1d4a5d',
+        pointBorderColor: '#1d4a5d',
+        pointBorderWidth: 1,
       },
     ],
   };
 
-  const options = {
+  const options: ChartOptions<'line'> = {
+    responsive: true,
+    maintainAspectRatio: false,
     scales: {
       y: {
         min: 0,
         grid: {
-          color: '#f6f6fb', // Set grid color
+          color: '#f6f6fb',
         },
         ticks: {
-          precision: 0, // Ensure y-axis values are integers
-        },
-        title: {
-          display: true, // Display the title
-          text: 'Followers', // Set the title text
-          color: '#000', // Set the title color (optional)
+          precision: 0,
+          color: '#636588',
           font: {
-            size: 14, // Set font size for the title (optional)
-            family: 'Arial', // Set font family (optional)
+            family: 'Poppins',
           },
         },
-        border: {
-          color: '#f6f6fb', // Set the border color for y-axis
+        title: {
+          display: true,
+          text: 'Followers',
+          color: '#000',
+          font: {
+            size: 14,
+            family: 'Poppins',
+          },
         },
       },
       x: {
         grid: {
-          color: '#f6f6fb', // Set grid color for x-axis as well
+          color: '#f6f6fb',
         },
-        border: {
-          color: '#f6f6fb', // Set the border color for x-axis
+        ticks: {
+          color: '#636588',
+          font: {
+            family: 'Poppins',
+          },
         },
+      },
+    },
+    plugins: {
+      legend: {
+        display: false,
       },
     },
   };
 
   return (
-    <div>
-      <Line data={chartData} options={options} />
+    <div style={{ height: '400px' }}>
+      <Line ref={chartRef} data={chartData} options={options} />
     </div>
   );
 };
