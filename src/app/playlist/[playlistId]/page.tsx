@@ -24,6 +24,7 @@ const ChartPage = () => {
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const [userPlaylists, setUserPlaylists] = useState<any[]>([]);
+    const [url, setUrl] = useState("");
 
     useEffect(() => {
         const analyzePlaylist = async () => {
@@ -58,6 +59,7 @@ const ChartPage = () => {
                 setFollowers(playlistData.followers);
                 setTrackCount(playlistData.tracks.length);
                 setImage(playlistData.image);
+                setUrl(playlistData.external_urls.spotify)
 
                 // Fetch follower count array from the new API
                 const followerCountResponse = await fetch(`/api/getFollowerCountArray?playlistId=${playlistId}`);
@@ -121,6 +123,7 @@ const ChartPage = () => {
                     name={name}
                     trackCount={trackCount ?? 0}
                     followers={followers ?? 0}
+                    url={url}
                 />
                 <FollowerCount
                     followers={followers}

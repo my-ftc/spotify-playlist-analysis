@@ -8,9 +8,10 @@ interface PlaylistOverviewProps {
     name: string;
     trackCount: number;
     followers: number;
+    url: string;
 }
 
-const PlaylistOverview: React.FC<PlaylistOverviewProps> = ({ image, name, trackCount, followers }) => {
+const PlaylistOverview: React.FC<PlaylistOverviewProps> = ({ image, name, trackCount, followers, url }) => {
     return (
         <div className="bg-white p-4 shadow-lg rounded-lg">
             <div className="flex items-center gap-3">
@@ -65,12 +66,16 @@ const PlaylistOverview: React.FC<PlaylistOverviewProps> = ({ image, name, trackC
                             <span className="text-[#1d4a5d] font-semibold">Copy Report Link</span>
                         </div>
 
-                        <div className="flex items-center justify-center bg-[#eff5f7] px-4 py-1 rounded-md ml-4">
+                        <a
+                            href={url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center justify-center bg-[#eff5f7] px-4 py-1 rounded-md ml-4 hover:underline"
+                        >
                             <img src="/images/open.png" alt="Open Icon" className="w-4 h-4 mr-2" />
                             <span className="text-[#1d4a5d] font-semibold">Open on Spotify</span>
-                        </div>
+                        </a>
                     </div>
-
                 </div>
             </div>
         </div>
