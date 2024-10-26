@@ -1,16 +1,16 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import PlaylistOverview from '../../../components/PlaylistOverview';
-import FollowerCount from '../../../components/FollowerCount';
-import GenreChart from '../../../components/GenreChart';
-import AgeDistributionChart from '../../../components/AgeDistributionChart';
-import UserPlaylistList from '../../../components/UserPlaylistList';
-import LoadingSpinner from '../../../components/LoadingSpinner';
+import PlaylistOverview from '@/components/PlaylistOverview';
+import FollowerCount from '@/components/FollowerCount';
+import GenreChart from '@/components/GenreChart';
+import AgeDistributionChart from '@/components/AgeDistributionChart';
+import UserPlaylistList from '@/components/UserPlaylistList';
 import MainLayout from '@/components/MainLayout';
 import { useParams } from 'next/navigation';
 import { categorizeTracksByAge } from '../../../lib/trackUtils';
 import { storePlaylistSearch } from "../../../lib/localStorageUtils";
+import LoadingWave from '@/components/LoadingWave';
 
 const ChartPage = () => {
     const params = useParams();
@@ -30,7 +30,7 @@ const ChartPage = () => {
     useEffect(() => {
         const timer = setTimeout(() => {
             setIsInitialLoadDone(true);
-        }, 1000);
+        });
 
         const analyzePlaylist = async () => {
             setError(null);
@@ -119,7 +119,7 @@ const ChartPage = () => {
     return (
         <MainLayout>
             {loading || !isInitialLoadDone ? (
-                <LoadingSpinner />
+                <LoadingWave />
             ) : (
                 <div className="mt-10">
                     {error && <div className="text-red-500">{error}</div>}
