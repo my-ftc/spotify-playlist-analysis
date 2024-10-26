@@ -52,6 +52,17 @@ const Footer = () => {
                         <li><a href="#" className="hover:underline">Contact us</a></li>
                     </ul>
                 </div>
+
+                <div className="absolute right-0">
+                    <button className="bg-[#eff5f7] text-[#1d4a5d] px-4 py-2 rounded-lg flex items-center">
+                        <img
+                            src="/images/music-note-plus-dark.png"
+                            alt="Submit Icon Dark"
+                            className="mr-2 h-5 w-5"
+                        />
+                        Submit music
+                    </button>
+                </div>
             </div>
         </div>
     );

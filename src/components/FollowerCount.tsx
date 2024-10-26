@@ -1,7 +1,9 @@
 // components/FollowerCount.tsx
 
+import { useState } from 'react';
 import LineGraph from './LineGraph';
 import CustomTooltip from './Tooltip';
+import InfoDialog from './InfoDialog';
 
 interface FollowerData {
   count: number;
@@ -16,6 +18,10 @@ interface FollowerCountProps {
 
 const FollowerCount: React.FC<FollowerCountProps> = ({ followers, trackCount, followerCountArray }) => {
   if (followers === null || trackCount === null || followerCountArray.length === 0) return null;
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const openDialog = () => setIsDialogOpen(true);
+  const closeDialog = () => setIsDialogOpen(false);
 
   const graphData = followerCountArray.map(entry => ({
     date: new Date(entry.updated_time).toLocaleDateString('en-US', { month: 'short', day: '2-digit' }),
@@ -39,8 +45,17 @@ const FollowerCount: React.FC<FollowerCountProps> = ({ followers, trackCount, fo
               src="/images/info.png"
               alt="Info Icon"
               className="w-4 h-4 cursor-pointer"
+              onClick={openDialog}
             />
           </CustomTooltip>
+
+          {isDialogOpen && (
+            <InfoDialog
+              title="Follower growth analysis"
+              content="Lorem ipsum dolor sit amet consectetur. Gravida in egestas donec viverra a porttitor sit sed."
+              onClose={closeDialog}
+            />
+          )}
         </div>
       </div>
 

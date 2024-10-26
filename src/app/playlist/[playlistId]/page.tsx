@@ -22,11 +22,16 @@ const ChartPage = () => {
     const [genres, setGenres] = useState<{ [genre: string]: number }>({});
     const [ageDistribution, setAgeDistribution] = useState<{ [ageGroup: string]: number }>({});
     const [error, setError] = useState<string | null>(null);
-    const [loading, setLoading] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
     const [userPlaylists, setUserPlaylists] = useState<any[]>([]);
     const [url, setUrl] = useState("");
+    const [isInitialLoadDone, setIsInitialLoadDone] = useState<boolean>(false);
 
     useEffect(() => {
+        const timer = setTimeout(() => {
+            setIsInitialLoadDone(true);
+        }, 1000);
+
         const analyzePlaylist = async () => {
             setError(null);
             setFollowers(null);
@@ -35,7 +40,6 @@ const ChartPage = () => {
             setGenres({});
             setAgeDistribution({});
             setUserPlaylists([]);
-            setLoading(true);
 
             const playlistId = params?.playlistId;
 
@@ -109,35 +113,37 @@ const ChartPage = () => {
         };
 
         analyzePlaylist();
+        return () => clearTimeout(timer);
     }, []);
 
     return (
         <MainLayout>
-            <div className="mt-10">
-                {loading && <LoadingSpinner />}
-                {error && <div className="text-red-500">{error}</div>}
-                <PlaylistOverview
-                    image={image}
-                    name={name}
-                    trackCount={trackCount ?? 0}
-                    followers={followers ?? 0}
-                    url={url}
-                />
-                <FollowerCount
-                    followers={followers}
-                    trackCount={trackCount}
-                    followerCountArray={followerCountArray}
-                />
-                <AgeDistributionChart ageDistribution={ageDistribution} />
-                <div className='flex flex-row gap-4'>
-                    <GenreChart genres={genres} />
-                    {!loading && userPlaylists.length > 0 && (
-                        <UserPlaylistList
-                            userPlaylists={userPlaylists}
-                        />
-                    )}
+            {loading || !isInitialLoadDone ? (
+                <LoadingSpinner />
+            ) : (
+                <div className="mt-10">
+                    {error && <div className="text-red-500">{error}</div>}
+                    <PlaylistOverview
+                        image={image}
+                        name={name}
+                        trackCount={trackCount ?? 0}
+                        followers={followers ?? 0}
+                        url={url}
+                    />
+                    <FollowerCount
+                        followers={followers}
+                        trackCount={trackCount}
+                        followerCountArray={followerCountArray}
+                    />
+                    <AgeDistributionChart ageDistribution={ageDistribution} />
+                    <div className='flex flex-row gap-4'>
+                        <GenreChart genres={genres} />
+                        {userPlaylists.length > 0 && (
+                            <UserPlaylistList userPlaylists={userPlaylists} />
+                        )}
+                    </div>
                 </div>
-            </div>
+            )}
         </MainLayout>
     );
 };

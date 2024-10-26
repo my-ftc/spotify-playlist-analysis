@@ -30,15 +30,17 @@ export default function Home() {
 
   return (
     <MainLayout>
-      <LandingSegment
-        query={query}
-        setQuery={setQuery}
-        previousSearches={previousSearches}
-        paginatedSearches={paginatedSearches}
-        totalPages={totalPages}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-      />
+      <div className="mt-10">
+        <LandingSegment
+          query={query}
+          setQuery={setQuery}
+          previousSearches={previousSearches}
+          paginatedSearches={paginatedSearches}
+          totalPages={totalPages}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
+      </div>
     </MainLayout>
   );
 }
