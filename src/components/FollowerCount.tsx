@@ -1,11 +1,13 @@
 // components/FollowerCount.tsx
 
+import { useState } from 'react';
 import LineGraph from './LineGraph';
 import CustomTooltip from './Tooltip';
+import InfoDialog from './InfoDialog';
 
 interface FollowerData {
   count: number;
-  updated_time: string; // Expecting a date string that can be formatted
+  updated_time: string;
 }
 
 interface FollowerCountProps {
@@ -15,13 +17,23 @@ interface FollowerCountProps {
 }
 
 const FollowerCount: React.FC<FollowerCountProps> = ({ followers, trackCount, followerCountArray }) => {
-  if (followers === null || trackCount === null || followerCountArray.length === 0) return null;
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const openDialog = () => setIsDialogOpen(true);
+  const closeDialog = () => setIsDialogOpen(false);
+
+  // If data is missing, we’ll render null later instead of early return.
+  if (followers === null || trackCount === null || followerCountArray.length === 0) {
+    return null;
+  }
 
   const graphData = followerCountArray.map(entry => ({
     date: new Date(entry.updated_time).toLocaleDateString('en-US', { month: 'short', day: '2-digit' }),
     count: entry.count,
   }));
-  const updatedGraphData = [...graphData, { date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit' }), count: followers }];
+  const updatedGraphData = [
+    ...graphData,
+    { date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit' }), count: followers }
+  ];
 
   return (
     <div className='bg-white p-4 rounded-lg shadow-lg max-w-full overflow-x-auto mt-5'>
@@ -39,8 +51,17 @@ const FollowerCount: React.FC<FollowerCountProps> = ({ followers, trackCount, fo
               src="/images/info.png"
               alt="Info Icon"
               className="w-4 h-4 cursor-pointer"
+              onClick={openDialog}
             />
           </CustomTooltip>
+
+          {isDialogOpen && (
+            <InfoDialog
+              title="Follower growth analysis"
+              content="Lorem ipsum dolor sit amet consectetur. Gravida in egestas donec viverra a porttitor sit sed."
+              onClose={closeDialog}
+            />
+          )}
         </div>
       </div>
 

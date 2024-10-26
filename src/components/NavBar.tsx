@@ -29,9 +29,9 @@ const NavBar: React.FC = () => {
                     </button>
                     <button className="bg-[#1d4a5d] text-white px-4 rounded-lg flex items-center">
                         <img
-                            src="/images/music-note-plus.png" // Replace with your image path
+                            src="/images/music-note-plus.png"
                             alt="Submit Icon"
-                            className="mr-2 h-5 w-5" // Optional size and spacing
+                            className="mr-2 h-5 w-5"
                         />
                         Submit music
                     </button>

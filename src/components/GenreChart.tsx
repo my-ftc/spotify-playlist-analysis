@@ -1,13 +1,18 @@
 // components/GenreChart.tsx
 
-import React from 'react';
+import React, { useState } from 'react';
 import CustomTooltip from './Tooltip';
+import InfoDialog from './InfoDialog';
 
 interface GenreChartProps {
   genres: { [genre: string]: number };
 }
 
 const GenreChart: React.FC<GenreChartProps> = ({ genres }) => {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const openDialog = () => setIsDialogOpen(true);
+  const closeDialog = () => setIsDialogOpen(false);
+
   // Sort genres and select the top 10
   const sortedGenres = Object.entries(genres)
     .sort(([, countA], [, countB]) => countB - countA)
@@ -18,7 +23,7 @@ const GenreChart: React.FC<GenreChartProps> = ({ genres }) => {
       <div className="flex items-center mt-3">
         <h2 className="font-bold text-black">Genre Analysis</h2>
 
-        <div className="flex items-center bg-[#eefaf0] px-2 py-1 rounded-lg ml-4">
+        <div className="flex items-center bg-[#eefaf0] px-2 py-1 rounded-md ml-4">
           <img src="/images/safe-logo.png" alt="Safe Icon" className="w-4 h-5 mr-2" />
           <span className="text-[#0a0f26] font-semibold">Safe</span>
         </div>
@@ -29,12 +34,21 @@ const GenreChart: React.FC<GenreChartProps> = ({ genres }) => {
               src="/images/info.png"
               alt="Info Icon"
               className="w-4 h-4 cursor-pointer"
+              onClick={openDialog}
             />
           </CustomTooltip>
+
+          {isDialogOpen && (
+            <InfoDialog
+              title="Genre Analysis"
+              content="Lorem ipsum dolor sit amet consectetur."
+              onClose={closeDialog}
+            />
+          )}
         </div>
       </div>
 
-      <p className='my-4 text-[#515268]'>Lorem ipsum dolor sit amet consectetur. </p>
+      <p className='my-4 text-[#515268]'>Lorem ipsum dolor sit amet consectetur.</p>
 
       <div className="flex flex-wrap gap-2 mt-2">
         {sortedGenres.map(([genre]) => (

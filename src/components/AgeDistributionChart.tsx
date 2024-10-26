@@ -11,6 +11,7 @@ import {
   ChartOptions,
 } from 'chart.js';
 import { useState } from 'react';
+import InfoDialog from './InfoDialog';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Legend, Tooltip);
 
@@ -20,6 +21,9 @@ interface AgeDistributionChartProps {
 
 const AgeDistributionChart: React.FC<AgeDistributionChartProps> = ({ ageDistribution }) => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null); // Track the active hover index
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const openDialog = () => setIsDialogOpen(true);
+  const closeDialog = () => setIsDialogOpen(false);
 
   const data = {
     labels: Object.keys(ageDistribution),
@@ -115,8 +119,17 @@ const AgeDistributionChart: React.FC<AgeDistributionChartProps> = ({ ageDistribu
               src="/images/info.png"
               alt="Info Icon"
               className="w-4 h-4 cursor-pointer"
+              onClick={openDialog}
             />
           </CustomTooltip>
+
+          {isDialogOpen && (
+            <InfoDialog
+              title="Track Age Analysis"
+              content="Lorem ipsum dolor sit amet consectetur. Gravida in egestas donec viverra a porttitor sit sed."
+              onClose={closeDialog}
+            />
+          )}
         </div>
       </div>
       <p className='my-4 text-[#515268]'>Lorem ipsum dolor sit amet consectetur. Gravida in egestas donec viverra a porttitor sit sed.</p>
