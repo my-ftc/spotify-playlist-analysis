@@ -39,7 +39,7 @@ const RecentlyChecked: React.FC<RecentlyCheckedProps> = ({ paginatedSearches, to
 
                 <ul>
                     {paginatedSearches.map((search, index) => (
-                        <li key={index} className="grid grid-cols-12 gap-4 py-4">
+                        <li key={index} className="grid xs:grid-cols-11 sm:grid-cols-12 md::grid-cols-12 lg::grid-cols-12 xs:gap-2 sm:gap-2 md:gap-4 lg:gap-4 py-4">
                             {/* Playlist Image and Name */}
                             <div className="col-span-4 flex items-center">
                                 <img
@@ -56,44 +56,44 @@ const RecentlyChecked: React.FC<RecentlyCheckedProps> = ({ paginatedSearches, to
                                     >
                                         {search.name}
                                     </a>
-                                    <div className="text-[#8789a8]">{search.ownerId}</div>
+                                    <div className="text-[#8789a8] xs:text-xs sm:text-sm md:text-base lg:text-base">{search.ownerId}</div>
                                 </div>
                             </div>
 
                             {/* Songs Count */}
-                            <div className="col-span-1 flex items-center justify-center text-gray-600">
+                            <div className="col-span-1 flex items-center justify-center text-gray-600 xs:text-sm sm:text-sm md:text-base lg:text-base">
                                 {search.tracks}
                             </div>
 
                             {/* Followers Count */}
-                            <div className="col-span-2 flex items-center justify-center text-gray-600">
+                            <div className="col-span-2 flex items-center justify-center text-gray-600 xs:text-sm sm:text-sm md:text-base lg:text-base">
                                 {search.followers}
                             </div>
 
                             {/* Checked Date */}
-                            <div className="col-span-1 flex items-center justify-center text-gray-600">
+                            <div className="col-span-1 flex items-center justify-center text-gray-600 xs:text-sm sm:text-sm md:text-base lg:text-base">
                                 {timeSince(search.date)}
                             </div>
 
                             {/* Status Column */}
                             <div className="col-span-2 flex items-center justify-center">
                                 <div className="flex items-center bg-[#eefaf0] px-2 py-1 rounded-lg">
-                                    <img src="/images/safe-logo.png" alt="Safe Icon" className="w-4 h-5 mr-2" />
-                                    <span className="text-[#0a0f26] font-semibold">Safe</span>
+                                    <img src="/images/safe-logo.png" alt="Safe Icon" className="xs:w-3 sm:w-3 md:w-4 lg:w-4 h-auto mr-2" />
+                                    <span className="text-[#0a0f26] font-semibold xs:text-sm sm:text-sm md:text-base lg:text-base">Safe</span>
                                 </div>
                             </div>
 
-                            <div className="col-span-2 flex items-center justify-center">
+                            <div className="xs:col-span-1 sm:col-span-2 md:col-span-2 lg:col-span-2 flex items-center justify-center">
                                 <Link
                                     href={`/playlist/${extractPlaylistId(search.url)}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="flex items-center text-[#1d4a5d] font-semibold hover:underline"
+                                    className="flex items-center text-[#1d4a5d] font-semibold hover:underlin xs:text-sm sm:text-sm md:text-base lg:text-base"
                                 >
                                     <img
                                         src="/images/report.png"
                                         alt="Report"
-                                        className="w-4 h-5 mr-2"
+                                        className="xs:w-3 sm:w-3 md:w-4 lg:w-4 h-auto mr-2"
                                     />
                                     Report
                                 </Link>
