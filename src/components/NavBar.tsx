@@ -10,24 +10,24 @@ const NavBar: React.FC = () => {
                     <img
                         src="/images/logo-text-over-image.png"
                         alt="Logo"
-                        className="w-full h-auto cursor-pointer"
+                        className="xs:w-36 s:w-full md:w-full lg:w-full h-auto cursor-pointer"
                     />
                 </Link>
             </div>
-            <div className="flex items-center space-x-4">
-                <div className="flex flex-row gap-16 md:gap-10">
-                    <a href="#" className="text-white hover:underline">How it works</a>
-                    <a href="#" className="text-white hover:underline">Preparing to Submit</a>
-                    <a href="#" className="text-white hover:underline">Our Difference</a>
-                    <a href="#" className="text-white hover:underline">For Curators</a>
-                    <a href="#" className="text-white hover:underline mr-4">Blog</a>
+            <div className="flex items-center">
+                <div className="flex flex-row gap-8 xs:gap-4 sm:gap-4 md:gap-8 lg:gap-16">
+                    <a href="#" className="text-white text-sm xs:text-xs sm:text-sm md:text-lg lg:text-lg hover:underline">How it works</a>
+                    <a href="#" className="text-white text-sm xs:text-xs sm:text-sm md:text-lg lg:text-lg hover:underline">Preparing to Submit</a>
+                    <a href="#" className="text-white text-sm xs:text-xs sm:text-sm md:text-lg lg:text-lg hover:underline">Our Difference</a>
+                    <a href="#" className="text-white text-sm xs:text-xs sm:text-sm md:text-lg lg:text-lg hover:underline">For Curators</a>
+                    <a href="#" className="text-white text-sm xs:text-xs sm:text-sm md:text-lg lg:text-lg hover:underline mr-4">Blog</a>
                 </div>
 
                 <div className="flex space-x-2">
-                    <button className="bg-white text-[#1d4a5d] px-4 py-2 rounded-lg">
+                    <button className="bg-white text-[#1d4a5d] px-4 py-2 rounded-lg xs:text-xs sm:text-sm md:text-lg lg:text-lg">
                         Sign in
                     </button>
-                    <button className="bg-[#1d4a5d] text-white px-4 rounded-lg flex items-center">
+                    <button className="bg-[#1d4a5d] text-white px-4 rounded-lg flex items-center xs:text-xs sm:text-sm md:text-lg lg:text-lg">
                         <img
                             src="/images/music-note-plus.png"
                             alt="Submit Icon"

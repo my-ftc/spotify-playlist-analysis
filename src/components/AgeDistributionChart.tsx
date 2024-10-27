@@ -104,7 +104,7 @@ const AgeDistributionChart: React.FC<AgeDistributionChartProps> = ({ ageDistribu
   };
 
   return (
-    <div className="bg-white shadow-lg rounded-lg p-4 mt-5 h-[60vh]">
+    <div className="bg-white shadow-lg rounded-lg p-4 mt-5 h-fit">
       <div className="flex items-center mt-3">
         <h2 className='font-bold text-black'>Track Age Analysis</h2>
 

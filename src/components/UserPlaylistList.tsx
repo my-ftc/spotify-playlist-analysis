@@ -66,12 +66,12 @@ const UserPlaylistList: React.FC<UserPlaylistListProps> = ({ userPlaylists }) =>
                                 href={`/playlist/${extractPlaylistId(playlist.external_urls.spotify)}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="flex items-center text-[#1d4a5d] font-semibold hover:underline"
+                                className="flex items-center text-[#1d4a5d] font-semibold hover:underline xs:text-sm sm:text-sm md:text-base lg:text-base"
                             >
                                 <img
                                     src="/images/analyze.png"
                                     alt="Analyze"
-                                    className="w-4 h-5 mr-2"
+                                    className="xs:w-3 sm:w-3 md:w-4 lg:w-4 h-auto mr-2"
                                 />
                                 Analyze
                             </Link>
