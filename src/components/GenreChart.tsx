@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import CustomTooltip from './Tooltip';
 import InfoDialog from './InfoDialog';
+import { evaluateDiversification } from '../utils/evaluateDiversification';
 
 interface GenreChartProps {
   genres: { [genre: string]: number };
@@ -12,6 +13,9 @@ const GenreChart: React.FC<GenreChartProps> = ({ genres }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const openDialog = () => setIsDialogOpen(true);
   const closeDialog = () => setIsDialogOpen(false);
+
+  // Determine if the playlist is diverse
+  const isDiverse = evaluateDiversification(genres);
 
   // Sort genres and select the top 10
   const sortedGenres = Object.entries(genres)
@@ -23,9 +27,11 @@ const GenreChart: React.FC<GenreChartProps> = ({ genres }) => {
       <div className="flex items-center mt-3">
         <h2 className="font-bold text-black">Genre Analysis</h2>
 
-        <div className="flex items-center bg-[#eefaf0] px-2 py-1 rounded-md ml-4">
-          <img src="/images/safe-logo.png" alt="Safe Icon" className="w-4 h-5 mr-2" />
-          <span className="text-[#0a0f26] font-semibold">Safe</span>
+        <div className={`flex items-center px-2 py-1 rounded-md ml-4 ${isDiverse ? 'bg-[#eefaf0]' : 'bg-[#fce7e7]'}`}>
+          <img src={isDiverse ? "/images/safe-logo.png" : "/images/issues-logo.png"} alt="Status Icon" className="w-4 h-5 mr-2" />
+          <span className={`text-[#0a0f26] font-semibold`}>
+            {isDiverse ? 'Safe' : 'Issues Detected'}
+          </span>
         </div>
 
         <div className="relative group ml-4 flex items-center">
@@ -43,6 +49,7 @@ const GenreChart: React.FC<GenreChartProps> = ({ genres }) => {
               title="Genre Analysis"
               content="Lorem ipsum dolor sit amet consectetur."
               onClose={closeDialog}
+              safe={isDiverse}
             />
           )}
         </div>

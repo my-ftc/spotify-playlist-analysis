@@ -128,6 +128,7 @@ const AgeDistributionChart: React.FC<AgeDistributionChartProps> = ({ ageDistribu
               title="Track Age Analysis"
               content="Lorem ipsum dolor sit amet consectetur. Gravida in egestas donec viverra a porttitor sit sed."
               onClose={closeDialog}
+              safe={true}
             />
           )}
         </div>

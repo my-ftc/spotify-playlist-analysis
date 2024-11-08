@@ -1,18 +1,17 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// This is your Prisma schema file for MySQL
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql" // Change to MySQL provider
   url      = env("DATABASE_URL")
 }
 
 model Followers {
   id            Int       @id @default(autoincrement())
   playlist_id   String    @unique
-  follower_count Json[]   // List of JSON objects, no optional modifier
+  follower_count Json     // Store as a JSON object in MySQL
   created_at    DateTime  @default(now())
 }

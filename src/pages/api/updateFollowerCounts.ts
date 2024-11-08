@@ -1,14 +1,14 @@
 // pages/api/updateFollowerCounts.ts
 
 import { NextApiRequest, NextApiResponse } from 'next';
-import { updateFollower } from '../../lib/updateFollower';
+import { updateFollower } from '../../lib/updateFollower'; // This function needs to handle JSON array properly
 import { getAccessToken, fetchPlaylistData } from '../../lib/spotify';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  // Accept both GET and POST
+  // Accept both GET and POST methods
   if (req.method === 'POST' || req.method === 'GET') {
     try {
       const accessToken = await getAccessToken();
@@ -19,10 +19,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       });
 
       for (const playlist of playlists) {
+        // Fetch current playlist data from Spotify
         const playlistData = await fetchPlaylistData(playlist.playlist_id, accessToken);
         const followerCount = playlistData?.followers ?? 0; // Ensure followerCount is never null
 
-        // Use insertFollowerCount to add a new record for each playlistId
+        // Use updateFollower to add the new follower count to the follower_count array
         await updateFollower(playlist.playlist_id, followerCount);
       }
 

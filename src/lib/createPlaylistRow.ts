@@ -16,7 +16,7 @@ export const createPlaylistRow = async (playlistId: string) => {
       await prisma.followers.create({
         data: {
           playlist_id: playlistId,
-          follower_count: [], // Insert an empty array
+          follower_count: [], // Pass an empty array directly
           created_at: new Date(),
         },
       });

@@ -11,6 +11,7 @@ import { useParams } from 'next/navigation';
 import { categorizeTracksByAge } from '../../../lib/trackUtils';
 import { storePlaylistSearch } from "../../../lib/localStorageUtils";
 import LoadingWave from '@/components/LoadingWave';
+import { detectAnomaly } from '../../../utils/followersAnomalyDetection';
 
 const ChartPage = () => {
     const params = useParams();
@@ -26,6 +27,7 @@ const ChartPage = () => {
     const [userPlaylists, setUserPlaylists] = useState<any[]>([]);
     const [url, setUrl] = useState("");
     const [isInitialLoadDone, setIsInitialLoadDone] = useState<boolean>(false);
+    const [isAnomalyDetected, setIsAnomalyDetected] = useState(false);
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -40,6 +42,7 @@ const ChartPage = () => {
             setGenres({});
             setAgeDistribution({});
             setUserPlaylists([]);
+            setIsAnomalyDetected(false);
 
             const playlistId = params?.playlistId;
 
@@ -116,6 +119,22 @@ const ChartPage = () => {
         return () => clearTimeout(timer);
     }, []);
 
+    // Second useEffect: For anomaly detection
+    useEffect(() => {
+        if (followers !== null && followerCountArray.length > 0) {
+            const updatedFollowerCountArray = [
+                ...followerCountArray,
+                {
+                    count: followers,
+                    updated_time: new Date().toISOString(), // Current time for updated_time
+                }
+            ];
+
+            const anomaly = detectAnomaly(updatedFollowerCountArray);
+            setIsAnomalyDetected(anomaly);
+        }
+    }, [followers, followerCountArray]); // Depend on followers and followerCountArray
+
     return (
         <MainLayout>
             {loading || !isInitialLoadDone ? (
@@ -129,11 +148,13 @@ const ChartPage = () => {
                         trackCount={trackCount ?? 0}
                         followers={followers ?? 0}
                         url={url}
+                        isAnomalyDetected={isAnomalyDetected}
                     />
                     <FollowerCount
                         followers={followers}
                         trackCount={trackCount}
                         followerCountArray={followerCountArray}
+                        isAnomalyDetected={isAnomalyDetected}
                     />
                     <AgeDistributionChart ageDistribution={ageDistribution} />
                     <div className='flex flex-row gap-4'>
