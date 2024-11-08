@@ -1,6 +1,4 @@
-// components/FollowerCount.tsx
-
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import LineGraph from './LineGraph';
 import CustomTooltip from './Tooltip';
 import InfoDialog from './InfoDialog';
@@ -14,14 +12,15 @@ interface FollowerCountProps {
   followers: number | null;
   trackCount: number | null;
   followerCountArray: FollowerData[];
+  isAnomalyDetected: true | false;
 }
 
-const FollowerCount: React.FC<FollowerCountProps> = ({ followers, trackCount, followerCountArray }) => {
+const FollowerCount: React.FC<FollowerCountProps> = ({ followers, trackCount, followerCountArray, isAnomalyDetected }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+
   const openDialog = () => setIsDialogOpen(true);
   const closeDialog = () => setIsDialogOpen(false);
 
-  // If data is missing, we’ll render null later instead of early return.
   if (followers === null || trackCount === null || followerCountArray.length === 0) {
     return null;
   }
@@ -30,6 +29,7 @@ const FollowerCount: React.FC<FollowerCountProps> = ({ followers, trackCount, fo
     date: new Date(entry.updated_time).toLocaleDateString('en-US', { month: 'short', day: '2-digit' }),
     count: entry.count,
   }));
+
   const updatedGraphData = [
     ...graphData,
     { date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit' }), count: followers }
@@ -40,9 +40,11 @@ const FollowerCount: React.FC<FollowerCountProps> = ({ followers, trackCount, fo
       <div className="flex items-center mt-3">
         <h2 className="text-lg font-bold font-poppins text-[#0a0f26]">Follower growth analysis</h2>
 
-        <div className="flex items-center bg-[#eefaf0] px-2 py-1 rounded-lg ml-4">
-          <img src="/images/safe-logo.png" alt="Safe Icon" className="w-4 h-5 mr-2" />
-          <span className="text-[#0a0f26] font-poppins font-semibold">Safe</span>
+        <div className={`flex items-center px-2 py-1 rounded-lg ml-4 ${isAnomalyDetected ? 'bg-[#fce7e7]' : 'bg-[#eefaf0]'}`}>
+          <img src={isAnomalyDetected ? "/images/issues-logo.png" : "/images/safe-logo.png"} alt="Status Icon" className="w-4 h-5 mr-2" />
+          <span className="text-[#0a0f26] font-poppins font-semibold">
+            {isAnomalyDetected ? 'Issues Detected' : 'Safe'}
+          </span>
         </div>
 
         <div className="relative group ml-4 flex items-center">
@@ -60,6 +62,7 @@ const FollowerCount: React.FC<FollowerCountProps> = ({ followers, trackCount, fo
               title="Follower growth analysis"
               content="Lorem ipsum dolor sit amet consectetur. Gravida in egestas donec viverra a porttitor sit sed."
               onClose={closeDialog}
+              safe={!isAnomalyDetected}
             />
           )}
         </div>

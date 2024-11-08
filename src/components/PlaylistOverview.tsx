@@ -10,9 +10,10 @@ interface PlaylistOverviewProps {
     trackCount: number;
     followers: number;
     url: string;
+    isAnomalyDetected: true | false;
 }
 
-const PlaylistOverview: React.FC<PlaylistOverviewProps> = ({ image, name, trackCount, followers, url }) => {
+const PlaylistOverview: React.FC<PlaylistOverviewProps> = ({ image, name, trackCount, followers, url, isAnomalyDetected }) => {
     return (
         <div className="bg-white p-4 shadow-lg rounded-lg">
             <div className="flex items-center gap-3">
@@ -34,9 +35,11 @@ const PlaylistOverview: React.FC<PlaylistOverviewProps> = ({ image, name, trackC
                 <div className="flex-1">
                     <div className="flex flex-row space-x-4">
                         <div className="text-lg font-semibold text-black">{name}</div>
-                        <div className="flex items-center justify-center bg-[#eefaf0] px-4 py-1 rounded-md">
-                            <img src="/images/safe-logo.png" alt="Safe Icon" className="w-4 h-5 mr-2" />
-                            <span className="text-[#0a0f26] font-semibold">This playlist is safe</span>
+                        <div className={`flex items-center justify-center px-4 py-1 rounded-md ${isAnomalyDetected ? 'bg-[#fce7e7]' : 'bg-[#eefaf0]'}`}>
+                            <img src={isAnomalyDetected ? "/images/issues-logo.png" : "/images/safe-logo.png"} alt="Safe Icon" className="w-4 h-5 mr-2" />
+                            <span className="text-[#0a0f26] font-semibold">
+                                {isAnomalyDetected ? 'This playlist might have issues' : 'This playlist is safe'}
+                            </span>
                         </div>
                     </div>
                     <div className="flex flex-row space-x-4">
@@ -57,7 +60,8 @@ const PlaylistOverview: React.FC<PlaylistOverviewProps> = ({ image, name, trackC
                             <span className="text-gray-600">{followers} followers</span>
                         </div>
                     </div>
-                    <div className="mt-2 text-[#373843]">There is a low chance that this playlist is botted.</div>
+                    <div className="mt-2 text-[#373843]">
+                        {isAnomalyDetected ? "There is a chance that this playlist is botted." : "There is a low chance that this playlist is botted."}</div>
                     <div className="flex mt-2">
                         <div
                             className="flex items-center justify-center bg-[#eff5f7] px-4 py-2 rounded-md cursor-pointer shadow-sm active:scale-95 active:bg-[#e0e7ea] transition-transform duration-100 group"

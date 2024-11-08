@@ -4,9 +4,10 @@ interface InfoDialogProps {
     title: string;
     content: string;
     onClose: () => void;
+    safe: true | false;
 }
 
-const InfoDialog: React.FC<InfoDialogProps> = ({ title, content, onClose }) => {
+const InfoDialog: React.FC<InfoDialogProps> = ({ title, content, onClose, safe }) => {
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
             <div className="relative bg-white rounded-lg shadow-lg w-1/3 p-6">
@@ -14,9 +15,16 @@ const InfoDialog: React.FC<InfoDialogProps> = ({ title, content, onClose }) => {
                 <div className="flex justify-between items-center mb-4">
                     <div className='flex flex-row'>
                         <h2 className="text-lg font-semibold text-black">{title}</h2>
-                        <div className="flex items-center bg-[#eefaf0] px-2 py-1 rounded-md ml-4">
-                            <img src="/images/safe-logo.png" alt="Safe Icon" className="w-4 h-5 mr-2" />
-                            <span className="text-[#0a0f26] font-semibold">Safe</span>
+                        {/* Display the status dynamically */}
+                        <div className={`flex items-center px-2 py-1 rounded-md ml-4 ${safe === true ? 'bg-[#eefaf0]' : 'bg-[#f9e8e8]'}`}>
+                            <img
+                                src={safe === true ? "/images/safe-logo.png" : "/images/issues-logo.png"}
+                                alt={safe === true ? 'Safe Icon' : 'Warning Icon'}
+                                className="w-4 h-5 mr-2"
+                            />
+                            <span className="text-[#0a0f26] font-semibold">
+                                {safe ? 'Safe' : 'Issues Detected'}
+                            </span>
                         </div>
                     </div>
                     <img
