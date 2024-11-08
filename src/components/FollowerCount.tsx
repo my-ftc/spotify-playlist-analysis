@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import LineGraph from './LineGraph';
 import CustomTooltip from './Tooltip';
 import InfoDialog from './InfoDialog';
