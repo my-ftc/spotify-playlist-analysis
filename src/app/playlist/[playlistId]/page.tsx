@@ -103,7 +103,8 @@ const ChartPage = () => {
                     setGenres(genreCountsData);
                 }
 
-                const ageDistribution = categorizeTracksByAge(tracks);
+                const isXXS = typeof window !== 'undefined' && window.innerWidth < 800;
+                const ageDistribution = categorizeTracksByAge(tracks, isXXS);
                 setAgeDistribution(ageDistribution);
                 storePlaylistSearch(playlistData);
 
@@ -140,7 +141,7 @@ const ChartPage = () => {
             {loading || !isInitialLoadDone ? (
                 <LoadingWave />
             ) : (
-                <div className="mt-10">
+                <div className="mt-10 xxs:mx-1 xs:mx-0">
                     {error && <div className="text-red-500">{error}</div>}
                     <PlaylistOverview
                         image={image}
@@ -157,7 +158,7 @@ const ChartPage = () => {
                         isAnomalyDetected={isAnomalyDetected}
                     />
                     <AgeDistributionChart ageDistribution={ageDistribution} />
-                    <div className='flex flex-row gap-4'>
+                    <div className='flex xxs:flex-col xs:flex-row gap-4'>
                         <GenreChart genres={genres} />
                         {userPlaylists.length > 0 && (
                             <UserPlaylistList userPlaylists={userPlaylists} />

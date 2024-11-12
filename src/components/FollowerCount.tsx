@@ -36,9 +36,9 @@ const FollowerCount: React.FC<FollowerCountProps> = ({ followers, trackCount, fo
   ];
 
   return (
-    <div className='bg-white p-4 rounded-lg shadow-lg max-w-full overflow-x-auto mt-5'>
-      <div className="flex items-center mt-3">
-        <h2 className="text-lg font-bold font-poppins text-[#0a0f26]">Follower growth analysis</h2>
+    <div className='bg-white p-4 rounded-lg shadow-lg max-w-full overflow-x-auto mt-5 xxs:text-sm xs:text-base'>
+      <div className="flex items-center xs:mt-3">
+        <h2 className="xs:text-lg font-bold font-poppins text-[#0a0f26]">Follower growth analysis</h2>
 
         <div className={`flex items-center px-2 py-1 rounded-lg ml-4 ${isAnomalyDetected ? 'bg-[#fce7e7]' : 'bg-[#eefaf0]'}`}>
           <img src={isAnomalyDetected ? "/images/issues-logo.png" : "/images/safe-logo.png"} alt="Status Icon" className="w-4 h-5 mr-2" />
@@ -68,7 +68,7 @@ const FollowerCount: React.FC<FollowerCountProps> = ({ followers, trackCount, fo
         </div>
       </div>
 
-      <p className='my-4 text-[#515268]'>Lorem ipsum dolor sit amet consectetur. Gravida in egestas donec viverra a porttitor sit sed.</p>
+      <p className='xxs:my-2.5 xs:my-4 text-[#515268]'>Lorem ipsum dolor sit amet consectetur. Gravida in egestas donec viverra a porttitor sit sed.</p>
       <LineGraph data={updatedGraphData} />
     </div>
   );

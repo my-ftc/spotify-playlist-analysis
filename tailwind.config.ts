@@ -27,6 +27,7 @@ const config: Config = {
       },
       screens: {
         // Custom breakpoints
+        'xxs': '350px',
         'xs': '800px',  // Extra small devices
         'sm': '1290px',  // Small devices
         'md': '1440px',  // Medium devices

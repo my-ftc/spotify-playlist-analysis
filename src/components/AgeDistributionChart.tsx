@@ -10,7 +10,7 @@ import {
   Tooltip,
   ChartOptions,
 } from 'chart.js';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import InfoDialog from './InfoDialog';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Legend, Tooltip);
@@ -24,6 +24,26 @@ const AgeDistributionChart: React.FC<AgeDistributionChartProps> = ({ ageDistribu
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const openDialog = () => setIsDialogOpen(true);
   const closeDialog = () => setIsDialogOpen(false);
+  const [barThickness, setBarThickness] = useState(80);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 800) {
+        setBarThickness(30);
+      } else {
+        setBarThickness(80);
+      }
+    };
+
+    // Set initial bar thickness based on current window size
+    handleResize();
+
+    // Listen for window resize events
+    window.addEventListener('resize', handleResize);
+
+    // Clean up event listener on component unmount
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const data = {
     labels: Object.keys(ageDistribution),
@@ -34,7 +54,7 @@ const AgeDistributionChart: React.FC<AgeDistributionChartProps> = ({ ageDistribu
         backgroundColor: 'rgba(29, 74, 93)', // Default bar color
         hoverBackgroundColor: 'rgba(7, 45, 61)', // Color on hover
         borderRadius: 5, // Makes the top of the bars rounded
-        barThickness: 80,
+        barThickness: barThickness,
       },
     ],
   };
@@ -75,6 +95,15 @@ const AgeDistributionChart: React.FC<AgeDistributionChartProps> = ({ ageDistribu
         border: {
           color: '#f6f6fb', // Set the border color for x-axis
         },
+        title: {
+          display: true,
+          text: 'Age of tracks (in months)',
+          color: '#000', // Set the title color (optional)
+          font: {
+            size: 14, // Set font size for the title (optional)
+            family: 'Arial', // Set font family for the title (optional)
+          },
+        }
       },
       y: {
         grid: {
@@ -104,7 +133,7 @@ const AgeDistributionChart: React.FC<AgeDistributionChartProps> = ({ ageDistribu
   };
 
   return (
-    <div className="bg-white shadow-lg rounded-lg p-4 mt-5 h-fit">
+    <div className="bg-white shadow-lg rounded-lg p-4 mt-5 h-fit xxs:text-sm xs:text-base">
       <div className="flex items-center mt-3">
         <h2 className='font-bold text-black'>Track Age Analysis</h2>
 
@@ -133,7 +162,7 @@ const AgeDistributionChart: React.FC<AgeDistributionChartProps> = ({ ageDistribu
           )}
         </div>
       </div>
-      <p className='my-4 text-[#515268]'>Lorem ipsum dolor sit amet consectetur. Gravida in egestas donec viverra a porttitor sit sed.</p>
+      <p className='xxs:my-2.5 xs:my-4 text-[#515268]'>Lorem ipsum dolor sit amet consectetur. Gravida in egestas donec viverra a porttitor sit sed.</p>
       <div className="h-[45vh]">
         <Bar data={data} options={options} />
       </div>

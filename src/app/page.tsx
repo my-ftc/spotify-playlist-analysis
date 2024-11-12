@@ -30,7 +30,7 @@ export default function Home() {
 
   return (
     <MainLayout>
-      <div className="mt-10">
+      <div className="mt-10 xxs:mx-2 xs:mx-0">
         <LandingSegment
           query={query}
           setQuery={setQuery}

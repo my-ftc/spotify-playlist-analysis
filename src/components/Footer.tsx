@@ -1,15 +1,18 @@
 // components/Footer.tsx
 const Footer = () => {
     return (
-        <div className="relative w-full">
+        <div className="relative w-full ">
             <img
                 src="/images/footer-bg.png"
                 alt="Footer Image"
-                className="w-screen object-cover h-auto"
+                className="w-screen object-cover h-auto xs:w-screen xs:h-auto xs:object-cover xs:relative xs:left-0 xxs:w-[300vw] xxs:object-center xxs:left-[-100vw]"
+                style={{
+                    maxWidth: "none", // Removes default max width to allow full overflow
+                }}
             />
 
-            <div className="absolute bottom-0 left-0 right-0 z-20 text-white flex bg-transparent xs:mx-8 sm:mx-16 md:mx-24 lg:mx-24 underline xs:space-x-24 sm:space-x-48 md:space-x-48 lg:space-x-48 mb-3p xs:h-3/4 sm:h-3/5 md:h-3/5 lg:h-3/4 overflow-hidden">
-                <div className="flex xs:flex-row sm:flex-row md:flex-row lg:flex-col xs:space-x-24 sm:space-x-48 md:space-x-48 lg:space-x-0">
+            <div className="absolute bottom-0 left-0 right-0 z-20 text-white flex bg-transparent xxs:mx-4 xs:mx-8 sm:mx-16 md:mx-24 underline xxs:space-x-24 sm:space-x-48 mb-3p xs:h-3/4 sm:h-3/5 lg:h-3/4 overflow-hidden">
+                <div className="flex xxs:flex-row lg:flex-col xxs:space-x-10 xs:space-x-24 sm:space-x-48 lg:space-x-0 xxs:text-xs sm:text-sm lg:text-lg">
                     <div className="mb-8">
                         <ul className="space-y-3">
                             <li><a href="#" className="hover:underline">Submit Your Music</a></li>
@@ -39,7 +42,7 @@ const Footer = () => {
                             <p>&copy; 2024 Muso Ltd</p>
                         </div>
                         <div>
-                            <ul className='space-y-1 xs:text-xs sm:text-sm md:text-sm lg:text-lg'>
+                            <ul className='space-y-1 xxs:text-xs sm:text-sm lg:text-lg'>
                                 <li><a href="#" className="hover:underline">Terms of Use</a></li>
                                 <li><a href="#" className="hover:underline">Privacy Policy</a></li>
                             </ul>
@@ -48,7 +51,7 @@ const Footer = () => {
                 </div>
 
                 <div className="flex flex-col">
-                    <ul className="space-y-3">
+                    <ul className="space-y-3 xxs:text-xs sm:text-sm lg:text-lg">
                         <li><a href="#" className="hover:underline">View recent music</a></li>
                         <li><a href="#" className="hover:underline">#SustainableCurator</a></li>
                         <li><a href="#" className="hover:underline">Contact us</a></li>
@@ -56,7 +59,7 @@ const Footer = () => {
                 </div>
 
                 <div className="absolute right-0">
-                    <button className="bg-[#eff5f7] text-[#1d4a5d] px-4 py-2 rounded-lg flex items-center xs:text-xs sm:text-sm md:text-lg lg:text-lg">
+                    <button className="bg-[#eff5f7] text-[#1d4a5d] px-4 py-2 rounded-lg flex items-center xxs:text-xs sm:text-sm md:text-lg">
                         <img
                             src="/images/music-note-plus-dark.png"
                             alt="Submit Icon Dark"
