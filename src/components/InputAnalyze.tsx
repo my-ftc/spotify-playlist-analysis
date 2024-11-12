@@ -19,7 +19,7 @@ const InputAnalyze: React.FC<InputAnalyzeProps> = ({ query, setQuery }) => {
             </g>
           </g>
         </svg>
-        <strong className="ml-2 text-black">Paste a Spotify URL to check it for bots</strong>
+        <strong className="ml-2 text-black xxs:text-sm xs:text-base">Paste a Spotify URL to check it for bots</strong>
       </div>
 
       <div className="flex flex-row mt-4 w-full">
@@ -38,12 +38,12 @@ const InputAnalyze: React.FC<InputAnalyzeProps> = ({ query, setQuery }) => {
         />
         {playlistId ? (
           <Link href={`/playlist/${playlistId}`} passHref>
-            <span className={`border-gray-300 bg-[#1d4a5d] text-white font-bold rounded-r-lg px-4 py-3 transition duration-200 w-auto whitespace-nowrap inline-flex items-center justify-center cursor-pointer`}>
+            <span className={`border-gray-300 bg-[#1d4a5d] text-white font-bold rounded-r-lg px-4 py-3 transition duration-200 w-auto whitespace-nowrap inline-flex items-center justify-center cursor-pointer xxs:text-xs xs:text-base`}>
               Analyze playlist
             </span>
           </Link>
         ) : (
-          <span className={`border-gray-300 bg-[#afb7be] text-white font-bold rounded-r-lg px-4 py-3 transition duration-200 w-auto whitespace-nowrap inline-flex items-center justify-center cursor-not-allowed`}>
+          <span className={`border-gray-300 bg-[#afb7be] text-white font-bold rounded-r-lg px-4 py-3 transition duration-200 w-auto whitespace-nowrap inline-flex items-center justify-center cursor-not-allowed xxs:text-xs xs:text-base`}>
             Analyze playlist
           </span>
         )}
