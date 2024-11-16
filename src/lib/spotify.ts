@@ -31,6 +31,7 @@ export const fetchPlaylistData = async (playlistId: string, accessToken: string)
   let tracks: any[] = [];
   let followersCount: number | null = null;
   let ownerId: string | null = null;
+  let ownerName: string | null = null;
   let playlistName: string | null = null;
   let playlistUrl: string | null = null;
   let playlistImage: string | null = null; // To hold the playlist's image URL
@@ -49,6 +50,7 @@ export const fetchPlaylistData = async (playlistId: string, accessToken: string)
   const playlistData = await playlistResponse.json();
   followersCount = playlistData.followers.total;
   ownerId = playlistData.owner.id;
+  ownerName = playlistData.owner.display_name;
   playlistName = playlistData.name;
   playlistUrl = playlistData.external_urls.spotify;
   playlistImage = playlistData.images && playlistData.images.length > 0 ? playlistData.images[0].url : null; // Get the first image if available
@@ -75,6 +77,7 @@ export const fetchPlaylistData = async (playlistId: string, accessToken: string)
     followers: followersCount,
     tracks,
     ownerId,
+    ownerName,
     name: playlistName,
     external_urls: {
       spotify: playlistUrl,
@@ -108,6 +111,7 @@ export const fetchArtistGenres = async (artistIds: string[], accessToken: string
 export const fetchUsersPlaylists = async (userId: string, accessToken: string, playlistId: string) => {
   let playlistImage: string | null = null; // To hold the playlist's image URL
   let ownerId: string | null = null;
+  let ownerName: string | null = null;
 
   const response = await fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, {
     headers: {
@@ -136,6 +140,7 @@ export const fetchUsersPlaylists = async (userId: string, accessToken: string, p
     const playlistData = await playlistResponse.json();
     playlistImage = playlistData.images && playlistData.images.length > 0 ? playlistData.images[0].url : null; // Get the first image if available
     ownerId = playlistData.owner.id;
+    ownerName = playlistData.owner.display_name;
 
     // Fetch all tracks (handling pagination)
     let tracks = playlistData.tracks.items; // Start with the first set of tracks
@@ -161,6 +166,7 @@ export const fetchUsersPlaylists = async (userId: string, accessToken: string, p
       id: playlist.id,
       name: playlistData.name,
       ownerId,
+      ownerName,
       tracks: tracks, // Return all tracks for the playlist
       followers: playlistData.followers.total,
       external_urls: playlistData.external_urls,

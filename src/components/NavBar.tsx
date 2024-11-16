@@ -11,15 +11,15 @@ const NavBar: React.FC = () => {
                     <img
                         src="/images/logo-text-over-image.png"
                         alt="Logo"
-                        className="xxs:w-36 xs:w-36 s:w-full md:w-full lg:w-full h-auto cursor-pointer"
+                        className="3xs:w-36 xs:w-36 sm:w-full h-auto cursor-pointer"
                     />
                 </Link>
             </div>
 
             <div className="flex items-center">
-                {/* Hamburger Icon - Only for xxs screens */}
+                {/* Hamburger Icon - Only for 3xs screens */}
                 <button
-                    className="xxs:block xs:hidden s:hidden md:hidden lg:hidden text-white"
+                    className="3xs:block xs:hidden text-white"
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
                 >
                     {isMenuOpen ? (
@@ -45,8 +45,7 @@ const NavBar: React.FC = () => {
                     )}
                 </button>
 
-                {/* Main navigation links - visible on xs, s, md, and lg */}
-                <div className="hidden xxs:hidden xs:flex flex-row gap-4 xs:gap-4 sm:gap-4 md:gap-8 lg:gap-16">
+                <div className="hidden 3xs:hidden xs:flex flex-row gap-4 sm:gap-4 md:gap-8 lg:gap-16">
                     <a href="#" className="text-white text-sm xs:text-xs sm:text-sm md:text-lg lg:text-lg hover:underline">How it works</a>
                     <a href="#" className="text-white text-sm xs:text-xs sm:text-sm md:text-lg lg:text-lg hover:underline">Preparing to Submit</a>
                     <a href="#" className="text-white text-sm xs:text-xs sm:text-sm md:text-lg lg:text-lg hover:underline">Our Difference</a>
@@ -54,8 +53,7 @@ const NavBar: React.FC = () => {
                     <a href="#" className="text-white text-sm xs:text-xs sm:text-sm md:text-lg lg:text-lg hover:underline mr-4">Blog</a>
                 </div>
 
-                {/* Sign in and Submit buttons - visible on xs, s, md, and lg */}
-                <div className="hidden xxs:hidden xs:flex space-x-2">
+                <div className="hidden 3xs:hidden xs:flex space-x-2">
                     <button className="bg-white text-[#1d4a5d] px-4 py-2 rounded-lg xs:text-xs sm:text-sm md:text-lg lg:text-lg">
                         Sign in
                     </button>
@@ -69,7 +67,7 @@ const NavBar: React.FC = () => {
                     </button>
                 </div>
 
-                {/* Hamburger Menu - Only visible on xxs */}
+                {/* Hamburger Menu - Only visible on 3xs */}
                 {isMenuOpen && (
                     <div className="absolute top-16 right-0 bg-[#1d4a5d] p-4 w-1/2">
                         <a href="#" className="block text-white text-sm hover:underline py-2">How it works</a>
@@ -79,11 +77,11 @@ const NavBar: React.FC = () => {
                         <a href="#" className="block text-white text-sm hover:underline py-2">Blog</a>
 
                         {/* Sign in and Submit buttons inside hamburger menu */}
-                        <div className="flex flex-col space-y-2 mt-4">
-                            <button className="bg-white text-[#1d4a5d] px-4 py-2 rounded-lg text-xs sm:text-sm">
+                        <div className="flex flex-col space-y-3 mt-4">
+                            <button className="bg-white text-[#1d4a5d] px-4 py-2 rounded-lg text-xs sm:text-sm hover:underline border-2">
                                 Sign in
                             </button>
-                            <button className="bg-[#1d4a5d] text-white px-4 py-2 rounded-lg flex items-center text-xs sm:text-sm">
+                            <button className="bg-[#1d4a5d] text-white px-4 py-2 rounded-lg flex items-center justify-center text-xs sm:text-sm hover:underline border-2">
                                 <img
                                     src="/images/music-note-plus.png"
                                     alt="Submit Icon"

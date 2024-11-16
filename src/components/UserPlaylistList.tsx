@@ -9,6 +9,7 @@ interface Playlist {
     images: string;
     name: string;
     ownerId: string;
+    ownerName: string;
     external_urls: {
         spotify: string;
     };
@@ -22,9 +23,9 @@ interface UserPlaylistListProps {
 
 const UserPlaylistList: React.FC<UserPlaylistListProps> = ({ userPlaylists }) => {
     return (
-        <div className="mt-4 bg-white p-4 shadow-lg rounded-lg xxs:w-full xs:w-1/2 xxs:text-sm xs:text-lg">
-            <h2 className="font-extrabold text-black">Other playlists from user</h2>
-            <p className='xxs:my-2.5 xs:my-4 text-[#515268]'>Lorem ipsum dolor sit amet consectetur. </p>
+        <div className="mt-5 bg-white p-4 shadow-lg rounded-lg 3xs:w-full md:w-1/2 3xs:text-sm xs:text-base">
+            <h2 className="font-extrabold text-black xs:mt-3 xs:text-lg">Other playlists from user</h2>
+            <p className='3xs:my-2.5 xs:my-4 text-[#515268]'>Lorem ipsum dolor sit amet consectetur. </p>
 
             <div className="hidden xs:grid grid-cols-[0.5fr_2fr_1fr_1fr_1fr] gap-4 border-b border-gray-300 pb-2 my-4">
                 <div></div>
@@ -54,7 +55,7 @@ const UserPlaylistList: React.FC<UserPlaylistListProps> = ({ userPlaylists }) =>
                             >
                                 {playlist.name}
                             </a>
-                            <div className="text-[#8789a8]">{playlist.ownerId}</div>
+                            <div className="text-[#8789a8]">{playlist.ownerName}</div>
                         </div>
 
                         <div className="text-center text-gray-600 break-words">{playlist.tracks.length}</div>
@@ -80,7 +81,7 @@ const UserPlaylistList: React.FC<UserPlaylistListProps> = ({ userPlaylists }) =>
                 ))}
             </ul>
 
-            <ul>
+            <ul className='xs:hidden'>
                 {userPlaylists.map((playlist, index) => (
                     <li key={index} className="py-3">
                         <div className="flex flex-row items-center">
@@ -101,7 +102,7 @@ const UserPlaylistList: React.FC<UserPlaylistListProps> = ({ userPlaylists }) =>
                                     >
                                         {playlist.name}
                                     </a>
-                                    <div className="text-[#8789a8]">{playlist.ownerId}</div>
+                                    <div className="text-[#8789a8]">{playlist.ownerName}</div>
                                 </div>
 
                                 <div className="flex flex-row space-x-4 text-xs">
@@ -129,7 +130,7 @@ const UserPlaylistList: React.FC<UserPlaylistListProps> = ({ userPlaylists }) =>
                                         href={`/playlist/${extractPlaylistId(playlist.external_urls.spotify)}`}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="flex items-center text-[#1d4a5d] font-semibold hover:underline xs:text-sm sm:text-sm md:text-base lg:text-base"
+                                        className="flex items-center text-[#1d4a5d] font-semibold hover:underline xs:text-sm sm:text-sm md:text-base lg:text-base 2xs:mr-10"
                                     >
                                         <img
                                             src="/images/analyze.png"

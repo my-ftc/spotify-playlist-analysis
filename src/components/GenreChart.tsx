@@ -23,9 +23,9 @@ const GenreChart: React.FC<GenreChartProps> = ({ genres }) => {
     .slice(0, 10);
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow-md mt-5 xxs:w-full xs:w-1/2 h-fit xxs:text-sm xs:text-base">
+    <div className="bg-white p-4 rounded-lg shadow-md mt-5 3xs:w-full md:w-1/2 h-fit 3xs:text-sm xs:text-base">
       <div className="flex items-center xs:mt-3">
-        <h2 className="font-bold text-black">Genre Analysis</h2>
+        <h2 className="xs:text-lg font-bold text-black">Genre Analysis</h2>
 
         <div className={`flex items-center px-2 py-1 rounded-md ml-4 ${isDiverse ? 'bg-[#eefaf0]' : 'bg-[#fce7e7]'}`}>
           <img src={isDiverse ? "/images/safe-logo.png" : "/images/issues-logo.png"} alt="Status Icon" className="w-4 h-5 mr-2" />
@@ -55,13 +55,13 @@ const GenreChart: React.FC<GenreChartProps> = ({ genres }) => {
         </div>
       </div>
 
-      <p className='xxs:my-2.5 xs:my-4 text-[#515268]'>Lorem ipsum dolor sit amet consectetur.</p>
+      <p className='3xs:my-2.5 xs:my-4 text-[#515268]'>Lorem ipsum dolor sit amet consectetur.</p>
 
       <div className="flex flex-wrap gap-2 mt-2">
         {sortedGenres.map(([genre]) => (
           <div
             key={genre}
-            className="rounded-full xxs:p-2.5 xs:p-4 text-black"
+            className="rounded-full 3xs:p-2.5 xs:p-4 text-black"
             style={{
               backgroundColor: '#dbe8ed',
             }}

@@ -27,13 +27,14 @@ const config: Config = {
       },
       screens: {
         // Custom breakpoints
-        'xxs': '350px',
-        'xs': '800px',  // Extra small devices
-        'sm': '1290px',  // Small devices
-        'md': '1440px',  // Medium devices
-        'lg': '1600px', // Large devices
-        // 'xl': '1280px', // Extra large devices
-        // '2xl': '1536px', // 2XL devices (optional, adjust as needed)
+        '3xs': '300px',
+        '2mxs': '480px',
+        '2xs': '575px',
+        'mxs': '800px',
+        'xs': '1000px',
+        'sm': '1290px',
+        'md': '1440px',
+        'lg': '1600px',
       },
     },
   },

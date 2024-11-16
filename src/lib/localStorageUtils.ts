@@ -7,6 +7,7 @@ interface PlaylistSearch {
   name: string;
   url: string;
   ownerId: string;
+  ownerName: string;
   followers: number;
   tracks: number;
   date: string;
@@ -30,6 +31,7 @@ export const storePlaylistSearch = (playlistData: any) => {
   const name = playlistData.name || "Unknown Playlist";
   const url = playlistData.external_urls.spotify || "#";
   const ownerId = playlistData.ownerId || "Unknown owner";
+  const ownerName = playlistData.ownerName || "Unknown owner";
   const followers = playlistData.followers || 0;
   const tracks = playlistData.tracks.length || 0;
   const date = new Date().toISOString();
@@ -44,10 +46,11 @@ export const storePlaylistSearch = (playlistData: any) => {
       name,
       url,
       ownerId,
+      ownerName,
       followers,
       tracks,
       date,
-      image  // Update image field
+      image
     };
     console.log("Updated existing search entry.");
   } else {
@@ -56,10 +59,11 @@ export const storePlaylistSearch = (playlistData: any) => {
       name,
       url,
       ownerId,
+      ownerName,
       followers,
       tracks,
       date,
-      image  // Add image field
+      image
     });
     console.log("Added new search entry.");
   }

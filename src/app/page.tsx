@@ -11,6 +11,7 @@ export default function Home() {
     name: string,
     url: string,
     ownerId: string;
+    ownerName: string,
     followers: number;
     tracks: number;
     date: string;
@@ -30,7 +31,7 @@ export default function Home() {
 
   return (
     <MainLayout>
-      <div className="mt-10 xxs:mx-2 xs:mx-0">
+      <div className="mt-10 3xs:mx-2 xs:mx-0">
         <LandingSegment
           query={query}
           setQuery={setQuery}
