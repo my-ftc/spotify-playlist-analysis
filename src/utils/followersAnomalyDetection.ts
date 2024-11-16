@@ -11,29 +11,36 @@ export function calculateZScore(latest: number, mean: number, stdDev: number): n
 
 export function detectAnomaly(followerCountArray: FollowerData[], threshold = 3.0, growthRateThreshold = 50, absoluteJumpThreshold = 10, dropThreshold = 0.5): boolean {
     const n = followerCountArray.length;
-    if (n < 2) return false; // Not enough data to calculate trends
+    if (n < 2) return false;
+
+    // Check extreme variations in the entire sequence
+    const counts = followerCountArray.map(d => d.count);
+    const maxCount = Math.max(...counts);
+    const minCount = Math.min(...counts);
+    const medianCount = [...counts].sort((a, b) => a - b)[Math.floor(n / 2)];
+
+    // Add two new anomaly indicators for the entire sequence
+    const hasExtremeVariation = maxCount / minCount > 1000; // 1000x difference between max and min
+    const hasExtremeSpike = maxCount / medianCount > 100;   // 100x difference from median
 
     const latestFollowerCount = followerCountArray[n - 1].count;
     const previousFollowerCount = followerCountArray[n - 2].count;
 
-    // Calculate mean and standard deviation of all follower counts
+    // Original calculations
     const mean = followerCountArray.reduce((sum, data) => sum + data.count, 0) / n;
     const variance = followerCountArray.reduce((sum, data) => sum + Math.pow(data.count - mean, 2), 0) / n;
     const stdDev = Math.sqrt(variance);
 
-    // Z-score check
     const zScore = calculateZScore(latestFollowerCount, mean, stdDev);
     const isZScoreAnomalous = Math.abs(zScore) > threshold;
 
-    // Rolling window (last 7 counts) Z-score check
-    const windowSize = Math.min(7, n); // Window size should not exceed the available data points
+    const windowSize = Math.min(7, n);
     const rollingMean = followerCountArray.slice(-windowSize).reduce((sum, data) => sum + data.count, 0) / windowSize;
     const rollingVariance = followerCountArray.slice(-windowSize).reduce((sum, data) => sum + Math.pow(data.count - rollingMean, 2), 0) / windowSize;
     const rollingStdDev = Math.sqrt(rollingVariance);
     const rollingZScore = calculateZScore(latestFollowerCount, rollingMean, rollingStdDev);
     const isRollingZScoreAnomalous = Math.abs(rollingZScore) > threshold;
 
-    // Growth rate check
     const latestGrowthRate = ((latestFollowerCount - previousFollowerCount) / previousFollowerCount) * 100;
     const historicalGrowthRate = followerCountArray.slice(1).reduce((acc, data, i) => {
         const prevCount = followerCountArray[i].count;
@@ -41,20 +48,35 @@ export function detectAnomaly(followerCountArray: FollowerData[], threshold = 3.
     }, 0) / (n - 1);
     const isGrowthRateAnomalous = Math.abs(latestGrowthRate - historicalGrowthRate) > growthRateThreshold;
 
-    // Absolute jump check (for small datasets like [5, 6, 1000])
+    // Modified thresholds for jump and drop checks
     const isAbsoluteJumpAnomalous = latestFollowerCount / previousFollowerCount > absoluteJumpThreshold;
-
-    // Sudden drop check (detects if the follower count has dropped by more than 50%)
     const isSuddenDropAnomalous = (previousFollowerCount > 0 && (latestFollowerCount / previousFollowerCount) < dropThreshold);
 
-    // Combined anomaly score
+    // Check for spike-then-drop pattern in any consecutive triplet
+    let hasSpikeDropPattern = false;
+    for (let i = 1; i < n - 1; i++) {
+        const prev = followerCountArray[i - 1].count;
+        const current = followerCountArray[i].count;
+        const next = followerCountArray[i + 1].count;
+
+        if (current > prev * 100 && next < current * 0.1) { // 100x increase then 90% drop
+            hasSpikeDropPattern = true;
+            break;
+        }
+    }
+
+    // Combined anomaly score with new indicators
     const anomalyScore = [
         isZScoreAnomalous,
         isRollingZScoreAnomalous,
         isGrowthRateAnomalous,
         isAbsoluteJumpAnomalous,
         isSuddenDropAnomalous,
+        hasExtremeVariation,    // New
+        hasExtremeSpike,        // New
+        hasSpikeDropPattern     // New
     ].filter(Boolean).length;
 
-    return anomalyScore >= 2; // Flag as an anomaly if 2 or more indicators are triggered
+    // Lower the threshold since we added more indicators
+    return anomalyScore >= 2;
 }

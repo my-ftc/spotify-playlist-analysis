@@ -12,6 +12,7 @@ interface PlaylistSearch {
   tracks: number;
   date: string;
   image: string | null;
+  safe: boolean;
 }
 
 // Retrieve searches from local storage, sorted by date (most recent first)
@@ -26,7 +27,7 @@ export const getPreviousSearches = (): PlaylistSearch[] => {
 };
 
 // Store a new playlist search (name, URL, image) in local storage
-export const storePlaylistSearch = (playlistData: any) => {
+export const storePlaylistSearch = (playlistData: any, safe: boolean) => {
   const previousSearches: PlaylistSearch[] = getPreviousSearches(); // Ensure previous searches conform to PlaylistSearch type
   const name = playlistData.name || "Unknown Playlist";
   const url = playlistData.external_urls.spotify || "#";
@@ -50,7 +51,8 @@ export const storePlaylistSearch = (playlistData: any) => {
       followers,
       tracks,
       date,
-      image
+      image,
+      safe
     };
     console.log("Updated existing search entry.");
   } else {
@@ -63,7 +65,8 @@ export const storePlaylistSearch = (playlistData: any) => {
       followers,
       tracks,
       date,
-      image
+      image,
+      safe
     });
     console.log("Added new search entry.");
   }
