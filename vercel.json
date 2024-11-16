@@ -2,7 +2,7 @@
     "crons": [
         {
             "path": "/api/updateFollowerCounts",
-            "schedule": "45 14 * * *"
+            "schedule": "0 5 * * *"
         }
     ]
 }
