@@ -133,9 +133,9 @@ const AgeDistributionChart: React.FC<AgeDistributionChartProps> = ({ ageDistribu
   };
 
   return (
-    <div className="bg-white shadow-lg rounded-lg p-4 mt-5 h-fit xxs:text-sm xs:text-base">
+    <div className="bg-white shadow-lg rounded-lg p-4 mt-5 h-fit 3xs:text-sm xs:text-base">
       <div className="flex items-center mt-3">
-        <h2 className='font-bold text-black'>Track Age Analysis</h2>
+        <h2 className='xs:text-lg font-bold text-black'>Track Age Analysis</h2>
 
         <div className="flex items-center bg-[#eefaf0] px-2 py-1 rounded-lg ml-4">
           <img src="/images/safe-logo.png" alt="Safe Icon" className="w-4 h-5 mr-2" />
@@ -162,7 +162,7 @@ const AgeDistributionChart: React.FC<AgeDistributionChartProps> = ({ ageDistribu
           )}
         </div>
       </div>
-      <p className='xxs:my-2.5 xs:my-4 text-[#515268]'>Lorem ipsum dolor sit amet consectetur. Gravida in egestas donec viverra a porttitor sit sed.</p>
+      <p className='3xs:my-2.5 xs:my-4 text-[#515268]'>Lorem ipsum dolor sit amet consectetur. Gravida in egestas donec viverra a porttitor sit sed.</p>
       <div className="h-[45vh]">
         <Bar data={data} options={options} />
       </div>

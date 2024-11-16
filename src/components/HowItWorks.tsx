@@ -1,7 +1,7 @@
 // components/HowItWorks.js
 const HowItWorks = () => {
     return (
-        <div className="xxs:w-full xs:w-1/4 bg-[#0a0f26] p-5 rounded-lg shadow-md xxs:text-xs xs:text-lg">
+        <div className="3xs:w-full md:w-1/4 bg-[#0a0f26] p-5 rounded-lg shadow-md 3xs:text-xs xs:text-lg">
             <h2 className="font-extrabold text-white">How does it work</h2>
             <p className="text-[#c0c0c0] mt-2">
                 Use our Spotify playlist bot checker to spot fake activity. Analyze streams, likes, and followers for bot signs. Enter playlist URL for a scan on engagement and interactions. Get a report in minutes.

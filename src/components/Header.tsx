@@ -5,7 +5,7 @@ const Header = () => {
             <img
                 src="/images/Vector.png"
                 alt="Top Image"
-                className="w-screen h-auto object-cover sm:w-screen sm:h-auto sm:object-cover sm:relative sm:left-0 xxs:w-[180vw] xxs:object-center xxs:left-[-40vw]"
+                className="w-screen h-auto object-cover mxs:w-screen mxs:h-auto mxs:object-cover mxs:relative mxs:left-0 2xs:w-[120vw] 2xs:left-[-10vw] 3xs:w-[180vw] 3xs:left-[-40vw]"
                 style={{
                     maxWidth: "none", // Removes default max width to allow full overflow
                 }}

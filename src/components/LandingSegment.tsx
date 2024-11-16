@@ -26,7 +26,7 @@ const LandingSegment: React.FC<LandingSegmentProps> = ({
         <>
             <InputAnalyze query={query} setQuery={setQuery} />
             {previousSearches.length > 0 && (
-                <div className="xxs:mt-5p xs:mt-2p flex xxs:flex-col xs:flex-row xxs:space-y-5 xs:space-y-0 xs:space-x-2">
+                <div className="3xs:mt-5p xs:mt-2p flex 3xs:flex-col md:flex-row 3xs:space-y-5 xs:space-y-4 md:space-x-2 md:space-y-0">
                     <RecentlyChecked
                         paginatedSearches={paginatedSearches}
                         totalPages={totalPages}

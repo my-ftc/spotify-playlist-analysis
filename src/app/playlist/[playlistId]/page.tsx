@@ -103,7 +103,7 @@ const ChartPage = () => {
                     setGenres(genreCountsData);
                 }
 
-                const isXXS = typeof window !== 'undefined' && window.innerWidth < 800;
+                const isXXS = typeof window !== 'undefined' && window.innerWidth < 1000;
                 const ageDistribution = categorizeTracksByAge(tracks, isXXS);
                 setAgeDistribution(ageDistribution);
                 storePlaylistSearch(playlistData);
@@ -134,14 +134,14 @@ const ChartPage = () => {
             const anomaly = detectAnomaly(updatedFollowerCountArray);
             setIsAnomalyDetected(anomaly);
         }
-    }, [followers, followerCountArray]); // Depend on followers and followerCountArray
+    }, [followers, followerCountArray]);
 
     return (
         <MainLayout>
             {loading || !isInitialLoadDone ? (
                 <LoadingWave />
             ) : (
-                <div className="mt-10 xxs:mx-1 xs:mx-0">
+                <div className="mt-10 3xs:mx-1 xs:mx-0">
                     {error && <div className="text-red-500">{error}</div>}
                     <PlaylistOverview
                         image={image}
@@ -158,7 +158,7 @@ const ChartPage = () => {
                         isAnomalyDetected={isAnomalyDetected}
                     />
                     <AgeDistributionChart ageDistribution={ageDistribution} />
-                    <div className='flex xxs:flex-col xs:flex-row gap-4'>
+                    <div className='flex 3xs:flex-col sm:flex-row sm:space-x-4'>
                         <GenreChart genres={genres} />
                         {userPlaylists.length > 0 && (
                             <UserPlaylistList userPlaylists={userPlaylists} />

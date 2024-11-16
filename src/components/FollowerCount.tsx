@@ -36,7 +36,7 @@ const FollowerCount: React.FC<FollowerCountProps> = ({ followers, trackCount, fo
   ];
 
   return (
-    <div className='bg-white p-4 rounded-lg shadow-lg max-w-full overflow-x-auto mt-5 xxs:text-sm xs:text-base'>
+    <div className='bg-white p-4 rounded-lg shadow-lg max-w-full overflow-x-auto mt-5 3xs:text-sm xs:text-base'>
       <div className="flex items-center xs:mt-3">
         <h2 className="xs:text-lg font-bold font-poppins text-[#0a0f26]">Follower growth analysis</h2>
 
@@ -68,7 +68,7 @@ const FollowerCount: React.FC<FollowerCountProps> = ({ followers, trackCount, fo
         </div>
       </div>
 
-      <p className='xxs:my-2.5 xs:my-4 text-[#515268]'>Lorem ipsum dolor sit amet consectetur. Gravida in egestas donec viverra a porttitor sit sed.</p>
+      <p className='3xs:my-2.5 xs:my-4 text-[#515268]'>Lorem ipsum dolor sit amet consectetur. Gravida in egestas donec viverra a porttitor sit sed.</p>
       <LineGraph data={updatedGraphData} />
     </div>
   );

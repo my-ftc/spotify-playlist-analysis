@@ -8,6 +8,7 @@ export interface Search {
     name: string;
     url: string;
     ownerId: string;
+    ownerName: string;
     followers: number;
     tracks: number;
     date: string;
@@ -23,11 +24,11 @@ export interface RecentlyCheckedProps {
 
 const RecentlyChecked: React.FC<RecentlyCheckedProps> = ({ paginatedSearches, totalPages, currentPage, setCurrentPage }) => {
     return (
-        <div className="xxs:w-full xs:w-3/4">
-            <h2 className="font-extrabold text-black xxs:text-xs xs:text-sm md:text-base xxs:ml-2 xs:ml-0">Recently checked</h2>
-            <p className="text-[#636588] xxs:mt-1 xs:mt-3 xxs:text-xs xs:text-sm md:text-base xxs:ml-2 xs:ml-0">Latest playlists that have been analysed.</p>
+        <div className="3xs:w-full md:w-3/4">
+            <h2 className="font-extrabold text-black 3xs:text-xs xs:text-base 3xs:ml-2 xs:ml-0">Recently checked</h2>
+            <p className="text-[#636588] 3xs:mt-1 xs:mt-3 3xs:text-xs xs:text-base 3xs:ml-2 xs:ml-0">Latest playlists that have been analysed.</p>
 
-            <div className="hidden xxs:hidden xs:block bg-white xxs:p-2 xs:p-4 rounded-lg shadow-md mt-4">
+            <div className="hidden 3xs:hidden xs:block bg-white 3xs:p-2 xs:p-4 rounded-lg shadow-md mt-4">
                 <div className="hidden xs:grid grid-cols-12 text-left border-b border-gray-300 pb-2">
                     <div className="col-span-4 text-[#8789a8]">Playlist</div>
                     <div className="col-span-1 text-center text-[#8789a8]">Songs</div>
@@ -39,7 +40,7 @@ const RecentlyChecked: React.FC<RecentlyCheckedProps> = ({ paginatedSearches, to
 
                 <ul>
                     {paginatedSearches.map((search, index) => (
-                        <li key={index} className="grid xxs:grid-cols-11 sm:grid-cols-12 xs:gap-2 md:gap-4 py-4">
+                        <li key={index} className="grid 3xs:grid-cols-11 xs:grid-cols-12 xs:gap-2 md:gap-4 py-4">
                             {/* Playlist Image and Name */}
                             <div className="col-span-4 flex items-center">
                                 <img
@@ -52,34 +53,34 @@ const RecentlyChecked: React.FC<RecentlyCheckedProps> = ({ paginatedSearches, to
                                         href={search.url}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="text-[#373843] hover:underline font-semibold xxs:text-xs xs:text-sm md:text-base"
+                                        className="text-[#373843] hover:underline font-semibold 3xs:text-xs xs:text-sm md:text-base"
                                     >
                                         {search.name}
                                     </a>
-                                    <div className="text-[#8789a8] xxs:text-xs xs:text-sm md:text-base">{search.ownerId}</div>
+                                    <div className="text-[#8789a8] 3xs:text-xs xs:text-sm md:text-base">{search.ownerName}</div>
                                 </div>
                             </div>
 
                             {/* Songs Count */}
-                            <div className="col-span-1 flex items-center justify-center text-gray-600 xxs:text-xs xs:text-sm md:text-base">
+                            <div className="col-span-1 flex items-center justify-center text-gray-600 3xs:text-xs xs:text-sm md:text-base">
                                 {search.tracks}
                             </div>
 
                             {/* Followers Count */}
-                            <div className="col-span-2 flex items-center justify-center text-gray-600 xxs:text-xs xs:text-sm md:text-base">
+                            <div className="col-span-2 flex items-center justify-center text-gray-600 3xs:text-xs xs:text-sm md:text-base">
                                 {search.followers}
                             </div>
 
                             {/* Checked Date */}
-                            <div className="col-span-1 flex items-center justify-center text-gray-600 xxs:text-xs xs:text-sm md:text-base">
+                            <div className="col-span-1 flex items-center justify-center text-gray-600 3xs:text-xs xs:text-sm md:text-base">
                                 {timeSince(search.date)}
                             </div>
 
                             {/* Status Column */}
                             <div className="col-span-2 flex items-center justify-center">
                                 <div className="flex items-center bg-[#eefaf0] px-2 py-1 rounded-lg">
-                                    <img src="/images/safe-logo.png" alt="Safe Icon" className="xxs:w-3 md:w-4 h-auto mr-2" />
-                                    <span className="text-[#0a0f26] font-semibold xxs:text-xs xs:text-sm md:text-base">Safe</span>
+                                    <img src="/images/safe-logo.png" alt="Safe Icon" className="3xs:w-3 md:w-4 h-auto mr-2" />
+                                    <span className="text-[#0a0f26] font-semibold 3xs:text-xs xs:text-sm md:text-base">Safe</span>
                                 </div>
                             </div>
 
@@ -93,9 +94,9 @@ const RecentlyChecked: React.FC<RecentlyCheckedProps> = ({ paginatedSearches, to
                                     <img
                                         src="/images/report.png"
                                         alt="Report"
-                                        className="xxs:w-3 md:w-4 h-auto mr-2"
+                                        className="3xs:w-3 md:w-4 h-auto mr-2"
                                     />
-                                    <span className='xxs:text-xs xs:text-sm md:text-base'>Report</span>
+                                    <span className='3xs:text-xs xs:text-sm md:text-base'>Report</span>
                                 </Link>
                             </div>
                         </li>
@@ -103,7 +104,7 @@ const RecentlyChecked: React.FC<RecentlyCheckedProps> = ({ paginatedSearches, to
                 </ul>
             </div>
 
-            <div className="xs:hidden bg-white xxs:p-2 xs:p-4 rounded-lg shadow-md mt-4">
+            <div className="xs:hidden bg-white 3xs:p-2 xs:p-4 rounded-lg shadow-md mt-4">
                 <ul>
                     {paginatedSearches.map((search, index) => (
                         <li key={index} className="py-3">
@@ -119,13 +120,13 @@ const RecentlyChecked: React.FC<RecentlyCheckedProps> = ({ paginatedSearches, to
                                             href={search.url}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="text-[#373843] hover:underline font-semibold xxs:text-xs xs:text-sm md:text-base"
+                                            className="text-[#373843] hover:underline font-semibold 3xs:text-xs xs:text-sm md:text-base"
                                         >
                                             {search.name}
                                         </a>
                                     </div>
 
-                                    <div className="text-[#8789a8] text-xs">{search.ownerId}</div>
+                                    <div className="text-[#8789a8] text-xs">{search.ownerName}</div>
 
                                     <div className="flex flex-row space-x-3 text-xs">
                                         <div className="flex items-center">
@@ -151,11 +152,11 @@ const RecentlyChecked: React.FC<RecentlyCheckedProps> = ({ paginatedSearches, to
                                 <div className='flex flex-col ml-auto mr-1 space-y-2'>
                                     <div className="col-span-2 flex items-center">
                                         <div className="flex items-center bg-[#eefaf0] px-2 py-1 rounded-lg">
-                                            <img src="/images/safe-logo.png" alt="Safe Icon" className="xxs:w-3 md:w-4 h-auto mr-2" />
-                                            <span className="text-[#0a0f26] font-semibold xxs:text-xs xs:text-sm md:text-base">Safe</span>
+                                            <img src="/images/safe-logo.png" alt="Safe Icon" className="3xs:w-3 md:w-4 h-auto mr-2" />
+                                            <span className="text-[#0a0f26] font-semibold 3xs:text-xs xs:text-sm md:text-base">Safe</span>
                                         </div>
                                     </div>
-                                    <div className="flex items-center justify-center">
+                                    <div className="flex items-center justify-center 2xs:mr-4">
                                         <Link
                                             href={`/playlist/${extractPlaylistId(search.url)}`}
                                             target="_blank"
@@ -165,9 +166,9 @@ const RecentlyChecked: React.FC<RecentlyCheckedProps> = ({ paginatedSearches, to
                                             <img
                                                 src="/images/report.png"
                                                 alt="Report"
-                                                className="xxs:w-3 md:w-4 h-auto mr-2"
+                                                className="3xs:w-3 md:w-4 h-auto mr-2"
                                             />
-                                            <span className='xxs:text-xs xs:text-sm md:text-base underline'>Report</span>
+                                            <span className='3xs:text-xs xs:text-sm md:text-base underline'>Report</span>
                                         </Link>
                                     </div>
                                 </div>
@@ -178,7 +179,7 @@ const RecentlyChecked: React.FC<RecentlyCheckedProps> = ({ paginatedSearches, to
             </div>
 
             {totalPages > 1 && (
-                <div className="flex justify-end mt-4 xxs:text-xs xs:text-base">
+                <div className="flex justify-end mt-4 3xs:text-xs xs:text-base">
                     <Pagination
                         currentPage={currentPage}
                         totalPages={totalPages}
