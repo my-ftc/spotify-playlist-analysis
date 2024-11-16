@@ -13,6 +13,7 @@ export interface Search {
     tracks: number;
     date: string;
     image: string | null;
+    safe: boolean;
 }
 
 export interface RecentlyCheckedProps {
@@ -85,9 +86,11 @@ const RecentlyChecked: React.FC<RecentlyCheckedProps> = ({ paginatedSearches, to
 
                             {/* Status Column */}
                             <div className="col-span-2 flex items-center justify-center">
-                                <div className="flex items-center bg-[#eefaf0] px-2 py-1 rounded-lg">
-                                    <img src="/images/safe-logo.png" alt="Safe Icon" className="3xs:w-3 md:w-4 h-auto mr-2" />
-                                    <span className="text-[#0a0f26] font-semibold 3xs:text-xs xs:text-sm md:text-base">Safe</span>
+                                <div className={`flex items-center bg-[#eefaf0] px-2 py-1 rounded-lg ${search.safe ? 'bg-[#eefaf0]' : 'bg-[#fce7e7]'}`}>
+                                    <img src={search.safe ? "/images/safe-logo.png" : "/images/issues-logo.png"} alt="Safe Icon" className="3xs:w-3 md:w-4 h-auto mr-2" />
+                                    <span className="text-[#0a0f26] font-semibold 3xs:text-xs xs:text-sm md:text-base">
+                                        {search.safe ? 'Safe' : 'Issues'}
+                                    </span>
                                 </div>
                             </div>
 
@@ -165,12 +168,14 @@ const RecentlyChecked: React.FC<RecentlyCheckedProps> = ({ paginatedSearches, to
                                 </div>
                                 <div className='flex flex-col ml-auto mr-1 space-y-2'>
                                     <div className="col-span-2 flex items-center">
-                                        <div className="flex items-center bg-[#eefaf0] px-2 py-1 rounded-lg">
-                                            <img src="/images/safe-logo.png" alt="Safe Icon" className="3xs:w-3 md:w-4 h-auto mr-2" />
-                                            <span className="text-[#0a0f26] font-semibold 3xs:text-xs xs:text-sm md:text-base">Safe</span>
+                                        <div className={`flex items-center bg-[#eefaf0] px-2 py-1 rounded-lg ${search.safe ? 'bg-[#eefaf0]' : 'bg-[#fce7e7]'}`}>
+                                            <img src={search.safe ? "/images/safe-logo.png" : "/images/issues-logo.png"} alt="Safe Icon" className="3xs:w-3 md:w-4 h-auto mr-2" />
+                                            <span className="text-[#0a0f26] font-semibold 3xs:text-xs xs:text-sm md:text-base">
+                                                {search.safe ? 'Safe' : 'Issues'}
+                                            </span>
                                         </div>
                                     </div>
-                                    <div className="flex items-center justify-center 2xs:mr-4">
+                                    <div className="flex items-center justify-center">
                                         <Link
                                             href={`/playlist/${extractPlaylistId(search.url)}`}
                                             target="_blank"

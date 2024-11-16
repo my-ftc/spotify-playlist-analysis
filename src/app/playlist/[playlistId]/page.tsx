@@ -42,7 +42,6 @@ const ChartPage = () => {
             setGenres({});
             setAgeDistribution({});
             setUserPlaylists([]);
-            setIsAnomalyDetected(false);
 
             const playlistId = params?.playlistId;
 
@@ -106,8 +105,7 @@ const ChartPage = () => {
                 const isXXS = typeof window !== 'undefined' && window.innerWidth < 1000;
                 const ageDistribution = categorizeTracksByAge(tracks, isXXS);
                 setAgeDistribution(ageDistribution);
-                storePlaylistSearch(playlistData);
-
+                storePlaylistSearch(playlistData, !isAnomalyDetected);
             } catch (err: any) {
                 setError("Error fetching playlist or artist data.");
                 console.error("Error fetching playlist data:", err.message);
@@ -118,7 +116,7 @@ const ChartPage = () => {
 
         analyzePlaylist();
         return () => clearTimeout(timer);
-    }, []);
+    }, [isAnomalyDetected]);
 
     // Second useEffect: For anomaly detection
     useEffect(() => {
@@ -130,9 +128,11 @@ const ChartPage = () => {
                     updated_time: new Date().toISOString(), // Current time for updated_time
                 }
             ];
-
             const anomaly = detectAnomaly(updatedFollowerCountArray);
-            setIsAnomalyDetected(anomaly);
+            console.log('anomaly: ', anomaly, isAnomalyDetected);
+            if (anomaly != isAnomalyDetected) {
+                setIsAnomalyDetected(anomaly);
+            }
         }
     }, [followers, followerCountArray]);
 

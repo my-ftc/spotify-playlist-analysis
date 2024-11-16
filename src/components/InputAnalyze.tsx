@@ -33,17 +33,17 @@ const InputAnalyze: React.FC<InputAnalyzeProps> = ({ query, setQuery }) => {
             }
           }}
           placeholder="Paste URL"
-          className="border border-gray-300 rounded-l-lg text-black focus:outline-none py-3 px-4 w-full"
+          className="border border-gray-300 rounded-l-lg text-black focus:outline-none py-3 px-4 w-full 3xs:text-xs xs:text-base"
           style={{ animation: "blinkingCursor 1.2s steps(12) infinite" }}
         />
         {playlistId ? (
           <Link href={`/playlist/${playlistId}`} passHref>
-            <span className={`border-gray-300 bg-[#1d4a5d] text-white font-bold rounded-r-lg px-4 py-3 transition duration-200 w-auto whitespace-nowrap inline-flex items-center justify-center cursor-pointer 3xs:text-xs xs:text-base`}>
+            <span className={`border-2 border-[#1d4a5d] bg-[#1d4a5d] text-white font-bold rounded-r-lg px-4 py-3 transition duration-200 w-auto whitespace-nowrap inline-flex items-center justify-center cursor-pointer 3xs:text-xs xs:text-base`}>
               Analyze playlist
             </span>
           </Link>
         ) : (
-          <span className={`border-gray-300 bg-[#afb7be] text-white font-bold rounded-r-lg px-4 py-3 transition duration-200 w-auto whitespace-nowrap inline-flex items-center justify-center cursor-not-allowed 3xs:text-xs xs:text-base`}>
+          <span className={`border-2 border-[#afb7be] bg-[#afb7be] text-white font-bold rounded-r-lg px-4 py-3 transition duration-200 w-auto whitespace-nowrap inline-flex items-center justify-center cursor-not-allowed 3xs:text-xs xs:text-base`}>
             Analyze playlist
           </span>
         )}
