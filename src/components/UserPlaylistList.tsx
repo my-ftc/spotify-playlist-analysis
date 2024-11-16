@@ -55,7 +55,14 @@ const UserPlaylistList: React.FC<UserPlaylistListProps> = ({ userPlaylists }) =>
                             >
                                 {playlist.name}
                             </a>
-                            <div className="text-[#8789a8]">{playlist.ownerName}</div>
+                            <a
+                                href={`https://open.spotify.com/user/${playlist.ownerId}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-[#8789a8] hover:underline"
+                            >
+                                {playlist.ownerName}
+                            </a>
                         </div>
 
                         <div className="text-center text-gray-600 break-words">{playlist.tracks.length}</div>
@@ -102,7 +109,14 @@ const UserPlaylistList: React.FC<UserPlaylistListProps> = ({ userPlaylists }) =>
                                     >
                                         {playlist.name}
                                     </a>
-                                    <div className="text-[#8789a8]">{playlist.ownerName}</div>
+                                    <a
+                                        href={`https://open.spotify.com/user/${playlist.ownerId}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-[#8789a8] hover:underline"
+                                    >
+                                        {playlist.ownerName}
+                                    </a>
                                 </div>
 
                                 <div className="flex flex-row space-x-4 text-xs">

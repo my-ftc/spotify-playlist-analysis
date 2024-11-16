@@ -48,7 +48,7 @@ const RecentlyChecked: React.FC<RecentlyCheckedProps> = ({ paginatedSearches, to
                                     alt={search.name}
                                     className="w-12 h-12 object-cover rounded-lg mr-3"
                                 />
-                                <div>
+                                <div className='flex flex-col'>
                                     <a
                                         href={search.url}
                                         target="_blank"
@@ -57,7 +57,14 @@ const RecentlyChecked: React.FC<RecentlyCheckedProps> = ({ paginatedSearches, to
                                     >
                                         {search.name}
                                     </a>
-                                    <div className="text-[#8789a8] 3xs:text-xs xs:text-sm md:text-base">{search.ownerName}</div>
+                                    <a
+                                        href={`https://open.spotify.com/user/${search.ownerId}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-[#8789a8] hover:underline 3xs:text-xs xs:text-sm md:text-base"
+                                    >
+                                        {search.ownerName}
+                                    </a>
                                 </div>
                             </div>
 
@@ -126,7 +133,14 @@ const RecentlyChecked: React.FC<RecentlyCheckedProps> = ({ paginatedSearches, to
                                         </a>
                                     </div>
 
-                                    <div className="text-[#8789a8] text-xs">{search.ownerName}</div>
+                                    <a
+                                        href={`https://open.spotify.com/user/${search.ownerId}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-[#8789a8] hover:underline text-xs"
+                                    >
+                                        {search.ownerName}
+                                    </a>
 
                                     <div className="flex flex-row space-x-3 text-xs">
                                         <div className="flex items-center">
