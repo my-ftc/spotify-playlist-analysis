@@ -48,5 +48,5 @@ export const evaluateDiversification = (genres: { [genre: string]: number }): bo
   );
 
   // Diversification condition: At least two clusters should be >= 10% of the total
-  return clusterPercentages.filter((percent) => percent >= 10).length >= 2;
+  return clusterPercentages.filter((percent) => percent >= 10).length <= 3;
 };

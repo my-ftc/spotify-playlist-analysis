@@ -143,7 +143,7 @@ const AgeDistributionChart: React.FC<AgeDistributionChartProps> = ({ ageDistribu
         </div>
 
         <div className="relative group ml-4 flex items-center">
-          <CustomTooltip title="Lorem ipsum dolor sit amet consectetur. Gravida in egestas donec viverra a porttitor sit sed.">
+          <CustomTooltip title="Click for more details about the track age analysis.">
             <img
               src="/images/info.png"
               alt="Info Icon"
@@ -155,14 +155,14 @@ const AgeDistributionChart: React.FC<AgeDistributionChartProps> = ({ ageDistribu
           {isDialogOpen && (
             <InfoDialog
               title="Track Age Analysis"
-              content="Lorem ipsum dolor sit amet consectetur. Gravida in egestas donec viverra a porttitor sit sed."
+              content="The track age analysis provides insights into the age distribution of the tracks, allowing you to see how tracks are spread across various age ranges. This information can help in identifying trends and patterns in the playlist."
               onClose={closeDialog}
               safe={true}
             />
           )}
         </div>
       </div>
-      <p className='3xs:my-2.5 xs:my-4 text-[#515268]'>Lorem ipsum dolor sit amet consectetur. Gravida in egestas donec viverra a porttitor sit sed.</p>
+      <p className='3xs:my-2.5 xs:my-4 text-[#515268]'>A breakdown of the age ranges of the tracks in the playlist.</p>
       <div className="h-[45vh]">
         <Bar data={data} options={options} />
       </div>
