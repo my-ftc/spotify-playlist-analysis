@@ -1,7 +1,19 @@
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { useState, useEffect } from 'react';
+import { Bar } from 'react-chartjs-2';
 import CustomTooltip from './Tooltip';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Legend,
+  Tooltip,
+  ChartOptions,
+} from 'chart.js';
+import { useState, useEffect } from 'react';
 import InfoDialog from './InfoDialog';
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Legend, Tooltip);
 
 interface AgeDistributionChartProps {
   ageDistribution: { [ageGroup: string]: number };
@@ -10,28 +22,20 @@ interface AgeDistributionChartProps {
 const AgeDistributionChart: React.FC<AgeDistributionChartProps> = ({ ageDistribution }) => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null); // Track the active hover index
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [barSize, setBarSize] = useState(80);
-  const [opacity, setOpacity] = useState<number | null>(null); // Track the opacity of the bar
-  const [hoveredBarIndex, setHoveredBarIndex] = useState<number | null>(null); // Track hovered bar index
-
   const openDialog = () => setIsDialogOpen(true);
   const closeDialog = () => setIsDialogOpen(false);
-
-  const data = Object.entries(ageDistribution).map(([key, value]) => ({
-    ageGroup: key,
-    count: value,
-  }));
+  const [barThickness, setBarThickness] = useState(80);
 
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 800) {
-        setBarSize(30);
+        setBarThickness(30);
       } else {
-        setBarSize(80);
+        setBarThickness(80);
       }
     };
 
-    // Set initial bar size based on current window size
+    // Set initial bar thickness based on current window size
     handleResize();
 
     // Listen for window resize events
@@ -41,28 +45,97 @@ const AgeDistributionChart: React.FC<AgeDistributionChartProps> = ({ ageDistribu
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const CustomTooltipContent = ({ active, payload }: { active?: boolean; payload?: any }) => {
-    if (active && payload && payload.length && payload[0].value !== 0) {
-      return (
-        <div
-          style={{
-            backgroundColor: '#0A0F26',
-            padding: '8px 12px',
-            borderRadius: '5px',
-            color: '#fff',
-          }}
-        >
-          <p style={{ margin: 0 }}>{`Number of tracks: ${payload[0].value}`}</p>
-        </div>
-      );
-    }
-    return null; // Do not show tooltip when there is no data or when count is 0
+  const data = {
+    labels: Object.keys(ageDistribution),
+    datasets: [
+      {
+        label: 'Number of Tracks',
+        data: Object.values(ageDistribution),
+        backgroundColor: 'rgba(29, 74, 93)', // Default bar color
+        hoverBackgroundColor: 'rgba(7, 45, 61)', // Color on hover
+        borderRadius: 5, // Makes the top of the bars rounded
+        barThickness: barThickness,
+      },
+    ],
+  };
+
+  const options: ChartOptions<'bar'> = {
+    responsive: true,
+    maintainAspectRatio: false, // Disable aspect ratio to allow custom height
+    onHover: (event, elements) => {
+      if (elements.length > 0) {
+        setActiveIndex(elements[0].index); // Set the index of the hovered bar
+      } else {
+        setActiveIndex(null); // Reset the index when not hovering
+      }
+    },
+    plugins: {
+      legend: {
+        display: false, // Hide the legend
+      },
+      title: {
+        display: false, // Hide the default title
+      },
+    },
+    scales: {
+      x: {
+        grid: {
+          color: '#f6f6fb', // Set the grid color for x-axis
+        },
+        ticks: {
+          color: '#636588', // Set tick color for x-axis
+          font: (context: any) => {
+            const isActive = context.index === activeIndex; // Check if this label is hovered
+            return {
+              family: 'Poppins', // Use Poppins font
+              weight: isActive ? 'bold' : 'normal', // Make the font bold if hovered
+            };
+          },
+        },
+        border: {
+          color: '#f6f6fb', // Set the border color for x-axis
+        },
+        title: {
+          display: true,
+          text: 'Age of tracks (in months)',
+          color: '#000', // Set the title color (optional)
+          font: {
+            size: 14, // Set font size for the title (optional)
+            family: 'Arial', // Set font family for the title (optional)
+          },
+        }
+      },
+      y: {
+        grid: {
+          color: '#f6f6fb', // Set the grid color for y-axis
+        },
+        beginAtZero: true, // Ensures y-axis starts from zero
+        ticks: {
+          color: '#636588', // Set tick color for y-axis
+          font: {
+            family: 'Poppins', // Use Poppins font
+          },
+        },
+        border: {
+          color: '#f6f6fb', // Set the border color for y-axis
+        },
+        title: {
+          display: true, // Display the title
+          text: 'Number of tracks', // Set the title text
+          color: '#000', // Set the title color (optional)
+          font: {
+            size: 14, // Set font size for the title (optional)
+            family: 'Arial', // Set font family for the title (optional)
+          },
+        },
+      },
+    },
   };
 
   return (
     <div className="bg-white shadow-lg rounded-lg p-4 mt-5 h-fit 3xs:text-sm xs:text-base">
       <div className="flex items-center mt-3">
-        <h2 className="xs:text-lg font-bold text-black">Track Age Analysis</h2>
+        <h2 className='xs:text-lg font-bold text-black'>Track Age Analysis</h2>
 
         <div className="flex items-center bg-[#eefaf0] px-2 py-1 rounded-lg ml-4">
           <img src="/images/safe-logo.png" alt="Safe Icon" className="w-4 h-5 mr-2" />
@@ -89,69 +162,9 @@ const AgeDistributionChart: React.FC<AgeDistributionChartProps> = ({ ageDistribu
           )}
         </div>
       </div>
-      <p className="3xs:my-2.5 xs:my-4 text-[#515268]">
-        A breakdown of the age ranges of the tracks in the playlist.
-      </p>
+      <p className='3xs:my-2.5 xs:my-4 text-[#515268]'>A breakdown of the age ranges of the tracks in the playlist.</p>
       <div className="h-[45vh]">
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart
-            data={data}
-            barCategoryGap={5}
-            barSize={barSize}
-            onMouseMove={(state) => {
-              if (state?.activeTooltipIndex !== undefined) {
-                setActiveIndex(state.activeTooltipIndex);
-              }
-            }}
-            onMouseLeave={() => {
-              setActiveIndex(null);
-              setOpacity(null); // Reset opacity when the mouse leaves the bar
-              setHoveredBarIndex(null); // Reset hovered bar index
-            }}
-          >
-            <CartesianGrid stroke="#f6f6fb" />
-            <XAxis
-              dataKey="ageGroup"
-              stroke="#f6f6fb"
-              tick={{
-                fill: '#636588',
-                fontFamily: 'Poppins',
-              }}
-            />
-            <YAxis
-              stroke="#f6f6fb"
-              tick={{
-                fill: '#636588',
-                fontFamily: 'Poppins',
-              }}
-              label={{
-                value: 'Number of tracks',
-                angle: -90,
-                position: 'insideLeft',
-                fill: '#000',
-                style: { fontSize: 14, fontFamily: 'Poppins' },
-              }}
-            />
-            <Tooltip
-              content={<CustomTooltipContent />}
-              cursor={false} // Prevent the default gray hover effect
-              isAnimationActive={false} // Disable animation for the tooltip
-            />
-            <Bar
-              dataKey="count"
-              fill={hoveredBarIndex === null ? "rgba(29, 74, 93)" : "#172d3d"} // Set color based on hover state
-              radius={[5, 5, 0, 0]}
-              fillOpacity={opacity === null ? 1 : opacity} // Set opacity dynamically
-              onMouseOver={(data, index) => {
-                setHoveredBarIndex(index); // Track hovered bar index
-              }}
-              onMouseOut={() => {
-                setHoveredBarIndex(null); // Reset hovered bar index when mouse leaves
-                setOpacity(null); // Reset opacity when mouse leaves
-              }}
-            />
-          </BarChart>
-        </ResponsiveContainer>
+        <Bar data={data} options={options} />
       </div>
     </div>
   );
