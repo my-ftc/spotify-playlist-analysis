@@ -35,6 +35,10 @@ const FollowerCount: React.FC<FollowerCountProps> = ({ followers, trackCount, fo
     { date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit' }), count: followers }
   ];
 
+  const infoDialogContent = isAnomalyDetected
+    ? 'The follower count shows abnormal growth patterns, which could indicate unusual activity.'
+    : 'The follower count appears consistent with no signs of unusual activity.';
+
   return (
     <div className='bg-white p-4 rounded-lg shadow-lg max-w-full overflow-x-auto mt-5 3xs:text-sm xs:text-base'>
       <div className="flex items-center xs:mt-3">
@@ -48,7 +52,7 @@ const FollowerCount: React.FC<FollowerCountProps> = ({ followers, trackCount, fo
         </div>
 
         <div className="relative group ml-4 flex items-center">
-          <CustomTooltip title="Lorem ipsum dolor sit amet consectetur. Gravida in egestas donec viverra a porttitor sit sed.">
+          <CustomTooltip title="Click for more details about follower growth analysis.">
             <img
               src="/images/info.png"
               alt="Info Icon"
@@ -60,7 +64,7 @@ const FollowerCount: React.FC<FollowerCountProps> = ({ followers, trackCount, fo
           {isDialogOpen && (
             <InfoDialog
               title="Follower growth analysis"
-              content="Lorem ipsum dolor sit amet consectetur. Gravida in egestas donec viverra a porttitor sit sed."
+              content={infoDialogContent} // Use dynamic content
               onClose={closeDialog}
               safe={!isAnomalyDetected}
             />
@@ -68,7 +72,7 @@ const FollowerCount: React.FC<FollowerCountProps> = ({ followers, trackCount, fo
         </div>
       </div>
 
-      <p className='3xs:my-2.5 xs:my-4 text-[#515268]'>Lorem ipsum dolor sit amet consectetur. Gravida in egestas donec viverra a porttitor sit sed.</p>
+      <p className='3xs:my-2.5 xs:my-4 text-[#515268]'>A detailed analysis of the playlist&#39;s follower growth patterns.</p>
       <LineGraph data={updatedGraphData} />
     </div>
   );

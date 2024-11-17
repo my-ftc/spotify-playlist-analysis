@@ -120,71 +120,71 @@ export const fetchUsersPlaylists = async (userId: string, accessToken: string, p
   });
 
   if (!response.ok) {
-    throw new Error('Failed to fetch user playlists');
+    throw new Error("Failed to fetch user playlists");
   }
 
   const data = await response.json();
 
+  // Limit the number of playlists to 15
+  const limitedPlaylists = data.items.slice(0, 15);
+
   // Map to include follower count and all tracks in each playlist object
-  const playlistsWithFollowers = await Promise.all(data.items.map(async (playlist: any) => {
-    const playlistResponse = await fetch(`https://api.spotify.com/v1/playlists/${playlist.id}`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-
-    if (!playlistResponse.ok) {
-      throw new Error(`Failed to fetch details for playlist ${playlist.id}`);
-    }
-
-    const playlistData = await playlistResponse.json();
-    playlistImage = playlistData.images && playlistData.images.length > 0 ? playlistData.images[0].url : null; // Get the first image if available
-    ownerId = playlistData.owner.id;
-    ownerName = playlistData.owner.display_name;
-
-    // Fetch all tracks (handling pagination)
-    let tracks = playlistData.tracks.items; // Start with the first set of tracks
-    let nextUrl = playlistData.tracks.next;
-
-    while (nextUrl) {
-      const tracksResponse = await fetch(nextUrl, {
+  const playlistsWithFollowers = await Promise.all(
+    limitedPlaylists.map(async (playlist: any) => {
+      const playlistResponse = await fetch(`https://api.spotify.com/v1/playlists/${playlist.id}`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       });
 
-      if (!tracksResponse.ok) {
-        throw new Error('Failed to fetch playlist tracks');
+      if (!playlistResponse.ok) {
+        throw new Error(`Failed to fetch details for playlist ${playlist.id}`);
       }
 
-      const tracksData = await tracksResponse.json();
-      tracks = tracks.concat(tracksData.items); // Append new tracks to the existing array
-      nextUrl = tracksData.next; // Update nextUrl for the next page, if any
-    }
+      const playlistData = await playlistResponse.json();
+      playlistImage = playlistData.images && playlistData.images.length > 0 ? playlistData.images[0].url : null; // Get the first image if available
+      ownerId = playlistData.owner.id;
+      ownerName = playlistData.owner.display_name;
 
-    return {
-      id: playlist.id,
-      name: playlistData.name,
-      ownerId,
-      ownerName,
-      tracks: tracks, // Return all tracks for the playlist
-      followers: playlistData.followers.total,
-      external_urls: playlistData.external_urls,
-      images: playlistImage,
-    };
-  }));
+      // Fetch all tracks (handling pagination)
+      let tracks = playlistData.tracks.items; // Start with the first set of tracks
+      let nextUrl = playlistData.tracks.next;
+
+      while (nextUrl) {
+        const tracksResponse = await fetch(nextUrl, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+
+        if (!tracksResponse.ok) {
+          throw new Error("Failed to fetch playlist tracks");
+        }
+
+        const tracksData = await tracksResponse.json();
+        tracks = tracks.concat(tracksData.items); // Append new tracks to the existing array
+        nextUrl = tracksData.next; // Update nextUrl for the next page, if any
+      }
+
+      return {
+        id: playlist.id,
+        name: playlistData.name,
+        ownerId,
+        ownerName,
+        tracks: tracks, // Return all tracks for the playlist
+        followers: playlistData.followers.total,
+        external_urls: playlistData.external_urls,
+        images: playlistImage,
+      };
+    })
+  );
 
   // Filter out the playlist with the specified playlistId
-  const filteredPlaylists = playlistsWithFollowers.filter(playlist => playlist.id !== playlistId);
-
-  // Sort playlists by followers and return the top 3
-  const topPlaylists = filteredPlaylists
-    .sort((a, b) => b.followers - a.followers)
-    .slice(0, 3);
-
-  return topPlaylists; // Return the top 3 playlists
+  const filteredPlaylists = playlistsWithFollowers.filter(
+    (playlist) => playlist.id !== playlistId
+  );
+  return filteredPlaylists;
 };
-
 
 
 // Helper function to split array into batches
@@ -232,7 +232,7 @@ const fetchWithRetry = async (fetchFunc: () => Promise<any>, retries = 3) => {
 };
 
 // Batch request function with delay between batches
-export const fetchArtistGenresInBatches = async (artistIds: string[], accessToken: string, batchSize = 20, delayMs = 1000) => {
+export const fetchArtistGenresInBatches = async (artistIds: string[], accessToken: string, batchSize = 15, delayMs = 1000) => {
   const artistChunks = chunkArray(artistIds, batchSize);
   let genreCounts: { [genre: string]: number } = {};
 
