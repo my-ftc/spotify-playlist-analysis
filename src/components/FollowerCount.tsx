@@ -64,7 +64,7 @@ const FollowerCount: React.FC<FollowerCountProps> = ({ followers, trackCount, fo
           )}
         </div>
       </div>
-      <p className="3xs:my-2.5 xs:my-4 text-[#515268]">A detailed analysis of the playlist's follower growth patterns.</p>
+      <p className="3xs:my-2.5 xs:my-4 text-[#515268]">A detailed analysis of the playlist&#39;s follower growth patterns.</p>
       <ResponsiveContainer width="100%" height={300}>
         <AreaChart data={updatedGraphData} margin={{ top: 10, right: 30, left: 40, bottom: 10 }}>
           <defs>
