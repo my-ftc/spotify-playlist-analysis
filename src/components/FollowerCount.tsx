@@ -72,7 +72,7 @@ const FollowerCount: React.FC<FollowerCountProps> = ({ followers, trackCount, fo
         </div>
       </div>
 
-      <p className='3xs:my-2.5 xs:my-4 text-[#515268]'>A detailed analysis of the playlist's follower growth patterns.</p>
+      <p className='3xs:my-2.5 xs:my-4 text-[#515268]'>A detailed analysis of the playlist&#39;s follower growth patterns.</p>
       <LineGraph data={updatedGraphData} />
     </div>
   );
