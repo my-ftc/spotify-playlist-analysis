@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import InfoDialog from './InfoDialog';
 
 interface FollowerData {
   count: number;
@@ -54,16 +55,12 @@ const FollowerCount: React.FC<FollowerCountProps> = ({ followers, trackCount, fo
             onClick={openDialog}
           />
           {isDialogOpen && (
-            <div className="absolute z-10 top-6 right-0 bg-white p-4 rounded-lg shadow-lg">
-              <h3 className="text-lg font-semibold">{isAnomalyDetected ? 'Anomaly Detected' : 'No Anomalies'}</h3>
-              <p>{infoDialogContent}</p>
-              <button
-                onClick={closeDialog}
-                className="mt-2 px-3 py-1 bg-gray-200 rounded-md hover:bg-gray-300"
-              >
-                Close
-              </button>
-            </div>
+            <InfoDialog
+              title="Follower growth analysis"
+              content={infoDialogContent} // Use dynamic content
+              onClose={closeDialog}
+              safe={!isAnomalyDetected}
+            />
           )}
         </div>
       </div>
