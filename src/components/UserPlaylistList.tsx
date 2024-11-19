@@ -99,35 +99,35 @@ const UserPlaylistList: React.FC<UserPlaylistListProps> = ({ userPlaylists }) =>
                 <ul className='xs:hidden'>
                     {paginatedPlaylists.map((playlist, index) => (
                         <li key={index} className="py-3">
-                            <div className="flex flex-row items-center">
-                                <div className="flex justify-center">
+                            <div className="grid grid-cols-[auto_1fr_auto] gap-4 items-center">
+                                {/* Image Section */}
+                                <div className="flex-shrink-0">
                                     <img
                                         src={playlist.images || 'default-image.jpg'}
                                         alt={playlist.name}
                                         className="w-14 h-auto object-cover rounded-lg"
                                     />
                                 </div>
-                                <div className='flex flex-col space-y-0.5 ml-2'>
-                                    <div className="flex flex-col break-words">
-                                        <a
-                                            href={playlist.external_urls.spotify}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="text-[#373843] hover:underline font-semibold"
-                                        >
-                                            {playlist.name}
-                                        </a>
-                                        <a
-                                            href={`https://open.spotify.com/user/${playlist.ownerId}`}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="text-[#8789a8] hover:underline"
-                                        >
-                                            {playlist.ownerName}
-                                        </a>
-                                    </div>
 
-                                    <div className="flex flex-row space-x-4 text-xs">
+                                {/* Playlist Info Section */}
+                                <div className="flex flex-col space-y-1">
+                                    <a
+                                        href={playlist.external_urls.spotify}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-[#373843] hover:underline font-semibold break-words"
+                                    >
+                                        {playlist.name}
+                                    </a>
+                                    <a
+                                        href={`https://open.spotify.com/user/${playlist.ownerId}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-[#8789a8] hover:underline"
+                                    >
+                                        {playlist.ownerName}
+                                    </a>
+                                    <div className="flex flex-row space-x-4 text-xs mt-2">
                                         <div className="flex items-center">
                                             <img
                                                 src="/images/music-note-02.png"
@@ -146,27 +146,28 @@ const UserPlaylistList: React.FC<UserPlaylistListProps> = ({ userPlaylists }) =>
                                         </div>
                                     </div>
                                 </div>
-                                <div className='flex flex-col ml-auto mr-1.5 space-y-2'>
-                                    <div className="text-center">
-                                        <Link
-                                            href={`/playlist/${extractPlaylistId(playlist.external_urls.spotify)}`}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="flex items-center text-[#1d4a5d] font-semibold hover:underline xs:text-sm sm:text-sm md:text-base lg:text-base 2xs:mr-10"
-                                        >
-                                            <img
-                                                src="/images/analyze.png"
-                                                alt="Analyze"
-                                                className="xs:w-3 sm:w-3 md:w-4 lg:w-4 h-auto mr-2"
-                                            />
-                                            Analyze
-                                        </Link>
-                                    </div>
+
+                                {/* Analyze Button Section */}
+                                <div className="text-center">
+                                    <Link
+                                        href={`/playlist/${extractPlaylistId(playlist.external_urls.spotify)}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex items-center text-[#1d4a5d] font-semibold hover:underline xs:text-sm sm:text-sm md:text-base lg:text-base"
+                                    >
+                                        <img
+                                            src="/images/analyze.png"
+                                            alt="Analyze"
+                                            className="xs:w-3 sm:w-3 md:w-4 lg:w-4 h-auto mr-2"
+                                        />
+                                        Analyze
+                                    </Link>
                                 </div>
                             </div>
                         </li>
                     ))}
                 </ul>
+
             </div>
 
             {totalPages > 1 && (
