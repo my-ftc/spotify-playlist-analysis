@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import InfoDialog from './InfoDialog';
+import CustomTooltip from './Tooltip';
 
 interface FollowerData {
   count: number;
@@ -19,7 +20,7 @@ const FollowerCount: React.FC<FollowerCountProps> = ({ followers, trackCount, fo
   const openDialog = () => setIsDialogOpen(true);
   const closeDialog = () => setIsDialogOpen(false);
 
-  if (followers === null || trackCount === null || followerCountArray.length === 0) {
+  if (followers === null || trackCount === null) {
     return null;
   }
 
@@ -33,9 +34,12 @@ const FollowerCount: React.FC<FollowerCountProps> = ({ followers, trackCount, fo
     { date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit' }), count: followers }
   ];
 
-  const infoDialogContent = isAnomalyDetected
-    ? 'The follower count shows abnormal growth patterns, which could indicate unusual activity.'
-    : 'The follower count appears consistent with no signs of unusual activity.';
+  const infoDialogContent = followerCountArray.length === 0
+    ? 'This is the first time we\'re analyzing this playlist. We have started tracking it. The follower count gets updated daily at 05\:00 UTC.'
+    : isAnomalyDetected
+      ? 'The follower count shows abnormal growth patterns, which could indicate unusual activity.'
+      : 'The follower count appears consistent with no signs of unusual activity.';
+
 
   return (
     <div className="bg-white p-4 rounded-lg shadow-lg max-w-full overflow-x-auto mt-5 3xs:text-sm xs:text-base">
@@ -48,12 +52,14 @@ const FollowerCount: React.FC<FollowerCountProps> = ({ followers, trackCount, fo
           </span>
         </div>
         <div className="relative group ml-4 flex items-center">
-          <img
-            src="/images/info.png"
-            alt="Info Icon"
-            className="w-4 h-4 cursor-pointer"
-            onClick={openDialog}
-          />
+          <CustomTooltip title="Click for more details about follower growth analysis.">
+            <img
+              src="/images/info.png"
+              alt="Info Icon"
+              className="w-4 h-4 cursor-pointer"
+              onClick={openDialog}
+            />
+          </CustomTooltip>
           {isDialogOpen && (
             <InfoDialog
               title="Follower growth analysis"
