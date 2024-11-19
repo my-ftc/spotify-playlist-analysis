@@ -12,6 +12,8 @@ import { categorizeTracksByAge } from '../../../lib/trackUtils';
 import { storePlaylistSearch } from "../../../lib/localStorageUtils";
 import LoadingWave from '@/components/LoadingWave';
 import { detectAnomaly } from '../../../utils/followersAnomalyDetection';
+import { fetchArtistGenresInBatches } from '../../../lib/spotify';
+import { fetchAccessToken } from '../../../pages/api/getAccessToken';
 
 const ChartPage = () => {
     const params = useParams();
@@ -87,7 +89,8 @@ const ChartPage = () => {
 
                 const [userPlaylistsResponse, genreCountsResponse] = await Promise.all([
                     ownerId ? fetch(`/api/fetchUserPlaylists?userId=${ownerId}&playlistId=${playlistId}`) : Promise.resolve(null),
-                    fetch(`/api/fetchArtistGenres?artistIds=${artistIds.join(",")}`),
+                    // fetch(`/api/fetchArtistGenres?artistIds=${artistIds.join(",")}`), Removed for the demo
+                    fetchArtistGenresInBatches(artistIds, await fetchAccessToken()), // Call the function directly
                 ]);
 
                 if (ownerId && userPlaylistsResponse && userPlaylistsResponse.ok) {
@@ -97,9 +100,14 @@ const ChartPage = () => {
                     setError("Owner ID is not available for this playlist.");
                 }
 
-                if (genreCountsResponse && genreCountsResponse.ok) {
-                    const genreCountsData = await genreCountsResponse.json();
-                    setGenres(genreCountsData);
+                // Removed for the demo
+                // if (genreCountsResponse && genreCountsResponse.ok) {
+                //     const genreCountsData = await genreCountsResponse.json();
+                //     setGenres(genreCountsData);
+                // }
+
+                if (genreCountsResponse) {
+                    setGenres(genreCountsResponse)
                 }
 
                 const isXXS = typeof window !== 'undefined' && window.innerWidth < 1000;
