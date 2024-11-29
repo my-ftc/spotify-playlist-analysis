@@ -137,9 +137,10 @@ const ChartPage = () => {
                 }
             ];
             const anomaly = detectAnomaly(updatedFollowerCountArray);
-            if (anomaly != isAnomalyDetected) {
-                setIsAnomalyDetected(anomaly);
-            }
+            // if (anomaly != isAnomalyDetected) {
+            setIsAnomalyDetected(anomaly);
+            // }
+            console.log("Anomaly and isAnomalyDetected: ", anomaly, isAnomalyDetected)
         }
     }, [followers, followerCountArray]);
 
