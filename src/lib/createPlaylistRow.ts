@@ -4,23 +4,21 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export const createPlaylistRow = async (playlistId: string) => {
+export const createPlaylistRow = async (playlistId: string, followerCount: number) => {
   try {
-    // Check if the playlist exists
     const existingRecord = await prisma.followers.findUnique({
       where: { playlist_id: playlistId },
     });
 
     if (!existingRecord) {
-      // Insert a new record with an empty follower_count array
       await prisma.followers.create({
         data: {
           playlist_id: playlistId,
-          follower_count: [], // Pass an empty array directly
+          follower_count: [{ count: followerCount, updated_time: new Date() }],
           created_at: new Date(),
         },
       });
-      console.log(`New playlist added: ${playlistId} with empty follower count array.`);
+      console.log(`New playlist added: ${playlistId} with initial follower count ${followerCount}.`);
       return true;
     }
 
@@ -28,7 +26,7 @@ export const createPlaylistRow = async (playlistId: string) => {
     return false;
 
   } catch (error) {
-    console.error('Error in upsert:', error);
+    console.error('Error in createPlaylistRow:', error);
     throw error;
   }
 };
