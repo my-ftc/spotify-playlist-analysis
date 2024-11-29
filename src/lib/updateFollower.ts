@@ -31,7 +31,7 @@ export const updateFollower = async (playlistId: string, followerCount: number) 
       where: { playlist_id: playlistId },
       data: {
         follower_count: updatedFollowerCount as Prisma.JsonArray, // Cast as JsonArray
-        created_at: new Date(), // Optional: Update created_at if needed
+        // created_at: new Date(), // Optional: Update created_at if needed
       },
     });
 

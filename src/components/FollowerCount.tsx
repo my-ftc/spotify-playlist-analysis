@@ -29,10 +29,12 @@ const FollowerCount: React.FC<FollowerCountProps> = ({ followers, trackCount, fo
     count: entry.count,
   }));
 
-  const updatedGraphData = [
-    ...graphData,
-    { date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit' }), count: followers }
-  ];
+  const todayDate = new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit' });
+  const todayEntry = { date: todayDate, count: followers };
+
+  const updatedGraphData = graphData.length > 0 && graphData[graphData.length - 1].date === todayDate
+    ? [...graphData.slice(0, -1), todayEntry] // Replace the last entry
+    : [...graphData, todayEntry]; // Add today's entry if not present  
 
   const infoDialogContent = followerCountArray.length === 0
     ? 'This is the first time we\'re analyzing this playlist. We have started tracking it. The follower count gets updated daily at 05\:00 UTC.'
@@ -90,11 +92,21 @@ const FollowerCount: React.FC<FollowerCountProps> = ({ followers, trackCount, fo
             tick={{ fill: '#636588', fontFamily: 'Poppins' }}
             axisLine={{ stroke: '#E5E7EB' }}
             tickLine={false}
+            domain={([dataMin, dataMax]: [number, number]) => {
+              const diff = dataMax - dataMin;
+              return [
+                Math.max(0, Math.floor(dataMin - (diff * 0.1))),
+                Math.ceil(dataMax + (diff * 0.1))
+              ];
+            }}
+            tickCount={6}
+            allowDecimals={false}
+            tickFormatter={(value) => value.toLocaleString()}
             label={{
               value: 'Followers',
               angle: -90,
-              position: 'outsideLeft', // Ensures the label is placed outside
-              dx: -60, // Moves the label farther to the left
+              position: 'outsideLeft',
+              dx: -60,
               style: {
                 fill: '#636588',
                 fontFamily: 'Poppins',
