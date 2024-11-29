@@ -109,7 +109,6 @@ export const fetchArtistGenres = async (artistIds: string[], accessToken: string
 };
 
 export const fetchUsersPlaylists = async (userId: string, accessToken: string, playlistId: string) => {
-  let playlistImage: string | null = null; // To hold the playlist's image URL
   let ownerId: string | null = null;
   let ownerName: string | null = null;
 
@@ -131,6 +130,7 @@ export const fetchUsersPlaylists = async (userId: string, accessToken: string, p
   // Map to include follower count and all tracks in each playlist object
   const playlistsWithFollowers = await Promise.all(
     limitedPlaylists.map(async (playlist: any) => {
+      let playlistImage: string | null = null;
       const playlistResponse = await fetch(`https://api.spotify.com/v1/playlists/${playlist.id}`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
